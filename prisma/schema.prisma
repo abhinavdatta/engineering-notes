@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id          String     @id @default(cuid())
+  code        String     @unique // CSE, ECE, EIE, etc.
+  name        String     // Computer Science & Engineering, etc.
+  description String?
+  icon        String?    // Icon name or emoji
+  color       String?    // Theme color for the department
+  subjects    Subject[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Subject {
+  id           String     @id @default(cuid())
+  code         String     // Subject code like CS101, EC201
+  name         String
+  semester     Int        // 1-8
+  departmentId String
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  resources    Resource[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  
+  @@unique([code, departmentId])
+}
+
+model Resource {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  type        ResourceType
+  fileName    String     // Original file name
+  filePath    String     // Path in GitHub repo or storage
+  fileSize    Int?       // File size in bytes
+  githubUrl   String?    // GitHub raw URL
+  subjectId   String
+  subject     Subject    @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+enum ResourceType {
+  NOTES
+  TEXTBOOK
+  QUESTION_PAPER
+  LAB_MANUAL
+  OTHER
+}
+
+// GitHub configuration for the repository
+model GitHubConfig {
+  id           String   @id @default(cuid())
+  repoOwner    String   // GitHub username
+  repoName     String   // Repository name
+  branch       String   @default("main")
+  baseUrl      String?  // Custom base URL if using GitHub Pages
+  lastSynced   DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
