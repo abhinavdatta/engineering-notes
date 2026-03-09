@@ -2,6 +2,9 @@
 
 Engineering Notes & Textbooks for Students
 
+## Use of AI
+most of the UI was made with the help of AI (because i could not think of a better UI design)
+
 ## Setup
 
 ### 1. Google Drive API Key
@@ -66,3 +69,10 @@ deploy/
     ├── notes-data.js
     └── textbooks-data.js
 ```
+
+
+## CHANGES
+1. If you want to change something please fork it and update it on your own (or) raise an issue in issue tab (or) make a pull request.
+2. you can download it and make any changes as you want. Its your wish
+
+ 
