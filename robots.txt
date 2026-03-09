@@ -1,0 +1,108 @@
+# Block AI Crawlers and Training Bots
+User-agent: GPTBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: ChatGPT-User
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Claude-Web
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: ClaudeBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Anthropic-AI
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Google-Extended
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: CCBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Omgilibot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Omgili
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: FacebookBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Bytespider
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: ImagesiftBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: PerplexityBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: YouBot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Diffbot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Amazonbot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: AI2Bot
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: cohere-ai
+Disallow: /
+Crawl-delay: 9999
+
+User-agent: Dark Visitors
+Disallow: /
+Crawl-delay: 9999
+
+# Allow regular search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 1
+
+User-agent: YandexBot
+Allow: /
+Crawl-delay: 1
+
+# Default - high delay to slow down unknown bots
+User-agent: *
+Allow: /
+Crawl-delay: 600
+
+Sitemap: https://enginotes.pages.dev/sitemap.xml

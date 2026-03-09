@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EngNotes - Engineering Notes & Textbooks for Students</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 50%;
+      animation: float 15s infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+    
+    .container {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Header */
+    .header {
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      font-size: 32px;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .nav-link {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: all 0.3s;
+      background: rgba(255,255,255,0.1);
+    }
+    
+    .nav-link:hover {
+      background: rgba(255,255,255,0.2);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+    
+    /* Hero Section */
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .hero-badge {
+      background: linear-gradient(135deg, #e94560, #ff6b6b);
+      color: #fff;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .hero h1 {
+      font-size: clamp(36px, 8vw, 64px);
+      color: #fff;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+    
+    .hero h1 span {
+      background: linear-gradient(135deg, #00d9ff, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    /* Cards */
+    .cards-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 20px;
+      margin-bottom: 40px;
+    }
+    
+    .card {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 280px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--card-color), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .card:hover::before {
+      opacity: 1;
+    }
+    
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: var(--card-color);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3), 0 0 30px var(--card-glow);
+    }
+    
+    .card-notes {
+      --card-color: #00ff88;
+      --card-glow: rgba(0, 255, 136, 0.2);
+    }
+    
+    .card-textbooks {
+      --card-color: #00d9ff;
+      --card-glow: rgba(0, 217, 255, 0.2);
+    }
+    
+    .card-icon {
+      font-size: 60px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    
+    .card-title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    
+    .card-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+    
+    .card-items {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .card-tag {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.8);
+      padding: 5px 12px;
+      border-radius: 15px;
+      font-size: 11px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 30px 20px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .footer-link {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    
+    .footer-link:hover {
+      color: #00d9ff;
+    }
+    
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header {
+        padding: 15px 20px;
+        justify-content: center;
+        text-align: center;
+      }
+      
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .card {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="particles" id="particles"></div>
+  
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <a href="PASTE YOUR home PAGE LINK HERE" class="logo">
+        <span class="logo-icon">📚</span>
+        EngNotes
+      </a>
+      <nav class="nav-links">
+        <a href="PASTE YOUR ABOUT PAGE LINK HERE" target="_blank" class="nav-link">About</a>
+        <a href="PASTE YOUR REPORT PAGE LINK HERE" target="_blank" class="nav-link">Report Issue</a>
+        <a href="PASTE YOUR MAIL COMPOSE LINK HERE" target="_blank" class="nav-link">Contact</a>
+      </nav>
+    </header>
+    
+    <!-- Hero -->
+    <main class="hero">
+      <div class="hero-badge">✨ Free Resources for Students</div>
+      <h1>Engineering <span>Notes</span> & Textbooks</h1>
+      <!-- Cards -->
+      <div class="cards-container">
+        <div class="card card-notes" onclick="navigateTo('pages/notes.html')">
+          <span class="card-icon">📝</span>
+          <div class="card-title">Class Resources</div>
+          <p class="card-desc">Comprehensive notes, previous year papers, and lab manuals organized by department and semester.</p>
+          <div class="card-items">
+            <span class="card-tag">Notes</span>
+            <span class="card-tag">Question Papers</span>
+            <span class="card-tag">Lab Manuals</span>
+          </div>
+        </div>
+        
+        <div class="card card-textbooks" onclick="navigateTo('pages/textbooks.html')">
+          <span class="card-icon">📖</span>
+          <div class="card-title">Textbooks</div>
+          <p class="card-desc">Semester textbooks and reference books for all branches. Download PDFs directly or view online.</p>
+          <div class="card-items">
+            <span class="card-tag">Textbooks</span>
+            <span class="card-tag">Reference Books</span>
+            <span class="card-tag">Guides</span>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="PASTE YOUR NOTES DRIVE LINK HERE" target="_blank" class="footer-link">Notes Drive</a>
+        <a href="PASTE YOUR TEXTBOOK DRIVE LINK HERE" target="_blank" class="footer-link">Textbooks Drive</a>
+        <a href="PASTE YOUR ABOUT PAGE LINK HERE" target="_blank" class="footer-link">GitHub</a>
+      </div>
+
+    </footer>
+  </div>
+  
+  <!-- Anti-Bot Protection -->
+  <script>
+    // Create floating particles
+    (function() {
+      var container = document.getElementById('particles');
+      for (var i = 0; i < 30; i++) {
+        var particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (10 + Math.random() * 20) + 's';
+        container.appendChild(particle);
+      }
+    })();
+    
+    // Bot detection
+    (function() {
+      var botDetected = false;
+      if (/HeadlessChrome/i.test(navigator.userAgent)) botDetected = true;
+      if (/PhantomJS/i.test(navigator.userAgent)) botDetected = true;
+      if (navigator.webdriver) botDetected = true;
+      if (window.callPhantom || window._phantom) botDetected = true;
+      if (window.__nightmare) botDetected = true;
+      if (window.domAutomation || window.domAutomationController) botDetected = true;
+      
+      if (botDetected) {
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#1a1a2e;color:#fff;font-family:Arial;text-align:center;"><div><h1>🤖 Bot Detected</h1><p style="margin-top:20px;font-size:18px;">This website is protected against automated scraping.</p></div></div>';
+      }
+    })();
+    
+    // Smart navigation
+    function navigateTo(path) {
+      var urlParams = new URLSearchParams(window.location.search);
+      var transformPort = urlParams.get('XTransformPort');
+      
+      if (transformPort) {
+        var separator = path.includes('?') ? '&' : '?';
+        window.location.href = path + separator + 'XTransformPort=' + transformPort;
+      } else {
+        window.location.href = path;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textbooks - EngNotes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f8fafc; color: #334155; min-height: 100vh; }
+    
+    /* Header */
+    .header { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 16px 24px; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1100px; margin: 0 auto; }
+    .header-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .home-btn { background: #3b82f6; color: #fff; border: none; padding: 10px 20px; font-size: 14px; font-weight: 500; border-radius: 8px; transition: all 0.2s; }
+    .home-btn:hover { background: #2563eb; transform: translateY(-1px); }
+    .logo { font-size: 20px; font-weight: 700; }
+    .logo a { color: #3b82f6; text-decoration: none; }
+    .breadcrumb { font-size: 13px; color: #64748b; }
+    .breadcrumb a { color: #3b82f6; text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    
+    .dept-links { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .dept-btn { border: 1px solid #e2e8f0; padding: 6px 14px; font-size: 12px; font-weight: 500; background: #fff; color: #475569; border-radius: 20px; transition: all 0.2s; cursor: pointer; }
+    .dept-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+    .dept-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+    
+    /* Main */
+    .main { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    
+    /* Hero */
+    .hero { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); padding: 48px 24px; text-align: center; color: #fff; }
+    .hero h1 { font-size: 32px; margin-bottom: 8px; font-weight: 700; }
+    .hero p { font-size: 16px; opacity: 0.9; }
+    .hero-notice { background: rgba(255,255,255,0.2); padding: 8px 20px; border-radius: 20px; font-size: 13px; display: inline-block; margin-top: 16px; }
+    
+    /* Section */
+    .section-title { font-size: 18px; font-weight: 600; color: #1e293b; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #3b82f6; display: inline-block; }
+    
+    /* Table */
+    .table-container { background: #fff; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: 14px 16px; text-align: left; }
+    th { background: #f1f5f9; font-weight: 600; font-size: 13px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px; }
+    tr { border-bottom: 1px solid #f1f5f9; }
+    tr:last-child { border-bottom: none; }
+    tr:hover { background: #f8fafc; }
+    
+    .code-badge { background: #3b82f6; color: #fff; padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; }
+    
+    /* Buttons */
+    .view-btn { background: #3b82f6; color: #fff; border: none; padding: 8px 18px; font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .view-btn:hover { background: #2563eb; }
+    .open-btn { background: #10b981; color: #fff; border: none; padding: 6px 14px; font-size: 12px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .open-btn:hover { background: #059669; }
+    .view-blue-btn { background: #3b82f6; color: #fff; border: none; padding: 6px 14px; font-size: 12px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .view-blue-btn:hover { background: #2563eb; }
+    
+    /* Department View */
+    .dept-header { background: linear-gradient(135deg, #eff6ff 0%, #fff 100%); padding: 32px 24px; border-bottom: 1px solid #e2e8f0; }
+    .back-link { background: none; border: none; color: #3b82f6; font-size: 14px; font-weight: 500; cursor: pointer; padding: 0; margin-bottom: 12px; display: inline-flex; align-items: center; gap: 4px; }
+    .back-link:hover { text-decoration: underline; }
+    .dept-title { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 4px; }
+    .dept-info { font-size: 14px; color: #64748b; }
+    .dept-count { font-size: 13px; color: #3b82f6; font-weight: 500; margin-top: 4px; }
+    
+    .filter-bar { background: #fff; padding: 16px 24px; border-bottom: 1px solid #e2e8f0; }
+    .filter-btn { border: 1px solid #e2e8f0; padding: 8px 16px; margin-right: 6px; font-size: 13px; font-weight: 500; background: #fff; color: #475569; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover { border-color: #3b82f6; color: #3b82f6; }
+    .filter-btn.active { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+    
+    .sem-title { font-size: 16px; font-weight: 600; color: #1e293b; background: #f1f5f9; padding: 12px 16px; margin: 0 0 12px 0; border-radius: 8px; border-left: 4px solid #3b82f6; }
+    
+    /* Unit Cards */
+    .unit-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 20px; }
+    .unit-card { background: #fff; border: 1px solid #e2e8f0; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; border-radius: 12px; }
+    .unit-card:hover { border-color: #3b82f6; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15); transform: translateY(-2px); }
+    .unit-card-number { font-size: 28px; font-weight: 700; color: #3b82f6; }
+    .unit-card-name { font-size: 13px; color: #64748b; margin-top: 8px; }
+    
+    /* Subject Badge */
+    .subject-badge { background: #3b82f6; color: #fff; padding: 4px 12px; font-size: 12px; font-weight: 600; border-radius: 4px; }
+    
+    /* Loading & States */
+    .loading { text-align: center; padding: 48px; background: #fff; border-radius: 12px; }
+    .loading-spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e2e8f0; border-top-color: #3b82f6; border-radius: 50%; animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .no-data { text-align: center; padding: 48px; background: #f8fafc; border-radius: 12px; color: #64748b; }
+    .hidden { display: none !important; }
+    
+    /* Modal */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.8); z-index: 9999; display: flex; flex-direction: column; }
+    .modal-header { background: #1e293b; color: #fff; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 15px; font-weight: 500; }
+    .modal-type { background: #3b82f6; padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; margin-left: 10px; }
+    .modal-open-btn { background: #3b82f6; color: #fff; border: none; padding: 10px 20px; font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; margin-right: 10px; transition: all 0.2s; }
+    .modal-open-btn:hover { background: #2563eb; }
+    .modal-close-btn { background: #ef4444; color: #fff; border: none; padding: 10px 20px; font-size: 13px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+    .modal-close-btn:hover { background: #dc2626; }
+    .modal-body { flex: 1; background: #334155; }
+    .modal-body iframe { width: 100%; height: 100%; border: none; }
+    .modal-footer { background: #f1f5f9; padding: 10px 24px; font-size: 12px; color: #64748b; text-align: center; }
+    
+    /* Footer */
+    .footer { background: #1e293b; color: #94a3b8; padding: 24px; text-align: center; margin-top: 48px; }
+    .footer a { color: #3b82f6; text-decoration: none; }
+    .footer-links { font-size: 13px; margin-bottom: 8px; }
+    .footer-links a { margin: 0 12px; }
+    
+    /* Info Boxes */
+    .info-boxes { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 32px; }
+    .info-box { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; }
+    .info-box h3 { font-size: 14px; font-weight: 600; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+    .info-box p, .info-box li { font-size: 13px; color: #64748b; line-height: 1.6; }
+    .info-box ol { padding-left: 20px; }
+    .info-box a { color: #3b82f6; }
+    
+    /* Responsive */
+    @media (max-width: 600px) {
+      .header { padding: 12px 16px; }
+      .main { padding: 16px; }
+      .hero { padding: 32px 16px; }
+      .hero h1 { font-size: 24px; }
+      .unit-cards { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-top">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="home-btn" onclick="goHome()">← Home</button>
+          <span class="logo"><a href="PASTE YOUR HOME PAGE LINK ">EngNotes</a></span>
+        </div>
+        <div class="breadcrumb" id="breadcrumb">
+          <a href="PASTE YOUR HOMEPAGE LINK HERE">Home</a> → <span>Textbooks</span>
+        </div>
+      </div>
+      <div class="dept-links" id="dept-links"></div>
+    </div>
+  </header>
+
+  <div id="home-view">
+    <div class="hero">
+      <h1>📖 Textbooks</h1>
+      <p>Semester Textbooks & Reference Books for All Departments</p>
+      <div class="hero-notice">Under Construction</div>
+    </div>
+    <div class="main">
+      <div id="home-content"></div>
+      <div class="info-boxes">
+        <div class="info-box">
+          <h3>📥 How to Download</h3>
+          <ol>
+            <li>Click on your department</li>
+            <li>Select your semester</li>
+            <li>Choose a subject</li>
+            <li>Pick a unit to view textbooks</li>
+          </ol>
+        </div>
+        <div class="info-box">
+          <h3>📬 Contribute</h3>
+          <p>Send textbooks to<br><a href="PASTE YOUR MAIL INBOX LINK HERE WITH YOUR MAIL" target="_blank">PASTE YOUR MAIL ID HERE</a></p>
+          <p style="margin-top:12px;"><strong>Google Drive:</strong><br><a href="PASTE YOUR GOOGLE DRIVE LINK HERE" target="_blank">Open Textbooks Drive →</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="dept-view" class="hidden">
+    <div class="dept-header">
+      <button class="back-link" onclick="goHome()">← Back</button>
+      <h1 class="dept-title" id="dept-title">Department</h1>
+      <p class="dept-info">Textbooks</p>
+      <p class="dept-count" id="dept-count">0 subjects</p>
+    </div>
+    <div class="filter-bar">
+      <span>Filter: </span><span id="semester-filters"></span>
+    </div>
+    <div class="main" id="dept-content"></div>
+  </div>
+
+  <div id="subject-view" class="hidden">
+    <div class="dept-header">
+      <button class="back-link" onclick="goBackToDept()">← Back</button>
+      <h1 class="dept-title" id="subject-title">Subject</h1>
+      <p class="dept-info">
+        <span class="subject-badge" id="subject-code">CODE</span>
+        Sem <span id="subject-sem">1</span> | <span id="subject-dept-code">DEPT</span>
+      </p>
+    </div>
+    <div class="main" id="subject-content"></div>
+  </div>
+
+  <div id="unit-view" class="hidden">
+    <div class="dept-header">
+      <button class="back-link" onclick="goBackToSubject()">← Back</button>
+      <h1 class="dept-title" id="unit-title">Unit</h1>
+      <p class="dept-info" id="unit-info">Subject</p>
+    </div>
+    <div class="main" id="unit-content"></div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="javascript:void(0)" onclick="goHome()">Home</a>
+      <a href="notes.html">Class Resources</a>
+      <a href="PASTE YOUR ABOUT PAGE LINK HERE" target="_blank">About</a>
+      <a href="PASTE YOUR REPORT PAGE LINK HERE" target="_blank">Report</a>
+    </div>
+  </footer>
+
+  <div id="pdf-modal" class="modal-overlay hidden">
+    <div class="modal-header">
+      <div><span class="modal-title" id="modal-title">PDF</span><span class="modal-type" id="modal-type">TEXTBOOK</span></div>
+      <div>
+        <button class="modal-open-btn" onclick="openInDrive()">Open in Drive</button>
+        <button class="modal-close-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+    <div class="modal-body"><iframe id="pdf-iframe" src=""></iframe></div>
+    <div class="modal-footer">File: <span id="modal-filename">file.pdf</span></div>
+  </div>
+
+  <!-- Anti-Bot Protection -->
+  <script>
+    (function() {
+      var botDetected = false;
+      if (/HeadlessChrome/i.test(navigator.userAgent)) botDetected = true;
+      if (/PhantomJS/i.test(navigator.userAgent)) botDetected = true;
+      if (navigator.webdriver) botDetected = true;
+      if (window.callPhantom || window._phantom) botDetected = true;
+      if (window.__nightmare) botDetected = true;
+      if (window.domAutomation || window.domAutomationController) botDetected = true;
+      
+      if (botDetected) {
+        document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#1a1a2e;color:#fff;font-family:Arial;text-align:center;"><div><h1>🤖 Bot Detected</h1><p style="margin-top:20px;font-size:18px;">This website is protected against automated scraping.</p></div></div>';
+      }
+    })();
+  </script>
+  
+  <script src="textbooks-data.js"></script>
+  
+  <script>
+    var API_KEY = 'PASTE YOUR DRIVE API HERE ';
+    var currentDeptId = null, currentSubjectId = null, currentUnitId = null, currentSemester = 'all', currentPdfUrl = null;
+    var filesCache = {};
+
+    function loadGoogleAPI() {
+      return new Promise(function(resolve, reject) {
+        if (window.gapi && window.gapi.client) { resolve(); return; }
+        var script = document.createElement('script');
+        script.src = 'https://apis.google.com/js/api.js';
+        script.onload = function() {
+          window.gapi.load('client', function() {
+            window.gapi.client.init({ apiKey: API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'] }).then(resolve, reject);
+          });
+        };
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+
+    async function loadFilesForUnit(unitId, folderId) {
+      if (filesCache[unitId]) return filesCache[unitId];
+      await loadGoogleAPI();
+      var response = await window.gapi.client.drive.files.list({ q: "'" + folderId + "' in parents and trashed = false", orderBy: 'name', fields: 'files(id, name, mimeType)' });
+      var items = response.result.files || [];
+      var files = [];
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.mimeType === 'application/vnd.google-apps.folder') {
+          var sub = await window.gapi.client.drive.files.list({ q: "'" + item.id + "' in parents and trashed = false", fields: 'files(id, name)' });
+          (sub.result.files || []).forEach(function(s) { files.push({ id: s.id, title: s.name.replace(/\.[^/.]+$/, ''), type: 'TEXTBOOK', fileName: s.name, driveUrl: 'https://drive.google.com/file/d/' + s.id + '/preview' }); });
+        } else {
+          files.push({ id: item.id, title: item.name.replace(/\.[^/.]+$/, ''), type: 'TEXTBOOK', fileName: item.name, driveUrl: 'https://drive.google.com/file/d/' + item.id + '/preview' });
+        }
+      }
+      filesCache[unitId] = files;
+      return files;
+    }
+
+    function getDeptById(id) { return DATA.find(function(d) { return d.id === id; }); }
+    function getSubjectById(deptId, subjectId) {
+      var dept = getDeptById(deptId);
+      if (!dept) return null;
+      for (var sem in dept.semesters) { var found = dept.semesters[sem].find(function(s) { return s.id === subjectId; }); if (found) return found; }
+      return null;
+    }
+    function getSemesterName(n) { return ['', '1st', '2nd', '3rd', '4th', '5th', '6th', '7th', '8th'][n] || n + 'th'; }
+    function hideAllViews() { ['home-view', 'dept-view', 'subject-view', 'unit-view'].forEach(function(id) { document.getElementById(id).className = 'hidden'; }); }
+
+    function updateDeptButtons() {
+      var html = '<span style="font-weight: 500; color: #64748b;">Departments: </span>';
+      DATA.forEach(function(d) { html += '<button class="' + (d.id === currentDeptId ? 'dept-btn active' : 'dept-btn') + '" onclick="goToDept(\'' + d.id + '\')">' + d.code + '</button> '; });
+      document.getElementById('dept-links').innerHTML = html;
+    }
+
+    function goHome() { var p = new URLSearchParams(window.location.search).get('XTransformPort'); window.location.href = p ? '../index.html?XTransformPort=' + p : 'https://enginotes.pages.dev'; }
+    function goToDept(id) { currentDeptId = id; currentSubjectId = null; currentUnitId = null; currentSemester = 'all'; hideAllViews(); document.getElementById('dept-view').className = ''; updateBreadcrumb(); updateDeptButtons(); renderDept(); }
+    function goBackToDept() { if (currentDeptId) goToDept(currentDeptId); else goHome(); }
+    function goToSubject(id) { currentSubjectId = id; currentUnitId = null; hideAllViews(); document.getElementById('subject-view').className = ''; updateBreadcrumb(); renderSubject(); }
+    function goBackToSubject() { if (currentSubjectId) goToSubject(currentSubjectId); else goBackToDept(); }
+    function goToUnit(id) { currentUnitId = id; hideAllViews(); document.getElementById('unit-view').className = ''; updateBreadcrumb(); renderUnit(); }
+
+    function updateBreadcrumb() {
+      var html = '<a href="PASTE YOUR HOMEPAGE PAGE LINK HERE">Home</a> → <span>Textbooks</span>';
+      if (currentDeptId) { var d = getDeptById(currentDeptId); if (d) html += ' → <span>' + d.name + '</span>'; }
+      if (currentSubjectId) { var s = getSubjectById(currentDeptId, currentSubjectId); if (s) html += ' → <span>' + s.name + '</span>'; }
+      if (currentUnitId) html += ' → <span>Unit</span>';
+      document.getElementById('breadcrumb').innerHTML = html;
+    }
+
+    function renderHome() {
+      var html = '<h2 class="section-title">Choose Department</h2><div class="table-container"><table><thead><tr><th>Code</th><th>Department</th><th>Action</th></tr></thead><tbody>';
+      DATA.forEach(function(d) { html += '<tr><td><span class="code-badge">' + d.code + '</span></td><td style="font-weight:500;">' + d.name + '</td><td><button class="view-btn" onclick="goToDept(\'' + d.id + '\')">View →</button></td></tr>'; });
+      document.getElementById('home-content').innerHTML = html + '</tbody></table></div>';
+    }
+
+    function renderDept() {
+      var dept = getDeptById(currentDeptId); if (!dept) return;
+      document.getElementById('dept-title').textContent = dept.name;
+      var total = 0; for (var sem in dept.semesters) total += dept.semesters[sem].length;
+      document.getElementById('dept-count').textContent = total + ' subjects';
+      var semHtml = '<button class="filter-btn active" onclick="filterSem(\'all\',this)">All</button>';
+      for (var s = 1; s <= 8; s++) semHtml += '<button class="filter-btn" onclick="filterSem(' + s + ',this)">Sem ' + s + '</button>';
+      document.getElementById('semester-filters').innerHTML = semHtml;
+      renderDeptTable();
+    }
+
+    function renderDeptTable() {
+      var dept = getDeptById(currentDeptId); if (!dept) return;
+      var html = '';
+      var sems = Object.keys(dept.semesters).sort(function(a,b) { return a - b; });
+      sems.forEach(function(sem) {
+        var subs = dept.semesters[sem];
+        if (currentSemester !== 'all' && sem != currentSemester) return;
+        if (subs.length === 0) return;
+        html += '<div style="margin-bottom:24px;"><h3 class="sem-title">' + getSemesterName(sem) + ' Semester (' + subs.length + ' subjects)</h3><div class="table-container"><table><thead><tr><th>Code</th><th>Subject</th><th>Units</th><th>Action</th></tr></thead><tbody>';
+        subs.forEach(function(sub) { html += '<tr><td style="font-weight:600;">' + sub.code + '</td><td>' + sub.name + '</td><td style="text-align:center;">' + sub.units.length + '</td><td><button class="open-btn" onclick="goToSubject(\'' + sub.id + '\')">Open</button></td></tr>'; });
+        html += '</tbody></table></div></div>';
+      });
+      document.getElementById('dept-content').innerHTML = html || '<div class="no-data"><p>No subjects found</p></div>';
+    }
+
+    function filterSem(sem, btn) {
+      currentSemester = sem;
+      document.querySelectorAll('#semester-filters .filter-btn').forEach(function(b) { b.className = 'filter-btn'; });
+      btn.className = 'filter-btn active';
+      renderDeptTable();
+    }
+
+    function renderSubject() {
+      var dept = getDeptById(currentDeptId);
+      var sub = getSubjectById(currentDeptId, currentSubjectId);
+      if (!dept || !sub) return;
+      document.getElementById('subject-title').textContent = sub.name;
+      document.getElementById('subject-code').textContent = sub.code;
+      document.getElementById('subject-sem').textContent = Object.keys(dept.semesters).find(function(s) { return dept.semesters[s].some(function(x) { return x.id === sub.id; }); }) || '?';
+      document.getElementById('subject-dept-code').textContent = dept.code;
+      var units = sub.units || [];
+      if (units.length === 0) { document.getElementById('subject-content').innerHTML = '<div class="no-data"><p>No units available</p></div>'; return; }
+      units.sort(function(a,b) { return a.number - b.number; });
+      var html = '<h2 class="section-title">Select Unit</h2><div class="unit-cards">';
+      units.forEach(function(u) { html += '<div class="unit-card" onclick="goToUnit(\'' + u.id + '\')"><div class="unit-card-number">' + u.number + '</div><div class="unit-card-name">' + u.name + '</div></div>'; });
+      document.getElementById('subject-content').innerHTML = html + '</div>';
+    }
+
+    async function renderUnit() {
+      var sub = getSubjectById(currentDeptId, currentSubjectId);
+      var unit = sub ? sub.units.find(function(u) { return u.id === currentUnitId; }) : null;
+      if (!sub || !unit) return;
+      document.getElementById('unit-title').textContent = unit.name;
+      document.getElementById('unit-info').textContent = sub.name;
+      document.getElementById('unit-content').innerHTML = '<div class="loading"><div class="loading-spinner"></div><p style="margin-top:16px;color:#64748b;">Loading textbooks...</p></div>';
+      var files = await loadFilesForUnit(unit.id, unit.folderId);
+      if (files.length === 0) { document.getElementById('unit-content').innerHTML = '<div class="no-data"><p>No textbooks found</p></div>'; return; }
+      var html = '<div class="table-container"><table><thead><tr><th>#</th><th>File</th><th>Type</th><th>Actions</th></tr></thead><tbody>';
+      files.forEach(function(f, i) { html += '<tr><td style="text-align:center;color:#94a3b8;">' + (i+1) + '</td><td><strong>' + f.title + '</strong><br><small style="color:#94a3b8;">' + f.fileName + '</small></td><td style="text-align:center;"><span class="code-badge">' + f.type + '</span></td><td><button class="view-blue-btn" onclick="openModal(\'' + f.id + '\')">View</button> <button class="open-btn" onclick="openTab(\'' + f.id + '\')">Open</button></td></tr>'; });
+      document.getElementById('unit-content').innerHTML = html + '</tbody></table></div>';
+    }
+
+    function openModal(id) { 
+      var files = filesCache[currentUnitId] || [];
+      var f = files.find(function(x) { return x.id === id; });
+      if (!f) return;
+      currentPdfUrl = f.driveUrl;
+      document.getElementById('modal-title').textContent = f.title;
+      document.getElementById('modal-type').textContent = f.type;
+      document.getElementById('modal-filename').textContent = f.fileName;
+      document.getElementById('pdf-iframe').src = f.driveUrl;
+      document.getElementById('pdf-modal').className = 'modal-overlay';
+    }
+    function closeModal() { document.getElementById('pdf-modal').className = 'modal-overlay hidden'; document.getElementById('pdf-iframe').src = ''; }
+    function openInDrive() { if (currentPdfUrl) window.open(currentPdfUrl.replace('/preview','/view'), '_blank'); }
+    function openTab(id) { var f = (filesCache[currentUnitId] || []).find(function(x) { return x.id === id; }); if (f) window.open(f.driveUrl.replace('/preview','/view'), '_blank'); }
+
+    updateDeptButtons();
+    renderHome();
+  </script>
+</body>
+</html>
