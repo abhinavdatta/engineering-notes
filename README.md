@@ -1,6 +1,6 @@
 # EngNotes
 
-Engineering Notes & Textbooks for Indian Students
+Engineering Notes & Textbooks for Students
 
 ## Setup
 
@@ -43,7 +43,7 @@ Update in all HTML files (`index.html`, `pages/notes.html`, `pages/textbooks.htm
 
 1. Enable **Drive API**
 2. Create **API Key**
-3. Add **HTTP Referrer restriction**: `enginotes.pages.dev/*`
+3. Add **HTTP Referrer restriction**: `YOUR WEBSITE LINK`
 
 ### 5. Data Files
 
