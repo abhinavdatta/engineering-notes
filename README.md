@@ -1,6 +1,8 @@
 # EngNotes
 
-Engineering Notes & Textbooks for Students
+Engineering Notes & Textbooks for Students. 
+<a href="https://enginotes.pages.dev/">Click here to visit the Website</a> 
+ 
 
 ## Use of AI
 most of the UI was made with the help of AI (because i could not think of a better UI design)
