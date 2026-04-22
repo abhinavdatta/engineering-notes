@@ -498,12 +498,13 @@ function updateCacheStatus() {
   if (typeof getCacheStatus !== 'function') return;
   
   var status = getCacheStatus();
+  var folderType = status.folderType || 'Unknown';
   
   if (!status.hasCache) {
-    statusEl.innerHTML = '<span class="cache-status">No cache</span>';
+    statusEl.innerHTML = '<span class="cache-status">No cache (' + folderType + ')</span>';
   } else if (status.isFresh) {
-    statusEl.innerHTML = '<span class="cache-status fresh">Cache: ' + status.cacheAgeFormatted + '</span>';
+    statusEl.innerHTML = '<span class="cache-status fresh">' + folderType + ' cached: ' + status.cacheAgeFormatted + '</span>';
   } else {
-    statusEl.innerHTML = '<span class="cache-status stale">Cache: ' + status.cacheAgeFormatted + '</span>';
+    statusEl.innerHTML = '<span class="cache-status stale">' + folderType + ' cached: ' + status.cacheAgeFormatted + '</span>';
   }
 }

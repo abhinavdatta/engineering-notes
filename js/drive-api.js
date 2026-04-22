@@ -13,7 +13,7 @@
  * - Uses cacheManager for localStorage caching
  * - Only caches if user has accepted cookies
  * - Cache TTL: 24 hours by default
- * - User can clear cache by declining cookies
+ * - Separate cache for Notes and Textbooks (based on ROOT_FOLDER_ID)
  * 
  * USAGE:
  * 1. Set API_KEY and ROOT_FOLDER_ID before calling init
@@ -56,37 +56,78 @@ var CACHE_TTL = 24 * 60 * 60 * 1000;
 
 /**
  * Memory cache for loaded files (session-only, no consent needed)
+ * Keyed by ROOT_FOLDER_ID to separate Notes and Textbooks
  * @type {Object}
  */
 var filesCache = {};
 
 /**
  * Memory cache for folder structure (session-only, no consent needed)
+ * Keyed by ROOT_FOLDER_ID to separate Notes and Textbooks
  * @type {Object}
  */
 var foldersCache = {};
 
 /**
- * Flag to track if structure has been loaded
- * @type {boolean}
+ * Flag to track if structure has been loaded (per ROOT_FOLDER_ID)
+ * @type {Object}
  */
-var structureLoaded = false;
+var structureLoadedMap = {};
 
 /**
- * Main data structure holding all folders/files
- * @type {Array}
+ * Main data structure holding all folders/files (per ROOT_FOLDER_ID)
+ * @type {Object}
  */
-var DATA = [];
+var DATA_MAP = {};
+
+/**
+ * Convenience getter for current DATA
+ */
+Object.defineProperty(window, 'DATA', {
+  get: function() { return DATA_MAP[ROOT_FOLDER_ID] || []; },
+  set: function(val) { DATA_MAP[ROOT_FOLDER_ID] = val; }
+});
+
+/**
+ * Convenience getter for structureLoaded
+ */
+Object.defineProperty(window, 'structureLoaded', {
+  get: function() { return structureLoadedMap[ROOT_FOLDER_ID] || false; },
+  set: function(val) { structureLoadedMap[ROOT_FOLDER_ID] = val; }
+});
 
 /* ============================================================
-   CACHE KEYS
+   CACHE KEYS - Include ROOT_FOLDER_ID for separation
    ============================================================ */
-var CACHE_KEYS = {
-  STRUCTURE: 'drive_structure_',
-  FOLDERS: 'drive_folders_',
-  FILES: 'drive_files_',
-  TIMESTAMP: 'drive_cache_timestamp'
+
+/**
+ * Gets cache key prefix for current ROOT_FOLDER_ID
+ * This ensures Notes and Textbooks have separate caches
+ * @returns {string} Cache key prefix
+ */
+function getCachePrefix() {
+  return 'drive_' + ROOT_FOLDER_ID.substring(0, 8) + '_';
+}
+
+/**
+ * Cache key templates (will be combined with ROOT_FOLDER_ID)
+ */
+var CACHE_KEY_TEMPLATES = {
+  STRUCTURE: 'structure',
+  FOLDERS: 'folders_',
+  FILES: 'files_'
 };
+
+/**
+ * Gets the full cache key for a specific type
+ * @param {string} type - Cache type (STRUCTURE, FOLDERS, FILES)
+ * @param {string} suffix - Optional suffix (e.g., folder ID)
+ * @returns {string} Full cache key
+ */
+function getCacheKey(type, suffix) {
+  suffix = suffix || '';
+  return getCachePrefix() + CACHE_KEY_TEMPLATES[type] + suffix;
+}
 
 /* ============================================================
    DEPARTMENT CODE MAPPING
@@ -116,7 +157,7 @@ var DEPT_CODES = {
 
 /**
  * Gets cached data if available and not expired
- * @param {string} key - Cache key
+ * @param {string} key - Cache key (without prefix, will be added)
  * @returns {*} Cached data or null
  */
 function getCachedData(key) {
@@ -129,7 +170,7 @@ function getCachedData(key) {
 
 /**
  * Sets data in cache if consent given
- * @param {string} key - Cache key
+ * @param {string} key - Cache key (without prefix, will be added)
  * @param {*} value - Data to cache
  */
 function setCachedData(key, value) {
@@ -139,19 +180,52 @@ function setCachedData(key, value) {
 }
 
 /**
- * Clears all Drive-related cache
+ * Clears cache for current ROOT_FOLDER_ID only
+ */
+function clearCurrentCache() {
+  var prefix = getCachePrefix();
+  
+  // Clear localStorage cache for this ROOT_FOLDER_ID only
+  if (typeof cacheManager !== 'undefined') {
+    // Remove structure cache
+    cacheManager.remove(getCacheKey('STRUCTURE'));
+    
+    // Remove folder and file caches (need to iterate localStorage)
+    for (var i = localStorage.length - 1; i >= 0; i--) {
+      var key = localStorage.key(i);
+      if (key && key.includes(prefix)) {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+  
+  // Clear memory cache for this ROOT_FOLDER_ID
+  delete DATA_MAP[ROOT_FOLDER_ID];
+  delete structureLoadedMap[ROOT_FOLDER_ID];
+  
+  // Clear file/folder caches (keyed by folder ID, but we can't easily filter)
+  // These will be repopulated on next fetch
+  filesCache = {};
+  foldersCache = {};
+  
+  console.log('[DriveAPI] Cache cleared for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
+}
+
+/**
+ * Clears all Drive-related cache (both Notes and Textbooks)
  */
 function clearDriveCache() {
   if (typeof cacheManager !== 'undefined') {
-    // Clear all drive_ prefixed items
     cacheManager.clear();
   }
-  // Also clear memory cache
+  
+  // Clear all memory caches
   filesCache = {};
   foldersCache = {};
-  structureLoaded = false;
-  DATA = [];
-  console.log('[DriveAPI] Cache cleared');
+  structureLoadedMap = {};
+  DATA_MAP = {};
+  
+  console.log('[DriveAPI] All cache cleared');
 }
 
 /* ============================================================
@@ -197,16 +271,18 @@ function loadGoogleAPI() {
  * @returns {Promise<Array>} Array of folder objects
  */
 async function fetchFolders(parentId) {
+  // Create cache key specific to this ROOT_FOLDER_ID
+  var cacheKey = getCacheKey('FOLDERS', parentId);
+  
   // Check memory cache first (fastest)
-  if (foldersCache[parentId]) {
-    return foldersCache[parentId];
+  if (foldersCache[cacheKey]) {
+    return foldersCache[cacheKey];
   }
   
   // Check localStorage cache (if consent given)
-  var cacheKey = CACHE_KEYS.FOLDERS + parentId;
   var cached = getCachedData(cacheKey);
   if (cached) {
-    foldersCache[parentId] = cached;
+    foldersCache[cacheKey] = cached;
     return cached;
   }
   
@@ -237,7 +313,7 @@ async function fetchFolders(parentId) {
   } while (pageToken);
   
   // Cache results
-  foldersCache[parentId] = allFolders;
+  foldersCache[cacheKey] = allFolders;
   setCachedData(cacheKey, allFolders);
   
   return allFolders;
@@ -254,17 +330,18 @@ async function fetchFolders(parentId) {
  * @returns {Promise<Array>} Array of file objects
  */
 async function fetchFiles(parentId) {
+  // Create cache key specific to this ROOT_FOLDER_ID
+  var cacheKey = getCacheKey('FILES', parentId);
+  
   // Check memory cache first
-  var memCacheKey = parentId + '_direct';
-  if (filesCache[memCacheKey]) {
-    return filesCache[memCacheKey];
+  if (filesCache[cacheKey]) {
+    return filesCache[cacheKey];
   }
   
   // Check localStorage cache
-  var cacheKey = CACHE_KEYS.FILES + parentId;
   var cached = getCachedData(cacheKey);
   if (cached) {
-    filesCache[memCacheKey] = cached;
+    filesCache[cacheKey] = cached;
     return cached;
   }
   
@@ -294,7 +371,7 @@ async function fetchFiles(parentId) {
   } while (pageToken);
   
   // Cache results
-  filesCache[memCacheKey] = allFiles;
+  filesCache[cacheKey] = allFiles;
   setCachedData(cacheKey, allFiles);
   
   return allFiles;
@@ -310,21 +387,13 @@ async function fetchFiles(parentId) {
  * @returns {Promise<Object>} Object with folders and files arrays
  */
 async function getFolderContents(folderId) {
-  // Check memory cache first
-  if (foldersCache[folderId] && filesCache[folderId + '_direct']) {
-    return {
-      folders: foldersCache[folderId],
-      files: filesCache[folderId + '_direct']
-    };
-  }
-  
   // Fetch folders and files in parallel
   var [folders, files] = await Promise.all([
     fetchFolders(folderId),
     fetchFiles(folderId)
   ]);
   
-  return { folders, files };
+  return { folders: folders, files: files };
 }
 
 /* ============================================================
@@ -401,117 +470,6 @@ function getDeptCode(name) {
 }
 
 /* ============================================================
-   LOAD FILES FROM FOLDER FUNCTION (Legacy - includes subfolders)
-   ============================================================ */
-
-/**
- * Loads all files from a folder, including from subfolders
- * Uses caching if available
- * @param {string} folderId - The folder ID to load from
- * @returns {Promise<Array>} Array of file objects
- */
-async function loadFilesFromFolder(folderId) {
-  // Check memory cache
-  if (filesCache[folderId]) {
-    return filesCache[folderId];
-  }
-  
-  // Check localStorage cache
-  var cacheKey = CACHE_KEYS.FILES + folderId + '_all';
-  var cached = getCachedData(cacheKey);
-  if (cached) {
-    filesCache[folderId] = cached;
-    return cached;
-  }
-  
-  await loadGoogleAPI();
-  
-  var allFiles = [];
-  var pageToken = null;
-  var items = [];
-  
-  do {
-    var params = {
-      q: "'" + folderId + "' in parents and trashed = false",
-      orderBy: 'name',
-      fields: 'nextPageToken, files(id, name, mimeType)',
-      pageSize: 1000
-    };
-    
-    if (pageToken) {
-      params.pageToken = pageToken;
-    }
-    
-    var response = await window.gapi.client.drive.files.list(params);
-    items = items.concat(response.result.files || []);
-    pageToken = response.result.nextPageToken;
-    
-  } while (pageToken);
-  
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    
-    if (item.mimeType === 'application/vnd.google-apps.folder') {
-      var subPageToken = null;
-      do {
-        var subParams = {
-          q: "'" + item.id + "' in parents and trashed = false",
-          orderBy: 'name',
-          fields: 'nextPageToken, files(id, name)',
-          pageSize: 1000
-        };
-        
-        if (subPageToken) {
-          subParams.pageToken = subPageToken;
-        }
-        
-        var subResponse = await window.gapi.client.drive.files.list(subParams);
-        var subFiles = subResponse.result.files || [];
-        
-        subFiles.forEach(function(s) {
-          allFiles.push({
-            id: s.id,
-            name: s.name,
-            parentFolder: item.name
-          });
-        });
-        
-        subPageToken = subResponse.result.nextPageToken;
-      } while (subPageToken);
-    } else {
-      allFiles.push({
-        id: item.id,
-        name: item.name
-      });
-    }
-  }
-  
-  var result = allFiles.map(function(item) {
-    var type = 'NOTES';
-    if (item.name.toLowerCase().includes('question') || item.name.toLowerCase().includes('qp')) {
-      type = 'QP';
-    } else if (item.name.toLowerCase().includes('lab')) {
-      type = 'LAB';
-    }
-    
-    return {
-      id: item.id,
-      title: item.name.replace(/\.[^/.]+$/, ''),
-      type: type,
-      fileName: item.name,
-      parentFolder: item.parentFolder || '',
-      driveUrl: 'https://drive.google.com/file/d/' + item.id + '/preview'
-    };
-  });
-  
-  // Cache results
-  filesCache[folderId] = result;
-  setCachedData(cacheKey, result);
-  
-  return result;
-}
-
-/* ============================================================
    BUILD STRUCTURE FUNCTION
    ============================================================ */
 
@@ -521,28 +479,29 @@ async function loadFilesFromFolder(folderId) {
  * @returns {Promise<Array>} Complete data structure
  */
 async function buildStructure() {
-  // Check if already loaded in memory
-  if (structureLoaded && DATA.length > 0) {
-    return DATA;
+  // Check if already loaded in memory for this ROOT_FOLDER_ID
+  if (structureLoadedMap[ROOT_FOLDER_ID] && DATA_MAP[ROOT_FOLDER_ID] && DATA_MAP[ROOT_FOLDER_ID].length > 0) {
+    console.log('[DriveAPI] Using in-memory structure');
+    return DATA_MAP[ROOT_FOLDER_ID];
   }
   
-  // Check localStorage cache for entire structure
-  var structureCacheKey = CACHE_KEYS.STRUCTURE + ROOT_FOLDER_ID;
+  // Check localStorage cache for this ROOT_FOLDER_ID
+  var structureCacheKey = getCacheKey('STRUCTURE');
   var cachedStructure = getCachedData(structureCacheKey);
   
   if (cachedStructure && cachedStructure.length > 0) {
-    DATA = cachedStructure;
-    structureLoaded = true;
-    console.log('[DriveAPI] Loaded structure from cache - saved API calls!');
-    return DATA;
+    DATA_MAP[ROOT_FOLDER_ID] = cachedStructure;
+    structureLoadedMap[ROOT_FOLDER_ID] = true;
+    console.log('[DriveAPI] Loaded from cache for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
+    return DATA_MAP[ROOT_FOLDER_ID];
   }
   
   // Fetch from API
-  console.log('[DriveAPI] Fetching structure from API...');
+  console.log('[DriveAPI] Fetching from API for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
   await loadGoogleAPI();
   
   var deptFolders = await fetchFolders(ROOT_FOLDER_ID);
-  DATA = [];
+  var data = [];
   
   for (var i = 0; i < deptFolders.length; i++) {
     var dept = deptFolders[i];
@@ -587,15 +546,16 @@ async function buildStructure() {
       }
     }
     
-    DATA.push(deptData);
+    data.push(deptData);
   }
   
-  // Cache the complete structure
-  setCachedData(structureCacheKey, DATA);
+  // Cache for this ROOT_FOLDER_ID
+  DATA_MAP[ROOT_FOLDER_ID] = data;
+  structureLoadedMap[ROOT_FOLDER_ID] = true;
+  setCachedData(structureCacheKey, data);
   
-  structureLoaded = true;
   console.log('[DriveAPI] Structure built and cached');
-  return DATA;
+  return data;
 }
 
 /* ============================================================
@@ -682,41 +642,20 @@ async function buildSubjectData(folder, semNum) {
 
 /**
  * Forces a refresh of the folder structure from the API
- * Clears all cache and fetches fresh data
+ * Clears cache for current ROOT_FOLDER_ID and fetches fresh data
  * @returns {Promise<Array>} Fresh data structure
  */
 async function refreshStructure() {
   console.log('[DriveAPI] Refreshing structure...');
   
-  // Clear all caches
-  filesCache = {};
-  foldersCache = {};
-  structureLoaded = false;
-  DATA = [];
-  
-  // Clear localStorage cache for this folder
-  if (typeof cacheManager !== 'undefined' && cacheManager.isAvailable()) {
-    var structureCacheKey = CACHE_KEYS.STRUCTURE + ROOT_FOLDER_ID;
-    cacheManager.remove(structureCacheKey);
-    
-    // Also clear folder and file caches
-    // We need to iterate and remove matching keys
-    for (var i = localStorage.length - 1; i >= 0; i--) {
-      var key = localStorage.key(i);
-      if (key && (
-        key.startsWith('enginotes_cache_drive_folders_') ||
-        key.startsWith('enginotes_cache_drive_files_')
-      )) {
-        localStorage.removeItem(key);
-      }
-    }
-  }
+  // Clear cache for current ROOT_FOLDER_ID only
+  clearCurrentCache();
   
   // Fetch fresh data from API
   await loadGoogleAPI();
   
   var deptFolders = await fetchFolders(ROOT_FOLDER_ID);
-  DATA = [];
+  var data = [];
   
   for (var i = 0; i < deptFolders.length; i++) {
     var dept = deptFolders[i];
@@ -761,25 +700,25 @@ async function refreshStructure() {
       }
     }
     
-    DATA.push(deptData);
+    data.push(deptData);
   }
   
   // Cache the fresh structure
-  var structureCacheKey = CACHE_KEYS.STRUCTURE + ROOT_FOLDER_ID;
-  setCachedData(structureCacheKey, DATA);
+  DATA_MAP[ROOT_FOLDER_ID] = data;
+  structureLoadedMap[ROOT_FOLDER_ID] = true;
+  setCachedData(getCacheKey('STRUCTURE'), data);
   
-  structureLoaded = true;
   console.log('[DriveAPI] Structure refreshed and cached');
   
-  return DATA;
+  return data;
 }
 
 /**
- * Gets the cache status
+ * Gets the cache status for current ROOT_FOLDER_ID
  * @returns {Object} Cache status info
  */
 function getCacheStatus() {
-  var structureCacheKey = CACHE_KEYS.STRUCTURE + ROOT_FOLDER_ID;
+  var structureCacheKey = getCacheKey('STRUCTURE');
   var hasCache = false;
   var cacheAge = null;
   
@@ -804,7 +743,8 @@ function getCacheStatus() {
     hasCache: hasCache,
     cacheAge: cacheAge,
     cacheAgeFormatted: cacheAge ? formatCacheAge(cacheAge) : null,
-    isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false
+    isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false,
+    folderType: ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks'
   };
 }
 

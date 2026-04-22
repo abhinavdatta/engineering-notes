@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EngNotes - Changelog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+    .subtitle {
+      color: #64748b;
+      margin-bottom: 32px;
+    }
+    .version {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .version-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .version-badge {
+      background: #10b981;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .version-date {
+      color: #64748b;
+      font-size: 14px;
+    }
+    .feature-group {
+      margin-bottom: 16px;
+    }
+    .feature-group h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .feature-list {
+      list-style: none;
+    }
+    .feature-list li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+    .feature-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: #10b981;
+      font-weight: bold;
+    }
+    .feature-list.added li::before {
+      content: "+";
+      color: #10b981;
+    }
+    .feature-list.changed li::before {
+      content: "~";
+      color: #f59e0b;
+    }
+    .feature-list.removed li::before {
+      content: "-";
+      color: #ef4444;
+    }
+    code {
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #475569;
+    }
+    .file-list {
+      background: #f8fafc;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .file-list h4 {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .file-list ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .file-list li {
+      background: #e2e8f0;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+    }
+    .summary-box {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+    .summary-box h2 {
+      margin-bottom: 12px;
+    }
+    .summary-box p {
+      opacity: 0.9;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .stat {
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 EngNotes Changelog</h1>
+    <p class="subtitle">Engineering Notes & Textbooks Website - All changes and features</p>
+
+    <!-- Summary -->
+    <div class="summary-box">
+      <h2>Summary</h2>
+      <p>A complete engineering notes and textbooks website with Google Drive integration, smart caching, and cookie consent.</p>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">7</div>
+          <div class="stat-label">JS Files</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">7</div>
+          <div class="stat-label">CSS Files</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">3</div>
+          <div class="stat-label">HTML Pages</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Version 1.3 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.3</span>
+        <span class="version-date">Latest - Cache Separation Fix</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Separate Cache for Notes and Textbooks</strong> - Cache keys now include ROOT_FOLDER_ID to prevent mixing</li>
+          <li>Memory cache now uses DATA_MAP and structureLoadedMap keyed by ROOT_FOLDER_ID</li>
+          <li>Cache status now shows which folder type is cached (e.g., "Notes cached: 2h ago")</li>
+          <li>Refresh button only clears cache for current page (Notes or Textbooks)</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li>Reorganized cache key generation with <code>getCachePrefix()</code> function</li>
+          <li>Added <code>clearCurrentCache()</code> to clear only current page's cache</li>
+          <li>Improved console logging to show which folder type is being loaded</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.2 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.2</span>
+        <span class="version-date">Refresh Button</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Refresh Folders Button</strong> - Manual refresh to update cached folder structure without page reload</li>
+          <li><strong>Cache Status Indicator</strong> - Shows how old the cached data is (e.g., "Cache: 2h 15m ago")</li>
+          <li><strong>Visual Button States</strong> - Loading spinner, success, and error states for refresh button</li>
+          <li><code>refreshStructure()</code> function in drive-api.js</li>
+          <li><code>getCacheStatus()</code> function in drive-api.js</li>
+          <li><code>handleRefreshFolders()</code> function in navigation.js</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li>Updated notes.html and textbooks.html headers to include refresh button</li>
+          <li>Added CSS styles for refresh button with animations</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.1 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.1</span>
+        <span class="version-date">Cookie Consent & Caching</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Cookie Consent Banner</strong> - GDPR-style banner on first visit</li>
+          <li><strong>Accept/Decline Buttons</strong> - User choice for cookie storage</li>
+          <li><strong>Smart LocalStorage Caching</strong> - 24-hour cache for folder structure (only if cookies accepted)</li>
+          <li><strong>Cache Manager</strong> - Safe caching that respects user consent</li>
+          <li><strong>Cookie Status in Footer</strong> - Shows current consent status with option to change</li>
+          <li>Created <code>css/cookie-consent.css</code></li>
+          <li>Created <code>js/cookie-consent.js</code></li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li>Updated drive-api.js to use cacheManager for all caching operations</li>
+          <li>Updated all HTML pages with cookie consent banner</li>
+          <li>API calls reduced significantly for returning users (0 calls if cached)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.0 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.0</span>
+        <span class="version-date">Initial Release</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Home Page</strong> - Landing page with animated particles background</li>
+          <li><strong>Class Resources Page</strong> - Notes, Question Papers, Lab Manuals</li>
+          <li><strong>Textbooks Page</strong> - Semester textbooks and reference books</li>
+          <li><strong>Google Drive API Integration</strong> - Dynamic content fetching from Google Drive</li>
+          <li><strong>Theme Support</strong> - Light, Dark, Pure Black/AMOLED themes</li>
+          <li><strong>Department Navigation</strong> - Browse by department (CSE, ECE, ME, etc.)</li>
+          <li><strong>Semester Filtering</strong> - Filter subjects by semester (1-8)</li>
+          <li><strong>Unit-wise Organization</strong> - Files organized by units/modules</li>
+          <li><strong>Subfolder Support</strong> - Navigate through nested folders</li>
+          <li><strong>PDF Viewer Modal</strong> - In-page PDF viewing with Google Drive preview</li>
+          <li><strong>Ad Spaces</strong> - 2-3 ads only on department pages (top and inline)</li>
+          <li><strong>Bot Protection</strong> - Basic security measures</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Removed</h3>
+        <ul class="feature-list removed">
+          <li>Adblock Detector - Removed due to errors (user requested)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- File Structure -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">Files</span>
+        <span class="version-date">Complete File Structure</span>
+      </div>
+      
+      <div class="file-list">
+        <h4>HTML Files (3)</h4>
+        <ul>
+          <li>index.html</li>
+          <li>pages/notes.html</li>
+          <li>pages/textbooks.html</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>CSS Files (7)</h4>
+        <ul>
+          <li>css/themes.css</li>
+          <li>css/common.css</li>
+          <li>css/notes.css</li>
+          <li>css/textbooks.css</li>
+          <li>css/home.css</li>
+          <li>css/ads.css</li>
+          <li>css/cookie-consent.css</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>JavaScript Files (7)</h4>
+        <ul>
+          <li>js/drive-api.js</li>
+          <li>js/navigation.js</li>
+          <li>js/cookie-consent.js</li>
+          <li>js/notes-app.js</li>
+          <li>js/textbooks-app.js</li>
+          <li>js/home-app.js</li>
+          <li>js/theme-manager.js</li>
+          <li>js/bot-protection.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- API Configuration -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">Config</span>
+        <span class="version-date">API Configuration</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Google Drive API</h3>
+        <ul class="feature-list">
+          <li><strong>API Key:</strong> <code>AIzaSyCC8BbNNG2HhwEJ74GRBoos_lvREUPUN2Y</code></li>
+          <li><strong>Notes Drive ID:</strong> <code>1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG</code></li>
+          <li><strong>Textbooks Drive ID:</strong> <code>1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi</code></li>
+          <li><strong>Cache TTL:</strong> 24 hours (86400000 ms)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <p style="text-align: center; color: #94a3b8; margin-top: 32px;">
+      Made with ❤️ for engineering students<br>
+      <a href="https://github.com/abhinavdatta" style="color: #64748b;">GitHub</a> · 
+      <a href="https://enginotes.pages.dev" style="color: #64748b;">Website</a>
+    </p>
+  </div>
+</body>
+</html>
