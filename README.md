@@ -171,8 +171,14 @@ deploy/
 ## Version History
 
 See `CHANGELOG.html` for complete version history.
+### Version (v1.5)
 
-### Latest Version (v1.4)
+- **Added:** Comprehensive mobile responsive design with 4 breakpoints (768px, 480px, 360px)
+- **Added:** Mobile card views for all table data (departments, subjects, files)
+- **Fixed:** Notes page was missing mobile card view on home page
+- **Improved:** Touch-optimized UI elements, horizontal scrolling filters, proper stacking layouts
+- 
+### Version (v1.4)
 
 - **Fixed:** Cache separation bug - Notes and Textbooks now have completely separate caches
 - **Changed:** ROOT_FOLDER_ID now uses dynamic getter function `getRootFolderId()`
