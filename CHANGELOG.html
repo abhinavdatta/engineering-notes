@@ -185,29 +185,57 @@
       </div>
     </div>
 
-    <!-- Version 1.3 -->
+    <!-- Version 1.4 -->
     <div class="version">
       <div class="version-header">
-        <span class="version-badge">v1.3</span>
-        <span class="version-date">Latest - Cache Separation Fix</span>
+        <span class="version-badge">v1.4</span>
+        <span class="version-date">Latest - Dynamic ROOT_FOLDER_ID Fix</span>
       </div>
       
       <div class="feature-group">
         <h3>Fixed</h3>
         <ul class="feature-list changed">
-          <li><strong>Separate Cache for Notes and Textbooks</strong> - Cache keys now include ROOT_FOLDER_ID to prevent mixing</li>
-          <li>Memory cache now uses DATA_MAP and structureLoadedMap keyed by ROOT_FOLDER_ID</li>
-          <li>Cache status now shows which folder type is cached (e.g., "Notes cached: 2h ago")</li>
-          <li>Refresh button only clears cache for current page (Notes or Textbooks)</li>
+          <li><strong>Critical Bug: Cache still mixing Notes and Textbooks</strong> - Previous fix (v1.3) didn't work because ROOT_FOLDER_ID was captured once at script load</li>
+          <li><strong>ROOT_FOLDER_ID now uses dynamic getter</strong> - Changed from static variable to <code>getRootFolderId()</code> function that always reads from <code>window.ROOT_FOLDER_ID</code></li>
+          <li>Each page now correctly maintains its own separate cache</li>
+          <li>Notes page will never use Textbooks cache and vice versa</li>
         </ul>
       </div>
       
       <div class="feature-group">
         <h3>Changed</h3>
         <ul class="feature-list changed">
+          <li>Added <code>getRootFolderId()</code> function that dynamically reads <code>window.ROOT_FOLDER_ID</code></li>
+          <li>Removed static <code>var ROOT_FOLDER_ID</code> declaration (was capturing value once)</li>
+          <li>All functions now call <code>getRootFolderId()</code> instead of using static variable</li>
+          <li>This ensures correct folder ID is used even when browser caches script execution</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (1)</h4>
+        <ul>
+          <li>js/drive-api.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.3 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.3</span>
+        <span class="version-date">Cache Separation Attempt</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li>Changed HTML pages to use <code>window.ROOT_FOLDER_ID</code> instead of <code>var ROOT_FOLDER_ID</code></li>
+          <li>Changed drive-api.js to check <code>window.ROOT_FOLDER_ID</code> before setting default</li>
           <li>Reorganized cache key generation with <code>getCachePrefix()</code> function</li>
           <li>Added <code>clearCurrentCache()</code> to clear only current page's cache</li>
           <li>Improved console logging to show which folder type is being loaded</li>
+          <li><em>Note: This version had a bug - ROOT_FOLDER_ID was still captured once at script load, not dynamically</em></li>
         </ul>
       </div>
     </div>
