@@ -1,0 +1,90 @@
+/**
+ * ============================================================
+ * ADS.CSS - Ad Space Styles
+ * ============================================================
+ * 
+ * This file contains styles for ad banner containers.
+ * 
+ * AD PLACEMENTS:
+ * - .ad-dept-top    : Top banner ad (department view only)
+ * - .ad-dept-inline : Inline ad (department view only)
+ * 
+ * Note: Ads are only shown in department/subject/unit views,
+ * not on the home page.
+ * ============================================================
+ */
+
+/* ============================================================
+   AD LABEL
+   ============================================================ */
+
+/**
+ * Ad label - small text showing "Advertisement"
+ */
+.ad-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+/* ============================================================
+   DEPARTMENT VIEW AD STYLES
+   ============================================================
+   Ads specifically for department/subject/unit views.
+   Hidden by default, shown via JS toggleAds() function.
+   ============================================================ */
+
+/**
+ * Department top banner ad
+ */
+.ad-dept-top {
+  display: none;
+  width: 100%;
+  max-width: 728px;
+  min-height: 90px;
+  margin: 16px auto;
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/**
+ * Department inline ad
+ */
+.ad-dept-inline {
+  display: none;
+  width: 100%;
+  max-width: 100%;
+  min-height: 90px;
+  margin: 20px 0;
+  background: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 16px;
+}
+
+/* ============================================================
+   RESPONSIVE STYLES
+   ============================================================ */
+
+@media (max-width: 600px) {
+  .ad-dept-top,
+  .ad-dept-inline {
+    max-width: 100%;
+    min-height: 50px;
+    margin: 12px auto;
+    font-size: 11px;
+  }
+}

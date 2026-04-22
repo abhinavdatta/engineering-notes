@@ -1,11 +1,6 @@
 # EngNotes
 
-Engineering Notes & Textbooks for Students. 
-<a href="https://enginotes.pages.dev/">Click here to visit the Website</a> 
- 
-
-## Use of AI
-most of the UI was made with the help of AI (because i could not think of a better UI design)
+Engineering Notes & Textbooks for Indian Students
 
 ## Setup
 
@@ -17,16 +12,16 @@ Add your API key in `pages/notes.html` and `pages/textbooks.html`:
 var API_KEY = 'YOUR_API_KEY_HERE';
 ```
 
-### 2. Google Drive Links
+### 2. Root Drive Folder IDs
 
-Update drive links in `pages/notes.html` and `pages/textbooks.html`:
+Update the root folder IDs in `pages/notes.html` and `pages/textbooks.html`:
 
-```html
-<!-- Notes Drive -->
-<a href="https://drive.google.com/drive/folders/YOUR_NOTES_FOLDER_ID">
+```javascript
+// In notes.html
+var ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
 
-<!-- Textbooks Drive -->
-<a href="https://drive.google.com/drive/folders/YOUR_TEXTBOOKS_FOLDER_ID">
+// In textbooks.html
+var ROOT_FOLDER_ID = 'YOUR_TEXTBOOKS_FOLDER_ID';
 ```
 
 ### 3. Contact Links
@@ -48,11 +43,41 @@ Update in all HTML files (`index.html`, `pages/notes.html`, `pages/textbooks.htm
 
 1. Enable **Drive API**
 2. Create **API Key**
-3. Add **HTTP Referrer restriction**: `YOUR WEBSITE LINK`
+3. Add **HTTP Referrer restriction**: `enginotes.pages.dev/*`
 
-### 5. Data Files
+## How It Works Now
 
-Update `pages/notes-data.js` and `pages/textbooks-data.js` with your folder structure.
+**Everything is fetched dynamically from Google Drive!** No more manual data file updates.
+
+### Folder Structure in Google Drive
+
+```
+Root Folder (Notes/Textbooks)
+├── Computer Science (Department)
+│   ├── Sem 3 (or Semester 3)
+│   │   ├── Data Structures (Subject)
+│   │   │   ├── Unit-1 (or U-1, Module-1)
+│   │   │   │   └── [PDF files here]
+│   │   │   └── Unit-2
+│   │   └── Algorithms
+│   └── Sem 4
+├── Electronics (ECE)
+│   └── ...
+```
+
+### Folder Naming Conventions
+
+The system auto-detects:
+
+| Type | Examples |
+|------|----------|
+| **Semester** | `Sem 3`, `Semester 3`, `S3`, `3rd Sem` |
+| **Unit** | `Unit-1`, `U-1`, `unit 1`, `Module-1` |
+| **Department** | Based on keywords like `Computer`, `Electronics`, `Civil`, etc. |
+
+### Adding New Content
+
+Just add folders/files in Google Drive and **refresh the page** - everything updates automatically!
 
 ## Deploy
 
@@ -67,14 +92,5 @@ deploy/
 ├── robots.txt
 └── pages/
     ├── notes.html
-    ├── textbooks.html
-    ├── notes-data.js
-    └── textbooks-data.js
+    └── textbooks.html
 ```
-
-
-## CHANGES
-1. If you want to change something please fork it and update it on your own (or) raise an issue in issue tab (or) make a pull request.
-2. you can download it and make any changes as you want. Its your wish
-
- 

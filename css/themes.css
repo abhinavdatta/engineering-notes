@@ -1,0 +1,130 @@
+/**
+ * ============================================================
+ * THEMES.CSS - Theme Management and Color Variables
+ * ============================================================
+ * 
+ * This file defines CSS custom properties (variables) for three themes:
+ * 1. Light Mode - Default bright theme
+ * 2. Dark Mode - Standard dark theme with slate colors
+ * 3. Pure Black Mode - AMOLED-optimized pure black theme
+ * 
+ * USAGE:
+ * - The theme is set via data-theme attribute on <html> element
+ * - Example: <html data-theme="dark">
+ * 
+ * LINE REFERENCE:
+ * - Lines 1-25:   File header and documentation
+ * - Lines 26-50:  Light theme (default) variables
+ * - Lines 51-80:  Dark theme variables
+ * - Lines 81-110: Pure black theme variables
+ * ============================================================
+ */
+
+/* ============================================================
+   ROOT VARIABLES - LIGHT THEME (DEFAULT)
+   ============================================================
+   These are the default colors used when no theme is set or
+   when light theme is explicitly selected.
+   ============================================================ */
+:root {
+  /* Background Colors */
+  --bg-primary: #f8fafc;      /* Main page background */
+  --bg-secondary: #ffffff;     /* Cards, tables background */
+  --bg-tertiary: #f1f5f9;      /* Hover states, section backgrounds */
+  
+  /* Text Colors */
+  --text-primary: #1e293b;     /* Main text color */
+  --text-secondary: #64748b;   /* Secondary text, descriptions */
+  --text-muted: #94a3b8;       /* Muted text, placeholders */
+  
+  /* Border & Accent Colors */
+  --border-color: #e2e8f0;     /* Border color for cards, dividers */
+  --accent-color: #10b981;     /* Primary accent (green for notes) */
+  --accent-hover: #059669;     /* Accent color on hover */
+  
+  /* Component-specific Colors */
+  --header-bg: #ffffff;        /* Header background */
+  --hero-gradient-start: #10b981;  /* Hero section gradient start */
+  --hero-gradient-end: #059669;    /* Hero section gradient end */
+  --modal-bg: #1e293b;         /* Modal header background */
+  --footer-bg: #1e293b;        /* Footer background */
+  --card-shadow: rgba(0,0,0,0.1);  /* Box shadow for cards */
+  --overlay-bg: rgba(15, 23, 42, 0.8);  /* Modal overlay background */
+}
+
+/* ============================================================
+   DARK THEME
+   ============================================================
+   Activated when: data-theme="dark" is set on <html>
+   Uses slate color palette for a comfortable dark experience.
+   ============================================================ */
+[data-theme="dark"] {
+  /* Background Colors */
+  --bg-primary: #1e293b;       /* Dark slate background */
+  --bg-secondary: #334155;     /* Cards, tables background */
+  --bg-tertiary: #475569;      /* Hover states, section backgrounds */
+  
+  /* Text Colors */
+  --text-primary: #f1f5f9;     /* Light text for dark background */
+  --text-secondary: #cbd5e1;   /* Secondary text */
+  --text-muted: #94a3b8;       /* Muted text */
+  
+  /* Border & Accent Colors */
+  --border-color: #475569;     /* Visible borders on dark */
+  --accent-color: #34d399;     /* Brighter accent for dark mode */
+  --accent-hover: #10b981;     /* Accent on hover */
+  
+  /* Component-specific Colors */
+  --header-bg: #0f172a;        /* Darker header */
+  --hero-gradient-start: #059669;
+  --hero-gradient-end: #047857;
+  --modal-bg: #0f172a;
+  --footer-bg: #0f172a;
+  --card-shadow: rgba(0,0,0,0.3);
+  --overlay-bg: rgba(0, 0, 0, 0.85);
+}
+
+/* ============================================================
+   PURE BLACK THEME (AMOLED)
+   ============================================================
+   Activated when: data-theme="pure-black" is set on <html>
+   Optimized for AMOLED screens - uses pure black (#000000)
+   to save battery on OLED displays.
+   ============================================================ */
+[data-theme="pure-black"] {
+  /* Background Colors */
+  --bg-primary: #000000;       /* Pure black - key for AMOLED */
+  --bg-secondary: #0a0a0a;     /* Near black for cards */
+  --bg-tertiary: #171717;      /* Slightly lighter for contrast */
+  
+  /* Text Colors */
+  --text-primary: #ffffff;     /* Pure white text */
+  --text-secondary: #d4d4d4;   /* Slightly dimmed secondary */
+  --text-muted: #737373;       /* Gray muted text */
+  
+  /* Border & Accent Colors */
+  --border-color: #262626;     /* Visible borders on black */
+  --accent-color: #4ade80;     /* Bright green accent */
+  --accent-hover: #22c55e;     /* Accent on hover */
+  
+  /* Component-specific Colors */
+  --header-bg: #000000;
+  --hero-gradient-start: #166534;
+  --hero-gradient-end: #14532d;
+  --modal-bg: #000000;
+  --footer-bg: #000000;
+  --card-shadow: rgba(0,0,0,0.5);
+  --overlay-bg: rgba(0, 0, 0, 0.95);
+}
+
+/* ============================================================
+   THEME TRANSITION
+   ============================================================
+   Smooth transition when switching between themes.
+   ============================================================ */
+body, .header, .footer, .card, .table-container, .modal-overlay {
+  transition: background-color 0.3s ease, 
+              border-color 0.3s ease, 
+              color 0.3s ease,
+              box-shadow 0.3s ease;
+}

@@ -1,0 +1,314 @@
+================================================================================
+                         ENGNOTES PROJECT FILE MAP
+================================================================================
+
+This document provides a comprehensive map of all files in the project,
+indicating what each section contains and which line numbers to find them.
+
+================================================================================
+                              FOLDER STRUCTURE
+================================================================================
+
+deploy/
+├── index.html           - Home page (landing page)
+├── pages/
+│   ├── notes.html       - Class Resources page
+│   └── textbooks.html   - Textbooks page
+├── css/
+│   ├── themes.css       - Theme variables (Light, Dark, Pure Black)
+│   ├── common.css       - Shared styles across all pages
+│   ├── notes.css        - Notes page specific styles
+│   ├── textbooks.css    - Textbooks page specific styles
+│   ├── home.css         - Home page specific styles
+│   └── ads.css          - Ad spaces and adblock popup styles
+├── js/
+│   ├── theme-manager.js - Theme switching functionality
+│   ├── drive-api.js     - Google Drive API interactions
+│   ├── navigation.js    - Navigation and UI rendering
+│   ├── bot-protection.js- Anti-bot detection
+│   ├── adblock-detector.js- Adblock detection with popup
+│   ├── notes-app.js     - Notes page application logic
+│   ├── textbooks-app.js - Textbooks page application logic
+│   └── home-app.js      - Home page application logic
+└── docs/
+    ├── file-map.txt     - This file
+    ├── css-reference.txt- CSS class reference
+    └── js-reference.txt - JavaScript function reference
+
+================================================================================
+                           CSS FILES LINE MAP
+================================================================================
+
+------------------------------------------------------------------------------
+themes.css (Theme Variables)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation and header
+Lines 36-65:   Light theme (default) CSS variables
+Lines 66-95:   Dark theme CSS variables
+Lines 96-125:  Pure Black (AMOLED) theme CSS variables
+Lines 126-140: Theme transition animations
+
+Variables defined:
+  - --bg-primary, --bg-secondary, --bg-tertiary (backgrounds)
+  - --text-primary, --text-secondary, --text-muted (text colors)
+  - --border-color (borders)
+  - --accent-color, --accent-hover (accent colors)
+  - --header-bg, --footer-bg, --modal-bg (component backgrounds)
+  - --card-shadow, --overlay-bg (effects)
+
+------------------------------------------------------------------------------
+common.css (Shared Styles)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation
+Lines 36-65:   CSS Reset and Base Styles
+Lines 66-120:  Header styles (.header, .logo, .breadcrumb, .dept-links)
+Lines 121-160: Theme toggle styles (.theme-toggle, .theme-btn)
+Lines 161-195: Footer styles (.footer, .footer-links)
+Lines 196-260: Button styles (.home-btn, .view-btn, .open-btn, etc.)
+Lines 261-310: Table styles (.table-container, table, th, td, .code-badge)
+Lines 311-340: Loading and state styles (.loading, .no-data, .loading-spinner)
+Lines 341-400: Modal styles (.modal-overlay, .modal-header, .modal-body)
+Lines 401-430: Utility classes (.hidden, .main, .section-title)
+Lines 431-460: Responsive styles (@media queries)
+
+------------------------------------------------------------------------------
+notes.css (Notes Page Styles)
+------------------------------------------------------------------------------
+Lines 1-30:    File documentation
+Lines 31-60:   Hero section (.hero, .hero h1, .hero-notice)
+Lines 61-100:  Department view (.dept-header, .dept-title, .dept-count)
+Lines 101-140: Filter bar (.filter-bar, .filter-btn, .sem-title)
+Lines 141-180: Unit cards (.unit-cards, .unit-card)
+Lines 181-220: Info boxes (.info-boxes, .info-box)
+Lines 221-250: Responsive styles
+
+------------------------------------------------------------------------------
+textbooks.css (Textbooks Page Styles)
+------------------------------------------------------------------------------
+Lines 1-30:    File documentation
+Lines 31-60:   Hero section (BLUE theme - differs from notes.css)
+Lines 61-100:  Department view (blue accent color)
+Lines 101-140: Filter bar (blue accent color)
+Lines 141-180: Unit cards (blue accent color)
+Lines 181-220: Info boxes (blue accent color)
+Lines 221-250: Responsive styles
+
+------------------------------------------------------------------------------
+home.css (Home Page Styles)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation
+Lines 36-80:   Particle animation (.particles, .particle, @keyframes float)
+Lines 81-115:  Container and base styles (.container)
+Lines 116-160: Header styles (.header, .logo, .nav-links)
+Lines 161-210: Hero section (.hero, .hero-badge, .hero h1 span gradient)
+Lines 211-280: Feature cards (.card, .card-notes, .card-textbooks)
+Lines 281-320: Footer styles (.footer, .footer-links)
+Lines 321-360: Responsive styles
+
+------------------------------------------------------------------------------
+ads.css (Ad Spaces and Adblock Popup)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation
+Lines 36-80:   Ad container styles (.ad-banner-top, .ad-banner-bottom, .ad-label)
+Lines 81-130:  Sidebar ad styles (.ad-sidebar, responsive show/hide)
+Lines 131-180: Inline ad styles (.ad-inline, .ad-inline-between)
+Lines 181-250: Adblock popup styles (#adblock-popup, .adblock-modal, .adblock-btn)
+Lines 251-360: Credit section (.adblock-credit with repo link)
+Lines 361-400: Department view ad styles (.ad-dept-top, .ad-dept-inline)
+Lines 401-480: Responsive styles
+
+Classes:
+  - .ad-dept-top    : Top banner ad (department view only)
+  - .ad-dept-inline : Inline ad (department view only)
+  - .ad-label       : "Advertisement" label
+  - #adblock-popup  : Adblock detection popup
+  - .adblock-modal  : Popup modal content
+  - .adblock-btn    : Popup buttons
+  - .adblock-credit : Credit link to Simple-Adblock-Detector
+
+Note: Ads are only shown in department/subject/unit views, NOT on home view.
+Total ads per page: 2 (one top banner, one inline in department view)
+
+================================================================================
+                           JS FILES LINE MAP
+================================================================================
+
+------------------------------------------------------------------------------
+theme-manager.js (Theme Switching)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation
+Lines 36-55:   Constants (THEME_OPTIONS, THEME_STORAGE_KEY, currentTheme)
+Lines 56-95:   setTheme(theme) - Sets the current theme
+Lines 96-125:  updateThemeButtons(activeTheme) - Updates UI buttons
+Lines 126-145: getTheme() - Returns current theme name
+Lines 146-180: initTheme() - Initializes from localStorage
+Lines 181-190: Auto-initialization IIFE
+
+Functions:
+  - setTheme(theme)     : Set theme ('light', 'dark', 'pure-black')
+  - getTheme()          : Get current theme name
+  - initTheme()         : Initialize theme on page load
+  - updateThemeButtons(): Update button states in UI
+
+------------------------------------------------------------------------------
+drive-api.js (Google Drive API)
+------------------------------------------------------------------------------
+Lines 1-40:    File documentation
+Lines 41-70:   Configuration (API_KEY, ROOT_FOLDER_ID, filesCache, DATA)
+Lines 71-90:   DEPT_CODES mapping object
+Lines 91-130:  loadGoogleAPI() - Loads Google API client
+Lines 131-180: fetchFolders(parentId) - Gets folders from Drive
+Lines 181-210: detectSemester(name) - Parses semester from name
+Lines 211-250: detectUnitNumber(name) - Parses unit from name
+Lines 251-280: getDeptCode(name) - Gets department code
+Lines 281-350: loadFilesFromFolder(folderId) - Gets files from folder
+Lines 351-430: buildStructure() - Builds complete folder structure
+Lines 431-460: detectSemesterFromSubject(name)
+Lines 461-520: buildSubjectData(folder, semNum) - Builds subject data
+
+Functions:
+  - loadGoogleAPI()        : Initialize Google API client
+  - fetchFolders(parentId) : Get all folders in a parent
+  - loadFilesFromFolder(id): Get all files in a folder
+  - buildStructure()       : Build complete folder structure
+  - detectSemester(name)   : Parse semester number
+  - detectUnitNumber(name) : Parse unit number
+  - getDeptCode(name)      : Get department code
+
+------------------------------------------------------------------------------
+navigation.js (Navigation & UI)
+------------------------------------------------------------------------------
+Lines 1-45:    File documentation
+Lines 46-75:   State variables (currentDeptId, currentSubjectId, etc.)
+Lines 76-120:  Helper functions (getDeptById, getSubjectById, etc.)
+Lines 121-145: toggleAds(show) - Shows/hides ads based on view
+Lines 146-220: Navigation functions (goHome, goToDept, goToSubject, goToUnit)
+Lines 221-260: Breadcrumb functions (updateBreadcrumb, updateDeptButtons)
+Lines 261-320: renderHome() - Renders home view
+Lines 321-370: renderDept() - Renders department view
+Lines 371-410: renderDeptTable() - Renders subjects table
+Lines 411-440: filterSem() - Semester filter handler
+Lines 441-480: renderSubject() - Renders subject view
+
+Functions:
+  - goHome()         : Navigate to home page
+  - goToDept(id)     : Navigate to department
+  - goToSubject(id)  : Navigate to subject
+  - goToUnit(id)     : Navigate to unit
+  - goBack()         : Generic back navigation
+  - toggleAds(show)  : Show/hide ads (only in dept/subject/unit views)
+  - renderHome()     : Render home view
+  - renderDept()     : Render department view
+  - renderSubject()  : Render subject view
+
+------------------------------------------------------------------------------
+bot-protection.js (Anti-Bot Detection)
+------------------------------------------------------------------------------
+Lines 1-30:    File documentation
+Lines 31-70:   detectBot() - Checks for bot indicators
+Lines 71-90:   showBotWarning() - Displays warning message
+Lines 91-100:  Auto-execution IIFE
+
+Detection checks:
+  - HeadlessChrome in userAgent
+  - PhantomJS in userAgent
+  - navigator.webdriver flag
+  - window.callPhantom, window._phantom
+  - window.__nightmare
+  - window.domAutomation
+
+------------------------------------------------------------------------------
+adblock-detector.js (Adblock Detection with Popup)
+------------------------------------------------------------------------------
+Lines 1-40:    File documentation
+Lines 41-100:  Fetch-based detection methods
+Lines 101-130: setIntervalCheck() - Timer tampering check
+Lines 131-160: idCheck() - DOM-based bait element check
+Lines 161-200: detectAdblock() - Main detection function
+Lines 201-250: Popup display functions (showAdblockPopup, closeAdblockPopup)
+Lines 251-280: Auto-initialization
+
+Functions:
+  - detectAdblock()       : Main detection (returns Promise<boolean>)
+  - showAdblockPopup()    : Shows friendly popup with credit link
+  - closeAdblockPopup()   : Closes popup for session
+  - dismissAdblockPopup() : Dismisses permanently (localStorage)
+
+Detection methods:
+  - Fetch known ad URLs (outbrain, quantserve, etc.)
+  - Check setInterval tampering
+  - DOM bait elements with ad-related IDs
+
+Popup Features:
+  - Non-intrusive (user can close and continue)
+  - Credit link to Simple-Adblock-Detector repo
+  - "Don't show again" option to permanently dismiss
+  - Based on: https://github.com/OddDevelopment/Simple-Adblock-Detector
+
+------------------------------------------------------------------------------
+notes-app.js (Notes Page Application)
+------------------------------------------------------------------------------
+Lines 1-35:    File documentation
+Lines 36-50:   Variables (currentPdfUrl)
+Lines 51-100:  renderUnit() - Renders unit with files
+Lines 101-140: openModal(id) - Opens PDF viewer
+Lines 141-160: closeModal() - Closes PDF viewer
+Lines 161-180: openInDrive(), openTab(id) - File open functions
+Lines 181-220: init() - Initializes application
+Lines 221-230: Auto-initialization
+
+------------------------------------------------------------------------------
+textbooks-app.js (Textbooks Page Application)
+------------------------------------------------------------------------------
+Same structure as notes-app.js
+
+------------------------------------------------------------------------------
+home-app.js (Home Page Application)
+------------------------------------------------------------------------------
+Lines 1-30:    File documentation
+Lines 31-60:   createParticles() - Creates animated background
+Lines 61-90:   navigateTo(path) - Smart navigation with port handling
+Lines 91-100:  Auto-initialization IIFE
+
+================================================================================
+                           HTML FILES OVERVIEW
+================================================================================
+
+The HTML files in deploy/ and deploy/pages/ have been refactored to use
+the modular CSS and JS files. Each HTML file:
+
+1. Links to CSS files in order:
+   - themes.css (must be first - defines CSS variables)
+   - common.css (shared styles)
+   - Page-specific CSS (notes.css/textbooks.css/home.css)
+
+2. Links to JS files in order:
+   - theme-manager.js (must be first - sets theme before render)
+   - drive-api.js (Google Drive functions)
+   - navigation.js (UI rendering)
+   - bot-protection.js (security)
+   - Page-specific JS (notes-app.js/textbooks-app.js/home-app.js)
+
+================================================================================
+                              QUICK REFERENCE
+================================================================================
+
+To add a new CSS variable:
+  1. Add to :root in themes.css (Light theme)
+  2. Add to [data-theme="dark"] in themes.css (Dark theme)
+  3. Add to [data-theme="pure-black"] in themes.css (AMOLED theme)
+
+To add a new function:
+  1. Determine which module it belongs to
+  2. Add function with JSDoc comments
+  3. Update this file-map.txt
+
+To add a new page:
+  1. Create HTML file in appropriate location
+  2. Create page-specific CSS in css/
+  3. Create page-specific JS in js/
+  4. Include necessary shared modules
+
+================================================================================
+                            END OF FILE MAP
+================================================================================

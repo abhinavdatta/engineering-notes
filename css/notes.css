@@ -1,0 +1,255 @@
+/**
+ * ============================================================
+ * NOTES.CSS - Class Resources Page Specific Styles
+ * ============================================================
+ * 
+ * This file contains styles specific to the notes.html page
+ * (Class Resources - Notes, Question Papers, Lab Manuals)
+ * 
+ * INCLUDED STYLES:
+ * - Hero Section
+ * - Department View
+ * - Subject View
+ * - Unit Cards
+ * - Info Boxes
+ * - Semester Filters
+ * - Page-specific Responsive
+ * 
+ * LINE REFERENCE:
+ * - Lines 1-30:    File documentation
+ * - Lines 31-60:   Hero section styles
+ * - Lines 61-100:  Department view styles
+ * - Lines 101-140: Subject view styles
+ * - Lines 141-180: Unit card styles
+ * - Lines 181-220: Info box styles
+ * - Lines 221-260: Filter bar styles
+ * - Lines 261-290: Responsive styles
+ * ============================================================
+ */
+
+/* ============================================================
+   HERO SECTION
+   ============================================================
+   Green-themed hero section for Class Resources page.
+   ============================================================ */
+.hero {
+  background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+  padding: 48px 24px;
+  text-align: center;
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.hero-notice {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: inline-block;
+  margin-top: 16px;
+}
+
+/* ============================================================
+   DEPARTMENT VIEW STYLES
+   ============================================================ */
+.dept-header {
+  background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+  padding: 32px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.back-link {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.dept-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.dept-info {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.dept-count {
+  font-size: 13px;
+  color: var(--accent-color);
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   FILTER BAR STYLES
+   ============================================================ */
+.filter-bar {
+  background: var(--bg-secondary);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filter-btn {
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  margin-right: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.filter-btn.active {
+  background: var(--accent-color);
+  color: #fff;
+  border-color: var(--accent-color);
+}
+
+.sem-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+  padding: 12px 16px;
+  margin: 0 0 12px 0;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-color);
+}
+
+/* ============================================================
+   UNIT CARD STYLES
+   ============================================================ */
+.unit-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.unit-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 12px;
+}
+
+.unit-card:hover {
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 12px var(--card-shadow);
+  transform: translateY(-2px);
+}
+
+.unit-card-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent-color);
+}
+
+.unit-card-name {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* ============================================================
+   INFO BOX STYLES
+   ============================================================ */
+.info-boxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.info-box {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.info-box h3 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-box p,
+.info-box li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.info-box ol {
+  padding-left: 20px;
+}
+
+.info-box a {
+  color: var(--accent-color);
+}
+
+/* ============================================================
+   RESPONSIVE STYLES FOR NOTES PAGE
+   ============================================================ */
+@media (max-width: 600px) {
+  .hero {
+    padding: 32px 16px;
+  }
+  
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .unit-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dept-header {
+    padding: 24px 16px;
+  }
+  
+  .dept-title {
+    font-size: 22px;
+  }
+}

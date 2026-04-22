@@ -1,0 +1,308 @@
+================================================================================
+                         CSS CLASS REFERENCE GUIDE
+================================================================================
+
+This document provides a quick reference for all CSS classes used in the
+EngNotes project, organized by category.
+
+================================================================================
+                           THEME VARIABLES
+================================================================================
+
+Usage: var(--variable-name)
+
+Background Colors:
+  --bg-primary    - Main page background
+  --bg-secondary  - Cards, tables, modal content
+  --bg-tertiary   - Hover states, section backgrounds
+
+Text Colors:
+  --text-primary  - Main text color
+  --text-secondary- Secondary text, descriptions
+  --text-muted    - Muted text, placeholders, hints
+
+Borders & Accents:
+  --border-color  - Border color for cards, dividers
+  --accent-color  - Primary accent (green/blue)
+  --accent-hover  - Accent color on hover
+
+Component Colors:
+  --header-bg     - Header background
+  --footer-bg     - Footer background
+  --modal-bg      - Modal header background
+  --card-shadow   - Box shadow for cards
+  --overlay-bg    - Modal overlay background
+
+================================================================================
+                           LAYOUT CLASSES
+================================================================================
+
+Container & Main:
+  .container      - Main container (home page)
+  .main           - Content container (max-width: 1100px)
+  .header         - Sticky header
+  .header-inner   - Header content wrapper
+  .header-top     - Header top row
+  .footer         - Footer section
+  .footer-links   - Footer navigation links
+
+Views:
+  .hidden         - Display none (utility)
+  .home-view      - Home view container
+  .dept-view      - Department view container
+  .subject-view   - Subject view container
+  .unit-view      - Unit view container
+
+================================================================================
+                           HEADER CLASSES
+================================================================================
+
+Logo & Branding:
+  .logo           - Logo text styling
+  .logo a         - Logo link
+
+Navigation:
+  .breadcrumb     - Breadcrumb navigation
+  .breadcrumb a   - Breadcrumb links
+  .nav-links      - Navigation links container (home)
+  .nav-link       - Navigation link item
+
+Department Quick Links:
+  .dept-links     - Container for department buttons
+  .dept-btn       - Department quick-link button
+  .dept-btn.active- Active department button
+
+Theme Toggle:
+  .theme-toggle   - Theme buttons container
+  .theme-btn      - Theme button
+  .theme-btn.active- Active theme button
+
+================================================================================
+                           BUTTON CLASSES
+================================================================================
+
+Primary Buttons:
+  .home-btn       - Home/back button (accent color)
+  .view-btn       - View action button
+
+Action Buttons:
+  .open-btn       - Open action (green)
+  .view-green-btn - View action (green accent)
+  .view-blue-btn  - View action (blue accent)
+
+Filter Buttons:
+  .filter-btn     - Semester filter button
+  .filter-btn.active- Active filter
+
+Other:
+  .back-link      - Back navigation link
+  .modal-open-btn - Open in Drive button (modal)
+  .modal-close-btn- Close modal button
+
+================================================================================
+                           HERO CLASSES
+================================================================================
+
+Home Page Hero:
+  .hero           - Hero section
+  .hero-badge     - Badge above title
+  .hero h1        - Main title
+  .hero h1 span   - Gradient text effect
+
+Notes/Textbooks Hero:
+  .hero           - Hero section (gradient background)
+  .hero h1        - Main title
+  .hero p         - Description text
+  .hero-notice    - Notice badge
+
+================================================================================
+                           CARD CLASSES
+================================================================================
+
+Feature Cards (Home):
+  .card           - Base card styling
+  .card-notes     - Green-themed card
+  .card-textbooks - Blue-themed card
+  .card-icon      - Card emoji icon
+  .card-title     - Card heading
+  .card-desc      - Card description
+  .card-items     - Tag container
+  .card-tag       - Individual tag
+
+Unit Cards:
+  .unit-cards     - Grid container
+  .unit-card      - Individual unit card
+  .unit-card-number- Unit number display
+  .unit-card-name - Unit name text
+
+Info Boxes:
+  .info-boxes     - Grid container
+  .info-box       - Individual info box
+  .info-box h3    - Box heading
+  .info-box p     - Box paragraph
+  .info-box ol    - Ordered list
+  .info-box a     - Links in box
+
+================================================================================
+                           TABLE CLASSES
+================================================================================
+
+Structure:
+  .table-container- Table wrapper with border radius
+  table           - Base table
+  thead           - Table header
+  tbody           - Table body
+  tr              - Table row
+  th              - Header cell
+  td              - Data cell
+
+Badges in Tables:
+  .code-badge     - Code/type badge (accent color)
+  .subject-badge  - Subject code badge
+
+================================================================================
+                           DEPARTMENT VIEW CLASSES
+================================================================================
+
+Header:
+  .dept-header    - Department header section
+  .dept-title     - Department name heading
+  .dept-info      - Department description
+  .dept-count     - Subject count display
+
+Filter Bar:
+  .filter-bar     - Semester filter container
+  .sem-title      - Semester section title
+
+================================================================================
+                           SUBJECT VIEW CLASSES
+================================================================================
+
+Subject Header:
+  Uses .dept-header classes
+
+Subject Info:
+  .subject-badge  - Subject code badge
+  #subject-title  - Subject name
+  #subject-code   - Subject code
+  #subject-sem    - Semester number
+  #subject-dept-code- Department code
+
+================================================================================
+                           UNIT VIEW CLASSES
+================================================================================
+
+Unit Header:
+  Uses .dept-header classes
+
+Unit Content:
+  #unit-title     - Unit name
+  #unit-info      - Subject name
+  #unit-content   - Files container
+
+================================================================================
+                           MODAL CLASSES
+================================================================================
+
+Structure:
+  .modal-overlay  - Full-screen overlay
+  .modal-header   - Header with title and buttons
+  .modal-body     - Content area (iframe)
+  .modal-footer   - Footer with filename
+
+Content:
+  .modal-title    - File title
+  .modal-type     - File type badge
+  .modal-open-btn - Open in Drive button
+  .modal-close-btn- Close button
+
+================================================================================
+                           STATE CLASSES
+================================================================================
+
+Loading:
+  .loading        - Loading container
+  .loading-spinner- Animated spinner
+
+Empty/Error:
+  .no-data        - Empty state container
+  .no-data p      - Empty state text
+
+================================================================================
+                           ANIMATION CLASSES
+================================================================================
+
+Spinner:
+  .loading-spinner- Rotating spinner animation
+  @keyframes spin - Rotation keyframes
+
+Particles (Home):
+  .particles      - Particle container
+  .particle       - Individual particle
+  @keyframes float- Floating animation
+
+Pulse (Home):
+  .hero-badge     - Pulsing badge
+  @keyframes pulse- Scale animation
+
+================================================================================
+                           RESPONSIVE BREAKPOINTS
+================================================================================
+
+Mobile (max-width: 600px):
+  - Header padding reduced
+  - Main padding reduced
+  - Unit cards: 2-column grid
+  - Feature cards: stacked
+  - Theme buttons: wrapped
+
+================================================================================
+                           AD SPACE CLASSES
+================================================================================
+
+Banner Ads:
+  .ad-banner-top   - Top banner ad (728x90)
+  .ad-banner-bottom- Bottom banner ad (728x90)
+  .ad-label        - "Advertisement" label text
+
+Sidebar Ad:
+  .ad-sidebar      - Fixed sidebar ad (160x600)
+  - Only visible on screens >= 1400px
+  - Main content adjusts margin-right
+
+Inline Ads:
+  .ad-inline       - Inline ad between content
+  .ad-inline-between- Ad between sections
+
+================================================================================
+                         ADBLOCK POPUP CLASSES
+================================================================================
+
+Container:
+  #adblock-popup   - Popup container (hidden by default)
+  .adblock-overlay - Semi-transparent background
+  .adblock-hiding  - Fade-out animation class
+
+Modal:
+  .adblock-modal   - Modal content box
+  .adblock-icon    - Shield emoji icon
+  .adblock-title   - "Ad Blocker Detected" title
+  .adblock-text    - Description text
+
+Buttons:
+  .adblock-buttons - Button container
+  .adblock-btn     - Base button styles
+  .adblock-btn-primary - "Got it" button (accent color)
+  .adblock-btn-secondary- "Don't show again" button
+
+Close:
+  .adblock-close   - X close button (top-right)
+
+Animations:
+  @keyframes adblockFadeIn  - Fade in animation
+  @keyframes adblockFadeOut - Fade out animation
+  @keyframes adblockSlideIn - Slide in from top
+
+================================================================================
+                         END OF CSS REFERENCE
+================================================================================
