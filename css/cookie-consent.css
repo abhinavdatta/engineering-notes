@@ -171,7 +171,7 @@
 /* ============================================================
    RESPONSIVE STYLES
    ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .cookie-banner {
     padding: 12px 16px;
   }
@@ -179,20 +179,51 @@
   .cookie-content {
     flex-direction: column;
     text-align: center;
+    gap: 12px;
   }
   
   .cookie-text {
     min-width: 100%;
   }
   
+  .cookie-text h3 {
+    font-size: 14px;
+  }
+  
+  .cookie-text p {
+    font-size: 12px;
+  }
+  
   .cookie-buttons {
     width: 100%;
     justify-content: center;
+    gap: 8px;
   }
   
   .cookie-accept-btn,
   .cookie-decline-btn {
     flex: 1;
     padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cookie-banner {
+    padding: 10px 12px;
+  }
+  
+  .cookie-text h3 {
+    font-size: 13px;
+  }
+  
+  .cookie-text p {
+    font-size: 11px;
+  }
+  
+  .cookie-accept-btn,
+  .cookie-decline-btn {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }

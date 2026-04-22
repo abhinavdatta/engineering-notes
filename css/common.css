@@ -8,28 +8,7 @@
  * - textbooks.html (Textbooks page)
  * - index.html (Home page)
  * 
- * INCLUDED STYLES:
- * - CSS Reset and Base Styles
- * - Header Components
- * - Footer Components
- * - Button Styles
- * - Table Styles
- * - Form Elements
- * - Loading States
- * - Modal Components
- * - Utility Classes
- * 
- * LINE REFERENCE:
- * - Lines 1-35:    File documentation
- * - Lines 36-60:   CSS Reset and Base
- * - Lines 61-120:  Header styles
- * - Lines 121-160: Footer styles
- * - Lines 161-220: Button styles
- * - Lines 221-280: Table styles
- * - Lines 281-320: Loading and state styles
- * - Lines 321-380: Modal styles
- * - Lines 381-420: Utility classes
- * - Lines 421-460: Responsive styles
+ * Fully responsive - works on all screen sizes
  * ============================================================
  */
 
@@ -42,18 +21,22 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 /* ============================================================
    HEADER STYLES
-   ============================================================
-   Sticky header with logo, navigation, and theme toggle.
    ============================================================ */
 .header {
   background: var(--header-bg);
@@ -96,6 +79,10 @@ body {
 .breadcrumb {
   font-size: 13px;
   color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
 }
 
 .breadcrumb a {
@@ -141,8 +128,6 @@ body {
 
 /* ============================================================
    THEME TOGGLE STYLES
-   ============================================================
-   Theme switcher buttons in the header.
    ============================================================ */
 .theme-toggle {
   display: flex;
@@ -178,8 +163,6 @@ body {
 
 /* ============================================================
    REFRESH BUTTON STYLES
-   ============================================================
-   Refresh button to manually update cached folder structure.
    ============================================================ */
 .refresh-btn {
   background: var(--bg-tertiary);
@@ -275,7 +258,6 @@ body {
 /* ============================================================
    BUTTON STYLES
    ============================================================ */
-/* Primary button (green/blue) */
 .home-btn {
   background: var(--accent-color);
   color: #fff;
@@ -293,7 +275,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* View button */
 .view-btn {
   background: var(--accent-color);
   color: #fff;
@@ -310,7 +291,6 @@ body {
   background: var(--accent-hover);
 }
 
-/* Open button (green accent) */
 .open-btn {
   background: #10b981;
   color: #fff;
@@ -327,7 +307,6 @@ body {
   background: #059669;
 }
 
-/* View with accent color */
 .view-green-btn,
 .view-blue-btn {
   background: var(--accent-color);
@@ -353,12 +332,14 @@ body {
   background: var(--bg-secondary);
   border-radius: 12px;
   box-shadow: 0 1px 3px var(--card-shadow);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
+  min-width: 500px;
 }
 
 th, td {
@@ -395,6 +376,7 @@ tr:hover {
   font-size: 11px;
   font-weight: 600;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 /* Subject badge */
@@ -463,6 +445,8 @@ tr:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .modal-title {
@@ -559,7 +543,7 @@ tr:hover {
    ============================================================ */
 .unit-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 16px;
   margin-top: 8px;
 }
@@ -597,6 +581,7 @@ tr:hover {
   font-weight: 500;
   color: var(--text-primary);
   line-height: 1.3;
+  word-break: break-word;
 }
 
 .unit-card-type {
@@ -613,24 +598,152 @@ tr:hover {
 }
 
 /* ============================================================
-   RESPONSIVE STYLES
+   FILE CARD STYLES (Mobile-friendly alternative to tables)
    ============================================================ */
-@media (max-width: 600px) {
+.file-cards {
+  display: none;
+}
+
+.file-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.file-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.file-card-number {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.file-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-card-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.file-card-filename {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.file-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.file-card-actions button {
+  flex: 1;
+  min-width: 80px;
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - TABLET
+   ============================================================ */
+@media (max-width: 768px) {
   .header {
     padding: 12px 16px;
+  }
+  
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .header-top > div:first-child {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .header-top > div:last-child {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .theme-toggle {
+    order: 2;
+    width: 100%;
+  }
+  
+  .theme-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .refresh-btn {
+    order: 1;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  .cache-status {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+  
+  .breadcrumb {
+    order: 4;
+    width: 100%;
+    font-size: 12px;
+    max-width: 100%;
   }
   
   .main {
     padding: 16px;
   }
   
-  .theme-toggle {
-    flex-wrap: wrap;
+  .dept-links {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 8px;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
   }
   
-  th, td {
-    padding: 10px 12px;
-    font-size: 13px;
+  .dept-links::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .dept-btn {
+    padding: 5px 12px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
   
   .unit-cards {
@@ -652,5 +765,145 @@ tr:hover {
   
   .unit-card-name {
     font-size: 12px;
+  }
+  
+  .footer {
+    padding: 16px;
+  }
+  
+  .footer-links a {
+    display: inline-block;
+    margin: 4px 8px;
+  }
+  
+  .modal-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+  
+  .modal-header > div:first-child {
+    width: 100%;
+  }
+  
+  .modal-header > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .modal-open-btn,
+  .modal-close-btn {
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 12px;
+    margin-right: 0;
+  }
+  
+  /* Show file cards on mobile instead of tables */
+  .table-container {
+    display: none;
+  }
+  
+  .file-cards {
+    display: block;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - SMALL PHONES
+   ============================================================ */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .header {
+    padding: 10px 12px;
+  }
+  
+  .logo {
+    font-size: 18px;
+  }
+  
+  .home-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+  
+  .theme-btn {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+  
+  .main {
+    padding: 12px;
+  }
+  
+  .unit-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .unit-card {
+    padding: 12px 10px;
+  }
+  
+  .unit-card-number {
+    font-size: 20px;
+  }
+  
+  .unit-card-icon {
+    font-size: 24px;
+  }
+  
+  .unit-card-name {
+    font-size: 11px;
+  }
+  
+  .loading {
+    padding: 32px 16px;
+  }
+  
+  .no-data {
+    padding: 32px 16px;
+  }
+  
+  .file-card {
+    padding: 12px;
+  }
+  
+  .file-card-actions button {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - EXTRA SMALL PHONES
+   ============================================================ */
+@media (max-width: 360px) {
+  .unit-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .unit-card {
+    padding: 10px 8px;
+  }
+  
+  .unit-card-number {
+    font-size: 18px;
+  }
+  
+  .dept-links {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 }

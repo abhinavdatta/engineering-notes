@@ -6,31 +6,12 @@
  * This file contains styles specific to the notes.html page
  * (Class Resources - Notes, Question Papers, Lab Manuals)
  * 
- * INCLUDED STYLES:
- * - Hero Section
- * - Department View
- * - Subject View
- * - Unit Cards
- * - Info Boxes
- * - Semester Filters
- * - Page-specific Responsive
- * 
- * LINE REFERENCE:
- * - Lines 1-30:    File documentation
- * - Lines 31-60:   Hero section styles
- * - Lines 61-100:  Department view styles
- * - Lines 101-140: Subject view styles
- * - Lines 141-180: Unit card styles
- * - Lines 181-220: Info box styles
- * - Lines 221-260: Filter bar styles
- * - Lines 261-290: Responsive styles
+ * Fully responsive for all screen sizes.
  * ============================================================
  */
 
 /* ============================================================
    HERO SECTION
-   ============================================================
-   Green-themed hero section for Class Resources page.
    ============================================================ */
 .hero {
   background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
@@ -91,6 +72,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .dept-info {
@@ -230,9 +212,9 @@
 }
 
 /* ============================================================
-   RESPONSIVE STYLES FOR NOTES PAGE
+   RESPONSIVE STYLES - TABLET
    ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .hero {
     padding: 32px 16px;
   }
@@ -241,15 +223,184 @@
     font-size: 24px;
   }
   
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .hero-notice {
+    font-size: 12px;
+    padding: 6px 16px;
+  }
+  
   .unit-cards {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 16px;
+  }
+  
+  .unit-card {
+    padding: 16px 12px;
+  }
+  
+  .unit-card-number {
+    font-size: 24px;
+  }
+  
+  .unit-card-name {
+    font-size: 12px;
+    margin-top: 6px;
   }
   
   .dept-header {
-    padding: 24px 16px;
+    padding: 20px 16px;
   }
   
   .dept-title {
-    font-size: 22px;
+    font-size: 20px;
+  }
+  
+  .dept-info {
+    font-size: 13px;
+  }
+  
+  .dept-count {
+    font-size: 12px;
+  }
+  
+  /* Filter bar */
+  .filter-bar {
+    padding: 12px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    scrollbar-width: none;
+  }
+  
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    margin-right: 6px;
+    margin-bottom: 0;
+  }
+  
+  .sem-title {
+    font-size: 14px;
+    padding: 10px 12px;
+    margin-left: -16px;
+    margin-right: -16px;
+    border-radius: 0;
+  }
+  
+  /* Info boxes - stack vertically */
+  .info-boxes {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .info-box {
+    padding: 16px;
+  }
+  
+  .info-box h3 {
+    font-size: 13px;
+  }
+  
+  .info-box p,
+  .info-box li {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - SMALL PHONES
+   ============================================================ */
+@media (max-width: 480px) {
+  .hero {
+    padding: 24px 12px;
+  }
+  
+  .hero h1 {
+    font-size: 20px;
+  }
+  
+  .hero p {
+    font-size: 13px;
+  }
+  
+  .hero-notice {
+    font-size: 11px;
+    padding: 5px 12px;
+  }
+  
+  .unit-cards {
+    gap: 8px;
+  }
+  
+  .unit-card {
+    padding: 12px 10px;
+  }
+  
+  .unit-card-number {
+    font-size: 20px;
+  }
+  
+  .unit-card-name {
+    font-size: 11px;
+  }
+  
+  .dept-header {
+    padding: 16px 12px;
+  }
+  
+  .dept-title {
+    font-size: 18px;
+  }
+  
+  .dept-info {
+    font-size: 12px;
+  }
+  
+  .filter-bar {
+    padding: 10px 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+  
+  .filter-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  .sem-title {
+    font-size: 13px;
+    padding: 8px 12px;
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - EXTRA SMALL PHONES
+   ============================================================ */
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 18px;
+  }
+  
+  .dept-title {
+    font-size: 16px;
+  }
+  
+  .unit-card-number {
+    font-size: 18px;
   }
 }

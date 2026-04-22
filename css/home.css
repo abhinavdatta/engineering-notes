@@ -7,29 +7,12 @@
  * Features animated background particles, gradient cards, and
  * modern glassmorphism effects.
  * 
- * INCLUDED STYLES:
- * - Animated Background Particles
- * - Hero Section with Gradient Text
- * - Feature Cards (Notes & Textbooks)
- * - Navigation Links
- * - Footer
- * 
- * LINE REFERENCE:
- * - Lines 1-35:    File documentation
- * - Lines 36-80:   Particle animation
- * - Lines 81-130:  Container and base
- * - Lines 131-180: Header styles
- * - Lines 181-230: Hero section
- * - Lines 231-300: Card styles
- * - Lines 301-350: Footer styles
- * - Lines 351-400: Responsive styles
+ * Fully responsive for all screen sizes.
  * ============================================================
  */
 
 /* ============================================================
    ANIMATED BACKGROUND PARTICLES
-   ============================================================
-   Floating particles that create a dynamic background effect.
    ============================================================ */
 .particles {
   position: fixed;
@@ -187,6 +170,8 @@
   justify-content: center;
   padding: 0 20px;
   margin-bottom: 40px;
+  width: 100%;
+  max-width: 800px;
 }
 
 .card {
@@ -307,29 +292,218 @@
 }
 
 /* ============================================================
-   RESPONSIVE STYLES
+   RESPONSIVE STYLES - TABLET
    ============================================================ */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .header {
     padding: 15px 20px;
-    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
     text-align: center;
   }
   
+  .logo {
+    font-size: 24px;
+  }
+  
+  .logo-icon {
+    font-size: 28px;
+  }
+  
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .nav-link {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  /* Theme toggle - full width on mobile */
+  .theme-toggle {
+    width: 100%;
+    justify-content: center;
+    margin-top: 8px;
+  }
+  
+  .theme-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+    flex: 1;
+    max-width: 100px;
+  }
+  
+  /* Cards stack vertically */
   .cards-container {
     flex-direction: column;
     align-items: center;
+    gap: 20px;
+    padding: 0 16px;
   }
   
   .card {
     width: 100%;
     max-width: 320px;
+    padding: 30px 24px;
   }
   
-  .theme-toggle {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
+  .card-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+  }
+  
+  .card-desc {
+    font-size: 13px;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Hero section */
+  .hero {
+    padding: 30px 16px;
+  }
+  
+  .hero-badge {
+    font-size: 11px;
+    padding: 6px 16px;
+    margin-bottom: 16px;
+  }
+  
+  .hero h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+  
+  /* Footer */
+  .footer {
+    padding: 20px 16px;
+  }
+  
+  .footer-links {
+    gap: 15px;
+  }
+  
+  .footer-link {
+    font-size: 13px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - SMALL PHONES
+   ============================================================ */
+@media (max-width: 480px) {
+  .header {
+    padding: 12px 16px;
+  }
+  
+  .logo {
+    font-size: 22px;
+  }
+  
+  .logo-icon {
+    font-size: 24px;
+  }
+  
+  .nav-link {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+  
+  .hero {
+    padding: 24px 12px;
+  }
+  
+  .hero-badge {
+    font-size: 10px;
+    padding: 5px 12px;
+  }
+  
+  .hero h1 {
+    font-size: 24px;
+  }
+  
+  .cards-container {
+    padding: 0 12px;
+    gap: 16px;
+  }
+  
+  .card {
+    padding: 24px 20px;
+    max-width: 100%;
+  }
+  
+  .card-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+  }
+  
+  .card-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .card-desc {
+    font-size: 12px;
+  }
+  
+  .card-items {
+    margin-top: 16px;
+    gap: 6px;
+  }
+  
+  .card-tag {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+  
+  .theme-btn {
+    padding: 5px 8px;
+    font-size: 10px;
+    max-width: 80px;
+  }
+  
+  .footer-links {
+    gap: 10px;
+  }
+  
+  .footer-link {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - EXTRA SMALL PHONES
+   ============================================================ */
+@media (max-width: 360px) {
+  .logo {
+    font-size: 20px;
+  }
+  
+  .hero h1 {
+    font-size: 20px;
+  }
+  
+  .hero-badge {
+    font-size: 9px;
+  }
+  
+  .card {
+    padding: 20px 16px;
+  }
+  
+  .card-icon {
+    font-size: 36px;
+  }
+  
+  .card-title {
+    font-size: 16px;
   }
 }
