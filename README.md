@@ -1,6 +1,5 @@
-# EngNotes
-
-Engineering Notes & Textbooks for Indian Students
+# Visit the website 
+press or click [here](https://enginotes.pages.dev/pages/notes)
 
 ## Setup
 
