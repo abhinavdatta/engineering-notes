@@ -2,7 +2,8 @@
  * ============================================================
  * DRIVE-API.JS - Google Drive API Module
  * ============================================================
- * 
+ * NOTE:- THIS ENTIRE SCRIPT WAS BUILT USING CHAT.Z.AI I WANT TO CLEAR THIS SO THATS WHY I AM WRITING IT HERE.
+ *  if you have any quires please raise an issue in issues tab
  * This module handles all Google Drive API interactions:
  * - Loading the Google API client
  * - Fetching folders and files
@@ -30,6 +31,43 @@
  * ============================================================
  */
 
+
+/*
+
+## How to Find Google Drive Folder ID
+
+1. **Open the folder in Google Drive** (or right-click → Open)
+
+2. **Look at the URL in your browser address bar:**
+
+```
+https://drive.google.com/drive/folders/1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG
+                                         └─────────────────────────────────┘
+                                                    This is the Folder ID
+```
+
+3. **Copy everything after `/folders/`** - that's your ROOT_FOLDER_ID
+
+## Example
+
+| Google Drive URL | Folder ID |
+|-----------------|-----------|
+| `drive.google.com/drive/folders/1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG` | `1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG` |
+| `drive.google.com/drive/folders/1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi` | `1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi` |
+
+## For Shared Drives
+
+If it's a Shared Drive (Team Drive), the URL looks like:
+```
+https://drive.google.com/drive/folders/1ABC...?usp=sharing&lsqid=...
+```
+Just copy the ID part before any `?` or `&` characters.
+
+That's it! The folder ID is always the long alphanumeric string after `/folders/` in the URL.*/
+
+
+
+
 /* ============================================================
    API CONFIGURATION
    ============================================================ */
@@ -38,15 +76,15 @@
  * Google API Key for Drive API access
  * @constant {string}
  */
-var API_KEY = 'AIzaSyCC8BbNNG2HhwEJ74GRBoos_lvREUPUN2Y';
+var API_KEY = 'API_KEY_GOES_HERE';
 
 /**
  * Root folder ID for the Drive structure
  * Set this before using the module
  * @type {string}
  */
-var ROOT_FOLDER_ID = '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG'; // Notes Drive
-// var ROOT_FOLDER_ID = '1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi'; // Textbooks Drive
+var ROOT_FOLDER_ID = 'DRIVE_root_id_GOES_HERE'; // Notes Drive
+// var ROOT_FOLDER_ID = 'DRIVE_root_id_GOES_HERE'; // Textbooks Drive
 
 /**
  * Cache TTL in milliseconds (24 hours)
@@ -492,12 +530,12 @@ async function buildStructure() {
   if (cachedStructure && cachedStructure.length > 0) {
     DATA_MAP[ROOT_FOLDER_ID] = cachedStructure;
     structureLoadedMap[ROOT_FOLDER_ID] = true;
-    console.log('[DriveAPI] Loaded from cache for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
+    console.log('[DriveAPI] Loaded from cache for', ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks');
     return DATA_MAP[ROOT_FOLDER_ID];
   }
   
   // Fetch from API
-  console.log('[DriveAPI] Fetching from API for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
+  console.log('[DriveAPI] Fetching from API for', ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks');
   await loadGoogleAPI();
   
   var deptFolders = await fetchFolders(ROOT_FOLDER_ID);
@@ -744,7 +782,7 @@ function getCacheStatus() {
     cacheAge: cacheAge,
     cacheAgeFormatted: cacheAge ? formatCacheAge(cacheAge) : null,
     isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false,
-    folderType: ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks'
+    folderType: ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks'
   };
 }
 
