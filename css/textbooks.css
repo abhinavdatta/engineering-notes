@@ -12,6 +12,43 @@
  */
 
 /* ============================================================
+   NAVBAR OVERRIDES - Blue Accent
+   ============================================================ */
+.navbar {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Dark theme navbar - match body background */
+[data-theme="dark"] .navbar {
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Pure black theme navbar */
+[data-theme="pure-black"] .navbar {
+  background: #000000;
+  border-bottom: 1px solid #262626;
+}
+
+.theme-switch-btn.active {
+  background: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.nav-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+}
+
+.navbar-brand .brand-text span {
+  background: linear-gradient(135deg, #3b82f6, #00d9ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================================
    HERO SECTION - BLUE THEME
    ============================================================ */
 .hero {
@@ -66,6 +103,28 @@
 
 .back-link:hover {
   text-decoration: underline;
+}
+
+/* Header Back Button */
+.header-back-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+
+.header-back-btn:hover {
+  background: #2563eb;
+  transform: translateX(-2px);
 }
 
 .dept-title {
@@ -217,146 +276,41 @@
    ============================================================ */
 @media (max-width: 768px) {
   .hero {
-    padding: 32px 16px;
+    padding: 20px 12px;
   }
   
   .hero h1 {
-    font-size: 24px;
+    font-size: 20px;
+    margin-bottom: 4px;
   }
   
   .hero p {
-    font-size: 14px;
+    font-size: 12px;
   }
   
   .hero-notice {
-    font-size: 12px;
-    padding: 6px 16px;
+    font-size: 10px;
+    padding: 4px 12px;
+    margin-top: 8px;
   }
   
   .unit-cards {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 16px;
-  }
-  
-  .unit-card {
-    padding: 16px 12px;
-  }
-  
-  .unit-card-number {
-    font-size: 24px;
-  }
-  
-  .unit-card-name {
-    font-size: 12px;
-    margin-top: 6px;
-  }
-  
-  .dept-header {
-    padding: 20px 16px;
-  }
-  
-  .dept-title {
-    font-size: 20px;
-  }
-  
-  .dept-info {
-    font-size: 13px;
-  }
-  
-  .dept-count {
-    font-size: 12px;
-  }
-  
-  /* Filter bar */
-  .filter-bar {
-    padding: 12px 16px;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    margin-left: -16px;
-    margin-right: -16px;
-    padding-left: 16px;
-    padding-right: 16px;
-    scrollbar-width: none;
-  }
-  
-  .filter-bar::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .filter-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    margin-right: 6px;
-    margin-bottom: 0;
-  }
-  
-  .sem-title {
-    font-size: 14px;
-    padding: 10px 12px;
-    margin-left: -16px;
-    margin-right: -16px;
-    border-radius: 0;
-    border-left: 4px solid #3b82f6;
-  }
-  
-  /* Info boxes - stack vertically */
-  .info-boxes {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  
-  .info-box {
-    padding: 16px;
-  }
-  
-  .info-box h3 {
-    font-size: 13px;
-  }
-  
-  .info-box p,
-  .info-box li {
-    font-size: 12px;
-  }
-}
-
-/* ============================================================
-   RESPONSIVE STYLES - SMALL PHONES
-   ============================================================ */
-@media (max-width: 480px) {
-  .hero {
-    padding: 24px 12px;
-  }
-  
-  .hero h1 {
-    font-size: 20px;
-  }
-  
-  .hero p {
-    font-size: 13px;
-  }
-  
-  .hero-notice {
-    font-size: 11px;
-    padding: 5px 12px;
-  }
-  
-  .unit-cards {
     gap: 8px;
+    margin-top: 12px;
   }
   
   .unit-card {
-    padding: 12px 10px;
+    padding: 14px 10px;
   }
   
   .unit-card-number {
-    font-size: 20px;
+    font-size: 22px;
   }
   
   .unit-card-name {
     font-size: 11px;
+    margin-top: 4px;
   }
   
   .dept-header {
@@ -371,22 +325,166 @@
     font-size: 12px;
   }
   
+  .dept-count {
+    font-size: 11px;
+  }
+  
+  /* Filter bar - compact scrollable */
   .filter-bar {
-    padding: 10px 12px;
+    padding: 8px 12px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
     margin-left: -12px;
     margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+    scrollbar-width: none;
+    font-size: 12px;
+  }
+  
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-bar > span:first-child {
+    display: none; /* Hide "Filter:" label on mobile */
   }
   
   .filter-btn {
-    padding: 5px 10px;
-    font-size: 11px;
+    padding: 4px 10px;
+    font-size: 10px;
+    margin-right: 4px;
+    margin-bottom: 0;
   }
   
   .sem-title {
     font-size: 13px;
-    padding: 8px 12px;
+    padding: 8px 10px;
     margin-left: -12px;
     margin-right: -12px;
+    margin-bottom: 8px;
+    border-radius: 0;
+    border-left: 4px solid #3b82f6;
+  }
+  
+  /* Info boxes - stack vertically */
+  .info-boxes {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .info-box {
+    padding: 14px;
+  }
+  
+  .info-box h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .info-box p,
+  .info-box li {
+    font-size: 11px;
+  }
+  
+  .info-box ol {
+    padding-left: 16px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - SMALL PHONES
+   ============================================================ */
+@media (max-width: 480px) {
+  .hero {
+    padding: 20px 10px;
+  }
+  
+  .hero h1 {
+    font-size: 18px;
+  }
+  
+  .hero p {
+    font-size: 12px;
+  }
+  
+  .hero-notice {
+    font-size: 10px;
+    padding: 4px 12px;
+  }
+  
+  .unit-cards {
+    gap: 6px;
+    margin-top: 10px;
+  }
+  
+  .unit-card {
+    padding: 12px 8px;
+  }
+  
+  .unit-card-number {
+    font-size: 18px;
+  }
+  
+  .unit-card-name {
+    font-size: 10px;
+  }
+  
+  .dept-header {
+    padding: 14px 10px;
+  }
+  
+  .dept-title {
+    font-size: 16px;
+  }
+  
+  .dept-info {
+    font-size: 11px;
+  }
+  
+  .dept-count {
+    font-size: 10px;
+  }
+  
+  .filter-bar {
+    padding: 6px 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  
+  .filter-btn {
+    padding: 3px 8px;
+    font-size: 9px;
+    margin-right: 3px;
+  }
+  
+  .sem-title {
+    font-size: 12px;
+    padding: 6px 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    margin-bottom: 6px;
+  }
+  
+  .info-boxes {
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .info-box {
+    padding: 12px;
+  }
+  
+  .info-box h3 {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+  
+  .info-box p,
+  .info-box li {
+    font-size: 10px;
   }
 }
 

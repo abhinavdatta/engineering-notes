@@ -75,7 +75,7 @@ function hasCookieConsent() {
  */
 function hasConsentChoice() {
   var consent = localStorage.getItem(CONSENT_KEY);
-  return consent === CONSENT_VALUES.ACCEPTED || consent === CONSENT_VALUES.DECLENSED;
+  return consent === CONSENT_VALUES.ACCEPTED || consent === CONSENT_VALUES.DECLINED;
 }
 
 /**
@@ -112,7 +112,7 @@ function acceptCookies() {
  * Clears any existing cache and disables future caching
  */
 function declineCookies() {
-  localStorage.setItem(CONSENT_KEY, CONSENT_VALUES.DECLENSED);
+  localStorage.setItem(CONSENT_KEY, CONSENT_VALUES.DECLINED);
   hideCookieBanner();
   updateCookieStatus();
   

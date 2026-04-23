@@ -5,6 +5,7 @@
  * 
  * This module handles all navigation and UI rendering:
  * - View switching (home, department, subject, unit, subfolder)
+ * - Browser history management (back/forward buttons work correctly)
  * - Breadcrumb updates
  * - Navigation buttons
  * - Rendering functions for each view
@@ -78,12 +79,142 @@ function toggleAds(show) {
 }
 
 /* ============================================================
+   BROWSER HISTORY MANAGEMENT
+   ============================================================ */
+
+/**
+ * Pushes current state to browser history
+ */
+function pushHistoryState() {
+  var state = {
+    deptId: currentDeptId,
+    subjectId: currentSubjectId,
+    unitId: currentUnitId,
+    subfolderId: currentSubfolderId
+  };
+  
+  // Build URL hash
+  var hash = '';
+  if (currentDeptId) hash += '/' + currentDeptId;
+  if (currentSubjectId) hash += '/' + currentSubjectId;
+  if (currentUnitId) hash += '/' + currentUnitId;
+  if (currentSubfolderId) hash += '/sub/' + currentSubfolderId;
+  
+  history.pushState(state, '', hash ? '#' + hash : window.location.pathname);
+}
+
+/**
+ * Restores view from history state
+ */
+function restoreFromState(state) {
+  if (!state) {
+    // No state, show home view
+    currentDeptId = null;
+    currentSubjectId = null;
+    currentUnitId = null;
+    currentSubfolderId = null;
+    
+    document.getElementById('home-view').classList.remove('hidden');
+    toggleAds(false);
+    updateBreadcrumb();
+    updateDeptButtons();
+    updateBackButton();
+    return;
+  }
+  
+  // Restore state variables
+  currentDeptId = state.deptId || null;
+  currentSubjectId = state.subjectId || null;
+  currentUnitId = state.unitId || null;
+  currentSubfolderId = state.subfolderId || null;
+  
+  // Restore the appropriate view
+  hideAllViews();
+  
+  if (currentSubfolderId) {
+    var subfolderView = document.getElementById('subfolder-view');
+    if (subfolderView) {
+      subfolderView.classList.remove('hidden');
+    }
+    toggleAds(true);
+    updateBreadcrumb();
+    updateBackButton();
+    // Note: renderSubfolder is in page-specific JS
+    if (typeof renderSubfolder === 'function') {
+      renderSubfolder(currentSubfolderId, 'Folder');
+    }
+  } else if (currentUnitId) {
+    document.getElementById('unit-view').classList.remove('hidden');
+    toggleAds(true);
+    updateBreadcrumb();
+    updateBackButton();
+    if (typeof renderUnit === 'function') {
+      renderUnit();
+    }
+  } else if (currentSubjectId) {
+    document.getElementById('subject-view').classList.remove('hidden');
+    toggleAds(true);
+    updateBreadcrumb();
+    updateBackButton();
+    renderSubject();
+  } else if (currentDeptId) {
+    document.getElementById('dept-view').classList.remove('hidden');
+    toggleAds(true);
+    updateBreadcrumb();
+    updateDeptButtons();
+    updateBackButton();
+    renderDept();
+  } else {
+    document.getElementById('home-view').classList.remove('hidden');
+    toggleAds(false);
+    updateBreadcrumb();
+    updateDeptButtons();
+    updateBackButton();
+  }
+}
+
+/**
+ * Handle browser back/forward buttons
+ */
+window.addEventListener('popstate', function(e) {
+  restoreFromState(e.state);
+});
+
+/**
+ * Initialize state from URL hash on page load
+ */
+function initFromHash() {
+  var hash = window.location.hash.slice(1); // Remove #
+  if (!hash) return;
+  
+  var parts = hash.split('/');
+  if (parts[0] === '') parts.shift(); // Remove empty first element
+  
+  if (parts.length >= 1 && parts[0]) {
+    currentDeptId = parts[0];
+    if (parts.length >= 2 && parts[1]) {
+      currentSubjectId = parts[1];
+      if (parts.length >= 3 && parts[2]) {
+        if (parts[2] === 'sub' && parts[3]) {
+          currentSubfolderId = parts[3];
+        } else {
+          currentUnitId = parts[2];
+          if (parts.length >= 5 && parts[3] === 'sub' && parts[4]) {
+            currentSubfolderId = parts[4];
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ============================================================
    NAVIGATION FUNCTIONS
    ============================================================ */
 
 function goHome() {
   var p = new URLSearchParams(window.location.search).get('XTransformPort');
-  window.location.href = p ? '../index.html?XTransformPort=' + p : 'https://enginotes.pages.dev';
+  window.location.href = p ? '../index.html?XTransformPort=' + p : 'https://your-domain.com';
 }
 
 function goToDept(id) {
@@ -101,6 +232,8 @@ function goToDept(id) {
   updateDeptButtons();
   updateBackButton();
   renderDept();
+  
+  pushHistoryState();
 }
 
 function goBackToDept() {
@@ -123,6 +256,8 @@ function goToSubject(id) {
   updateBreadcrumb();
   updateBackButton();
   renderSubject();
+  
+  pushHistoryState();
 }
 
 function goBackToSubject() {
@@ -144,6 +279,8 @@ function goToUnit(id) {
   updateBreadcrumb();
   updateBackButton();
   renderUnit();
+  
+  pushHistoryState();
 }
 
 function goBackToUnit() {
@@ -171,6 +308,8 @@ function goToSubfolder(id, name) {
   updateBreadcrumb();
   updateBackButton();
   renderSubfolder(id, name);
+  
+  pushHistoryState();
 }
 
 function goBack() {
@@ -212,7 +351,7 @@ function createSubfolderView() {
    ============================================================ */
 
 function updateBreadcrumb() {
-  var html = '<a href="https://enginotes.pages.dev">Home</a> → <span>Class Resources</span>';
+  var html = '<a href="https://your-domain.com">Home</a> → <span>Class Resources</span>';
   
   if (currentDeptId) {
     var d = getDeptById(currentDeptId);
@@ -242,7 +381,46 @@ function updateBreadcrumb() {
     }
   }
   
-  document.getElementById('breadcrumb').innerHTML = html;
+  // Update old breadcrumb (if exists)
+  var breadcrumb = document.getElementById('breadcrumb');
+  if (breadcrumb) {
+    breadcrumb.innerHTML = html;
+  }
+  
+  // Update new navbar breadcrumb (if exists)
+  var navbarBreadcrumb = document.getElementById('navbar-breadcrumb');
+  if (navbarBreadcrumb) {
+    // Simpler breadcrumb for navbar
+    var navHtml = '<a href="https://your-domain.com">Home</a>';
+    navHtml += '<span class="separator">→</span>';
+    navHtml += '<span>Class Resources</span>';
+    
+    if (currentDeptId) {
+      var d = getDeptById(currentDeptId);
+      if (d) {
+        navHtml += '<span class="separator">→</span>';
+        navHtml += '<span>' + d.code + '</span>';
+      }
+    }
+    
+    if (currentSubjectId) {
+      var s = getSubjectById(currentDeptId, currentSubjectId);
+      if (s) {
+        navHtml += '<span class="separator">→</span>';
+        navHtml += '<span>' + s.code + '</span>';
+      }
+    }
+    
+    if (currentUnitId) {
+      var unit = getUnitById(currentDeptId, currentSubjectId, currentUnitId);
+      if (unit) {
+        navHtml += '<span class="separator">→</span>';
+        navHtml += '<span>Unit ' + unit.number + '</span>';
+      }
+    }
+    
+    navbarBreadcrumb.innerHTML = navHtml;
+  }
 }
 
 function updateDeptButtons() {
@@ -258,6 +436,11 @@ function updateDeptButtons() {
 
 function updateBackButton() {
   var backBtn = document.getElementById('header-back-btn');
+  
+  // Check if back button exists on this page
+  if (!backBtn) {
+    return;
+  }
   
   if (currentSubfolderId) {
     backBtn.style.display = 'inline-block';
@@ -282,6 +465,8 @@ function updateBackButton() {
 
 function renderHome() {
   var html = '<h2 class="section-title">Choose Department</h2>';
+  
+  // Desktop table view
   html += '<div class="table-container"><table>';
   html += '<thead><tr><th>Code</th><th>Department</th><th>Action</th></tr></thead><tbody>';
   
@@ -294,6 +479,23 @@ function renderHome() {
   });
   
   html += '</tbody></table></div>';
+  
+  // Mobile card view
+  html += '<div class="file-cards">';
+  
+  DATA.forEach(function(d) {
+    html += '<div class="file-card" onclick="goToDept(\'' + d.id + '\')" style="cursor:pointer;">';
+    html += '<div class="file-card-header">';
+    html += '<div class="code-badge" style="flex-shrink:0;">' + d.code + '</div>';
+    html += '<div class="file-card-info">';
+    html += '<div class="file-card-name">' + d.name + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  html += '</div>';
+  
   document.getElementById('home-content').innerHTML = html;
 }
 
@@ -335,6 +537,8 @@ function renderDeptTable() {
     
     html += '<div style="margin-bottom:24px;">';
     html += '<h3 class="sem-title">' + getSemesterName(sem) + ' Semester (' + subs.length + ' subjects)</h3>';
+    
+    // Desktop table view
     html += '<div class="table-container"><table>';
     html += '<thead><tr><th>Code</th><th>Subject</th><th>Units</th><th>Action</th></tr></thead><tbody>';
     
@@ -347,7 +551,24 @@ function renderDeptTable() {
       html += '</tr>';
     });
     
-    html += '</tbody></table></div></div>';
+    html += '</tbody></table></div>';
+    
+    // Mobile card view
+    html += '<div class="file-cards">';
+    
+    subs.forEach(function(sub) {
+      html += '<div class="file-card" onclick="goToSubject(\'' + sub.id + '\')" style="cursor:pointer;">';
+      html += '<div class="file-card-header">';
+      html += '<div class="code-badge" style="flex-shrink:0;">' + sub.code + '</div>';
+      html += '<div class="file-card-info">';
+      html += '<div class="file-card-name">' + sub.name + '</div>';
+      html += '<div class="file-card-filename">' + sub.units.length + ' units</div>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+    });
+    
+    html += '</div></div>';
   });
   
   if (!html) {
@@ -508,3 +729,31 @@ function updateCacheStatus() {
     statusEl.innerHTML = '<span class="cache-status stale">' + folderType + ' cached: ' + status.cacheAgeFormatted + '</span>';
   }
 }
+
+/* ============================================================
+   MOBILE MENU FUNCTIONS
+   ============================================================ */
+
+/**
+ * Toggle mobile menu visibility
+ */
+function toggleMobileMenu() {
+  var menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.toggle('active');
+  }
+}
+
+/**
+ * Close mobile menu when clicking outside
+ */
+document.addEventListener('click', function(e) {
+  var menu = document.getElementById('mobileMenu');
+  var toggle = document.querySelector('.mobile-menu-toggle');
+  
+  if (menu && menu.classList.contains('active')) {
+    if (!menu.contains(e.target) && toggle && !toggle.contains(e.target)) {
+      menu.classList.remove('active');
+    }
+  }
+});

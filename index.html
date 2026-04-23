@@ -1,30 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ============================================================
-       INDEX.HTML - Home/Landing Page
-       ============================================================
-       This is the main landing page for EngNotes.
-       
-       CSS Files (load in order):
-       1. themes.css - Theme variables (must be first)
-       2. common.css - Shared styles
-       3. home.css   - Page-specific styles (animated background)
-       4. ads.css    - Ad spaces and adblock popup
-       5. cookie-consent.css - Cookie banner styles
-       
-       JS Files (load in order):
-       1. theme-manager.js - Theme initialization
-       2. cookie-consent.js - Cookie consent management
-       3. bot-protection.js- Security
-       4. home-app.js      - Creates particles and navigation
-       ============================================================ -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EngNotes - Engineering Notes & Textbooks for Students</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
   
-  <!-- CSS: Themes must load first to define CSS variables -->
+  <!-- CSS: themes.css must load first -->
   <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/common.css">
   <link rel="stylesheet" href="css/home.css">
@@ -33,103 +15,115 @@
 </head>
 <body>
 
-  <!-- ============================================================
-       ANIMATED BACKGROUND PARTICLES
-       ============================================================ -->
-  <div class="particles" id="particles"></div>
+  <!-- Starry Background -->
+  <div class="landscape"></div>
+  <div class="filter"></div>
+  <canvas id="stars-canvas"></canvas>
 
-  <!-- ============================================================
-       MAIN CONTAINER
-       ============================================================ -->
+  <!-- Main Container -->
   <div class="container">
     
-    <!-- ============================================================
-         HEADER
-         ============================================================ -->
-    <header class="header">
-      <a href="https://enginotes.pages.dev" class="logo">
-        <span class="logo-icon">📚</span>
-        EngNotes
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <a href="https://your-domain.com" class="navbar-brand">
+        <span class="brand-icon">📚</span>
+        <span class="brand-text">Eng<span>Notes</span></span>
       </a>
-      <nav class="nav-links">
-        <!-- Theme Toggle -->
-        <div class="theme-toggle">
-          <button class="theme-btn active" data-theme="light" onclick="setTheme('light')">☀️ Light</button>
-          <button class="theme-btn" data-theme="dark" onclick="setTheme('dark')">🌙 Dark</button>
-          <button class="theme-btn" data-theme="pure-black" onclick="setTheme('pure-black')">⬛ Black</button>
+      
+      <div class="navbar-menu">
+        <a href="https://github.com/YOUR_USERNAME" target="_blank" class="navbar-link">About</a>
+        <a href="https://github.com/YOUR_USERNAME/engineering-notes/issues" target="_blank" class="navbar-link">Report</a>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=YOUR_EMAIL@example.com" target="_blank" class="navbar-link">Contact</a>
+        <a href="CHANGELOG.html" target="_blank" class="navbar-link">ChangeLogs</a>
+        
+        <div class="theme-switcher">
+          <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">☀️</button>
+          <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">🌙</button>
+          <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">⬛</button>
         </div>
-        <!-- Navigation Links -->
-        <a href="https://github.com/LINK GOES HERE" target="_blank" class="nav-link">About</a>
-        <a href="https://github.com/LINK GOES HERE" target="_blank" class="nav-link">Report Issue</a>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=MAIL_GOES_HERE" target="_blank" class="nav-link">Contact</a>
-        <a href="CHANGELOG.html">change logs</a>
-      </nav>
-    </header>
+        
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" class="mobile-menu-link">About</a>
+      <a href="https://github.com/YOUR_USERNAME/engineering-notes/issues" target="_blank" class="mobile-menu-link">Report Issue</a>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=YOUR_EMAIL@example.com" target="_blank" class="mobile-menu-link">Contact</a>
+      <div class="theme-switcher">
+        <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">☀️ Light</button>
+        <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">🌙 Dark</button>
+        <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">⬛ Black</button>
+      </div>
+    </div>
     
-    <!-- ============================================================
-         HERO SECTION
-         ============================================================ -->
+    <!-- Hero Section -->
     <main class="hero">
-      <!-- Badge -->
       <div class="hero-badge">✨ Free Resources for Students</div>
       
-      <!-- Main Title -->
-      <h1>Engineering <span>Notes</span> & Textbooks</h1>
+      <h1 class="hero-title">Engineering <span class="highlight">Notes</span> & Textbooks</h1>
+      
+      <p class="hero-subtitle">Access comprehensive study materials, previous papers, and textbooks organized by department and semester.</p>
       
       <!-- Feature Cards -->
-      <div class="cards-container">
-        
-        <!-- Class Resources Card (Green) -->
-        <div class="card card-notes" onclick="navigateTo('pages/notes.html')">
-          <span class="card-icon">📝</span>
-          <div class="card-title">Class Resources</div>
-          <p class="card-desc">Comprehensive notes, previous year papers, and lab manuals organized by department and semester.</p>
-          <div class="card-items">
-            <span class="card-tag">Notes</span>
-            <span class="card-tag">Question Papers</span>
-            <span class="card-tag">Lab Manuals</span>
+      <div class="cards-grid">
+        <div class="feature-card green" onclick="navigateTo('pages/notes.html')">
+          <span class="feature-card-icon">📝</span>
+          <div class="feature-card-title">Class Resources</div>
+          <p class="feature-card-desc">Notes, question papers, and lab manuals organized by department.</p>
+          <div class="feature-card-tags">
+            <span class="feature-card-tag">Notes</span>
+            <span class="feature-card-tag">Papers</span>
+            <span class="feature-card-tag">Labs</span>
           </div>
         </div>
         
-        <!-- Textbooks Card (Blue) -->
-        <div class="card card-textbooks" onclick="navigateTo('pages/textbooks.html')">
-          <span class="card-icon">📖</span>
-          <div class="card-title">Textbooks</div>
-          <p class="card-desc">Semester textbooks and reference books for all branches. Download PDFs directly or view online.</p>
-          <div class="card-items">
-            <span class="card-tag">Textbooks</span>
-            <span class="card-tag">Reference Books</span>
-            <span class="card-tag">Guides</span>
+        <div class="feature-card blue" onclick="navigateTo('pages/textbooks.html')">
+          <span class="feature-card-icon">📖</span>
+          <div class="feature-card-title">Textbooks</div>
+          <p class="feature-card-desc">Semester textbooks and reference books for all branches.</p>
+          <div class="feature-card-tags">
+            <span class="feature-card-tag">Textbooks</span>
+            <span class="feature-card-tag">Reference</span>
+            <span class="feature-card-tag">Guides</span>
           </div>
         </div>
-        
+      </div>
+
+      <!-- Contribute Section -->
+      <div class="contribute-section">
+        <div class="contribute-section-icon">📤</div>
+        <h2>Have Notes to Share?</h2>
+        <p>Help thousands of students by sharing your notes, question papers, or textbooks!</p>
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=YOUR_EMAIL@example.com&subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="contribute-btn">
+          ✉️ Send Your Notes
+        </a>
+        <p class="contribute-note">Your contribution helps fellow students!</p>
+        <p>for subject in mail use this format [SEM:-" ",subject:-" " & Unit:-" "] </p>
       </div>
     </main>
     
-    <!-- ============================================================
-         FOOTER
-         ============================================================ -->
+    <!-- Footer -->
     <footer class="footer">
       <div class="footer-links">
-        <a href="DRIVE_LINK_GOES_HERE" target="_blank" class="footer-link">Notes Drive</a>
-        <a href="DRIVE_LINK_GOES_HERE" target="_blank" class="footer-link">Textbooks Drive</a>
-        <a href="https://github.com/LINK GOES HERE" target="_blank" class="footer-link">GitHub</a>
-        <a href="CHANGELOG.html">change logs</a>
+        <a href="https://drive.google.com/drive/folders/YOUR_NOTES_FOLDER_ID" target="_blank" class="footer-link">Notes Drive</a>
+        <a href="https://drive.google.com/drive/folders/YOUR_TEXTBOOKS_FOLDER_ID" target="_blank" class="footer-link">Textbooks Drive</a>
+        <a href="https://github.com/YOUR_USERNAME" target="_blank" class="footer-link">GitHub</a>
+        <p>brave users can't store cache due to policies.Use any other browser for better experience</p>
       </div>
-      <!-- Cookie Status Indicator -->
       <div id="cookie-status" class="cookie-status"></div>
     </footer>
     
   </div>
 
-  <!-- ============================================================
-       COOKIE CONSENT BANNER
-       ============================================================ -->
+  <!-- Cookie Banner -->
   <div id="cookie-banner" class="cookie-banner hidden">
     <div class="cookie-content">
       <div class="cookie-text">
         <h3>🍪 Cookie Consent</h3>
-        <p>We use cookies to cache the folder structure and reduce API calls. This makes the website faster. <a href="https://policies.google.com/privacy" target="_blank">Learn more</a></p>
+        <p>We use cookies to cache the folder structure and reduce API calls. <a href="https://policies.google.com/privacy" target="_blank">Learn more</a></p>
       </div>
       <div class="cookie-buttons">
         <button class="cookie-decline-btn" onclick="declineCookies()">Decline</button>
@@ -138,9 +132,7 @@
     </div>
   </div>
 
-  <!-- ============================================================
-       JAVASCRIPT FILES
-       ============================================================ -->
+  <!-- JavaScript -->
   <script src="js/theme-manager.js"></script>
   <script src="js/cookie-consent.js"></script>
   <script src="js/bot-protection.js"></script>

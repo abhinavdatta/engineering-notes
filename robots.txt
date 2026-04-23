@@ -105,4 +105,4 @@ User-agent: *
 Allow: /
 Crawl-delay: 600
 
-Sitemap: https://enginotes.pages.dev/sitemap.xml
+Sitemap: https://your-domain.com/sitemap.xml

@@ -91,8 +91,18 @@ function showBotWarning() {
    AUTO-EXECUTION
    ============================================================
    Run bot detection immediately when script loads.
+   Note: Disabled in development/sandbox environments
    ============================================================ */
 (function() {
+  // Skip bot detection in development or if skip flag is set
+  if (window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' ||
+      window.location.search.includes('skipbot=1') ||
+      window.location.port === '3000') {
+    console.log('[BotProtection] Skipped in development mode');
+    return;
+  }
+  
   if (detectBot()) {
     showBotWarning();
   }

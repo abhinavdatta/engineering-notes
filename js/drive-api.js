@@ -2,8 +2,7 @@
  * ============================================================
  * DRIVE-API.JS - Google Drive API Module
  * ============================================================
- * NOTE:- THIS ENTIRE SCRIPT WAS BUILT USING CHAT.Z.AI I WANT TO CLEAR THIS SO THATS WHY I AM WRITING IT HERE.
- *  if you have any quires please raise an issue in issues tab
+ * 
  * This module handles all Google Drive API interactions:
  * - Loading the Google API client
  * - Fetching folders and files
@@ -17,7 +16,7 @@
  * - Separate cache for Notes and Textbooks (based on ROOT_FOLDER_ID)
  * 
  * USAGE:
- * 1. Set API_KEY and ROOT_FOLDER_ID before calling init
+ * 1. Set window.ROOT_FOLDER_ID BEFORE loading this script
  * 2. Call loadGoogleAPI() to initialize the API client
  * 3. Use fetchFolders() and loadFilesFromFolder() to get data
  * 
@@ -31,43 +30,6 @@
  * ============================================================
  */
 
-
-/*
-
-## How to Find Google Drive Folder ID
-
-1. **Open the folder in Google Drive** (or right-click → Open)
-
-2. **Look at the URL in your browser address bar:**
-
-```
-https://drive.google.com/drive/folders/1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG
-                                         └─────────────────────────────────┘
-                                                    This is the Folder ID
-```
-
-3. **Copy everything after `/folders/`** - that's your ROOT_FOLDER_ID
-
-## Example
-
-| Google Drive URL | Folder ID |
-|-----------------|-----------|
-| `drive.google.com/drive/folders/1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG` | `1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG` |
-| `drive.google.com/drive/folders/1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi` | `1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi` |
-
-## For Shared Drives
-
-If it's a Shared Drive (Team Drive), the URL looks like:
-```
-https://drive.google.com/drive/folders/1ABC...?usp=sharing&lsqid=...
-```
-Just copy the ID part before any `?` or `&` characters.
-
-That's it! The folder ID is always the long alphanumeric string after `/folders/` in the URL.*/
-
-
-
-
 /* ============================================================
    API CONFIGURATION
    ============================================================ */
@@ -76,21 +38,28 @@ That's it! The folder ID is always the long alphanumeric string after `/folders/
  * Google API Key for Drive API access
  * @constant {string}
  */
-var API_KEY = 'API_KEY_GOES_HERE';
+var API_KEY = 'YOUR_API_KEY_HERE';
 
 /**
- * Root folder ID for the Drive structure
- * Set this before using the module
- * @type {string}
+ * Default Root folder ID (fallback)
+ * Notes: 'YOUR_NOTES_FOLDER_ID'
+ * Textbooks: 'YOUR_TEXTBOOKS_FOLDER_ID'
+ * @constant {string}
  */
-var ROOT_FOLDER_ID = 'DRIVE_root_id_GOES_HERE'; // Notes Drive
-// var ROOT_FOLDER_ID = 'DRIVE_root_id_GOES_HERE'; // Textbooks Drive
+var DEFAULT_ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
 
 /**
  * Cache TTL in milliseconds (24 hours)
  * @constant {number}
  */
 var CACHE_TTL = 24 * 60 * 60 * 1000;
+
+/**
+ * Auto-refresh threshold in milliseconds (12 hours)
+ * If cache is older than this, refresh silently in background
+ * @constant {number}
+ */
+var AUTO_REFRESH_THRESHOLD = 12 * 60 * 60 * 1000;
 
 /**
  * Memory cache for loaded files (session-only, no consent needed)
@@ -118,20 +87,50 @@ var structureLoadedMap = {};
  */
 var DATA_MAP = {};
 
+/* ============================================================
+   ROOT_FOLDER_ID GETTER - Always reads from window
+   ============================================================ */
+
+/**
+ * Gets the current ROOT_FOLDER_ID
+ * Always reads from window.ROOT_FOLDER_ID set by the HTML page
+ * @returns {string} Current root folder ID
+ */
+function getRootFolderId() {
+  return window.ROOT_FOLDER_ID || DEFAULT_ROOT_FOLDER_ID;
+}
+
+// Define ROOT_FOLDER_ID as a getter that always reads from window
+Object.defineProperty(window, '_rootFolderIdGetter', {
+  get: function() { return getRootFolderId(); }
+});
+
 /**
  * Convenience getter for current DATA
  */
 Object.defineProperty(window, 'DATA', {
-  get: function() { return DATA_MAP[ROOT_FOLDER_ID] || []; },
-  set: function(val) { DATA_MAP[ROOT_FOLDER_ID] = val; }
+  get: function() { 
+    var rootId = getRootFolderId();
+    return DATA_MAP[rootId] || []; 
+  },
+  set: function(val) { 
+    var rootId = getRootFolderId();
+    DATA_MAP[rootId] = val; 
+  }
 });
 
 /**
  * Convenience getter for structureLoaded
  */
 Object.defineProperty(window, 'structureLoaded', {
-  get: function() { return structureLoadedMap[ROOT_FOLDER_ID] || false; },
-  set: function(val) { structureLoadedMap[ROOT_FOLDER_ID] = val; }
+  get: function() { 
+    var rootId = getRootFolderId();
+    return structureLoadedMap[rootId] || false; 
+  },
+  set: function(val) { 
+    var rootId = getRootFolderId();
+    structureLoadedMap[rootId] = val; 
+  }
 });
 
 /* ============================================================
@@ -144,7 +143,8 @@ Object.defineProperty(window, 'structureLoaded', {
  * @returns {string} Cache key prefix
  */
 function getCachePrefix() {
-  return 'drive_' + ROOT_FOLDER_ID.substring(0, 8) + '_';
+  var rootId = getRootFolderId();
+  return 'drive_' + rootId.substring(0, 8) + '_';
 }
 
 /**
@@ -221,6 +221,7 @@ function setCachedData(key, value) {
  * Clears cache for current ROOT_FOLDER_ID only
  */
 function clearCurrentCache() {
+  var rootId = getRootFolderId();
   var prefix = getCachePrefix();
   
   // Clear localStorage cache for this ROOT_FOLDER_ID only
@@ -238,15 +239,16 @@ function clearCurrentCache() {
   }
   
   // Clear memory cache for this ROOT_FOLDER_ID
-  delete DATA_MAP[ROOT_FOLDER_ID];
-  delete structureLoadedMap[ROOT_FOLDER_ID];
+  delete DATA_MAP[rootId];
+  delete structureLoadedMap[rootId];
   
   // Clear file/folder caches (keyed by folder ID, but we can't easily filter)
   // These will be repopulated on next fetch
   filesCache = {};
   foldersCache = {};
   
-  console.log('[DriveAPI] Cache cleared for', ROOT_FOLDER_ID === '1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG' ? 'Notes' : 'Textbooks');
+  var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+  console.log('[DriveAPI] Cache cleared for', folderType);
 }
 
 /**
@@ -285,15 +287,25 @@ function loadGoogleAPI() {
     script.src = 'https://apis.google.com/js/api.js';
     
     script.onload = function() {
+      console.log('[DriveAPI] Google API script loaded');
       window.gapi.load('client', function() {
         window.gapi.client.init({
           apiKey: API_KEY,
           discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-        }).then(resolve, reject);
+        }).then(function() {
+          console.log('[DriveAPI] Google API client initialized');
+          resolve();
+        }, function(err) {
+          console.error('[DriveAPI] Failed to initialize client:', err);
+          reject(err);
+        });
       });
     };
     
-    script.onerror = reject;
+    script.onerror = function(err) {
+      console.error('[DriveAPI] Failed to load Google API script:', err);
+      reject(err);
+    };
     document.head.appendChild(script);
   });
 }
@@ -508,37 +520,183 @@ function getDeptCode(name) {
 }
 
 /* ============================================================
+   AUTO-REFRESH HELPER FUNCTIONS
+   ============================================================ */
+
+/**
+ * Gets cache data with age information
+ * @param {string} key - Cache key (without prefix)
+ * @returns {Object} Object with data, age, and timestamp
+ */
+function getCacheInfo(key) {
+  var result = { data: null, age: null, timestamp: null };
+  
+  if (typeof cacheManager === 'undefined') {
+    return result;
+  }
+  
+  var cacheKey = 'enginotes_cache_' + key;
+  
+  try {
+    var item = localStorage.getItem(cacheKey);
+    if (!item) return result;
+    
+    var parsed = JSON.parse(item);
+    result.data = parsed.value;
+    result.timestamp = parsed.timestamp;
+    result.age = Date.now() - parsed.timestamp;
+  } catch (e) {
+    // Ignore parse errors
+  }
+  
+  return result;
+}
+
+/**
+ * Flag to track if background refresh is in progress
+ * @type {Object}
+ */
+var backgroundRefreshInProgress = {};
+
+/**
+ * Silently refreshes cache in the background without blocking UI
+ * @param {string} rootId - Root folder ID to refresh
+ */
+async function silentBackgroundRefresh(rootId) {
+  // Prevent multiple simultaneous refreshes for same folder
+  if (backgroundRefreshInProgress[rootId]) {
+    console.log('[DriveAPI] Background refresh already in progress for', rootId);
+    return;
+  }
+  
+  backgroundRefreshInProgress[rootId] = true;
+  
+  try {
+    console.log('[DriveAPI] Starting silent background refresh...');
+    
+    // Clear only the structure cache for this root
+    var structureCacheKey = 'drive_' + rootId.substring(0, 8) + '_structure';
+    if (typeof cacheManager !== 'undefined') {
+      cacheManager.remove(structureCacheKey);
+    }
+    
+    // Fetch fresh data
+    await loadGoogleAPI();
+    
+    var deptFolders = await fetchFolders(rootId);
+    var data = [];
+    
+    for (var i = 0; i < deptFolders.length; i++) {
+      var dept = deptFolders[i];
+      var deptData = {
+        id: dept.id,
+        code: getDeptCode(dept.name),
+        name: dept.name,
+        folderId: dept.id,
+        semesters: {}
+      };
+      
+      var subFolders = await fetchFolders(dept.id);
+      
+      for (var j = 0; j < subFolders.length; j++) {
+        var sub = subFolders[j];
+        var semNum = detectSemester(sub.name);
+        
+        if (semNum !== null) {
+          if (!deptData.semesters[semNum]) {
+            deptData.semesters[semNum] = [];
+          }
+          
+          var subjectFolders = await fetchFolders(sub.id);
+          for (var k = 0; k < subjectFolders.length; k++) {
+            var subj = subjectFolders[k];
+            var subjectData = await buildSubjectData(subj, semNum);
+            deptData.semesters[semNum].push(subjectData);
+          }
+        } else {
+          var detectedSem = detectSemesterFromSubject(sub.name) || 1;
+          if (!deptData.semesters[detectedSem]) {
+            deptData.semesters[detectedSem] = [];
+          }
+          var subjectData = await buildSubjectData(sub, detectedSem);
+          deptData.semesters[detectedSem].push(subjectData);
+        }
+      }
+      
+      for (var s = 1; s <= 8; s++) {
+        if (!deptData.semesters[s]) {
+          deptData.semesters[s] = [];
+        }
+      }
+      
+      data.push(deptData);
+    }
+    
+    // Update cache and memory
+    DATA_MAP[rootId] = data;
+    setCachedData(getCacheKey('STRUCTURE'), data);
+    
+    console.log('[DriveAPI] Silent background refresh complete');
+  } catch (error) {
+    console.error('[DriveAPI] Background refresh failed:', error);
+  } finally {
+    backgroundRefreshInProgress[rootId] = false;
+  }
+}
+
+/* ============================================================
    BUILD STRUCTURE FUNCTION
    ============================================================ */
 
 /**
  * Builds the complete folder structure from Google Drive
  * Uses caching if available to reduce API calls
+ * Auto-refreshes cache silently if older than AUTO_REFRESH_THRESHOLD
  * @returns {Promise<Array>} Complete data structure
  */
 async function buildStructure() {
+  var rootId = getRootFolderId();
+  console.log('[DriveAPI] buildStructure called with rootId:', rootId);
+  
   // Check if already loaded in memory for this ROOT_FOLDER_ID
-  if (structureLoadedMap[ROOT_FOLDER_ID] && DATA_MAP[ROOT_FOLDER_ID] && DATA_MAP[ROOT_FOLDER_ID].length > 0) {
+  if (structureLoadedMap[rootId] && DATA_MAP[rootId] && DATA_MAP[rootId].length > 0) {
     console.log('[DriveAPI] Using in-memory structure');
-    return DATA_MAP[ROOT_FOLDER_ID];
+    return DATA_MAP[rootId];
   }
   
   // Check localStorage cache for this ROOT_FOLDER_ID
   var structureCacheKey = getCacheKey('STRUCTURE');
-  var cachedStructure = getCachedData(structureCacheKey);
+  var cacheInfo = getCacheInfo(structureCacheKey);
   
-  if (cachedStructure && cachedStructure.length > 0) {
-    DATA_MAP[ROOT_FOLDER_ID] = cachedStructure;
-    structureLoadedMap[ROOT_FOLDER_ID] = true;
-    console.log('[DriveAPI] Loaded from cache for', ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks');
-    return DATA_MAP[ROOT_FOLDER_ID];
+  if (cacheInfo.data && cacheInfo.data.length > 0) {
+    DATA_MAP[rootId] = cacheInfo.data;
+    structureLoadedMap[rootId] = true;
+    var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+    console.log('[DriveAPI] Loaded from cache for', folderType, '- Age:', formatCacheAge(cacheInfo.age));
+    
+    // Auto-refresh in background if cache is stale
+    if (cacheInfo.age > AUTO_REFRESH_THRESHOLD) {
+      console.log('[DriveAPI] Cache is stale, triggering silent background refresh...');
+      silentBackgroundRefresh(rootId);
+    }
+    
+    return DATA_MAP[rootId];
   }
   
   // Fetch from API
-  console.log('[DriveAPI] Fetching from API for', ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks');
-  await loadGoogleAPI();
+  var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+  console.log('[DriveAPI] Fetching from API for', folderType);
   
-  var deptFolders = await fetchFolders(ROOT_FOLDER_ID);
+  try {
+    await loadGoogleAPI();
+  } catch (apiError) {
+    console.error('[DriveAPI] Failed to load Google API:', apiError);
+    throw apiError;
+  }
+  
+  var deptFolders = await fetchFolders(rootId);
+  console.log('[DriveAPI] Found', deptFolders.length, 'department folders');
+  
   var data = [];
   
   for (var i = 0; i < deptFolders.length; i++) {
@@ -588,8 +746,8 @@ async function buildStructure() {
   }
   
   // Cache for this ROOT_FOLDER_ID
-  DATA_MAP[ROOT_FOLDER_ID] = data;
-  structureLoadedMap[ROOT_FOLDER_ID] = true;
+  DATA_MAP[rootId] = data;
+  structureLoadedMap[rootId] = true;
   setCachedData(structureCacheKey, data);
   
   console.log('[DriveAPI] Structure built and cached');
@@ -684,6 +842,7 @@ async function buildSubjectData(folder, semNum) {
  * @returns {Promise<Array>} Fresh data structure
  */
 async function refreshStructure() {
+  var rootId = getRootFolderId();
   console.log('[DriveAPI] Refreshing structure...');
   
   // Clear cache for current ROOT_FOLDER_ID only
@@ -692,7 +851,7 @@ async function refreshStructure() {
   // Fetch fresh data from API
   await loadGoogleAPI();
   
-  var deptFolders = await fetchFolders(ROOT_FOLDER_ID);
+  var deptFolders = await fetchFolders(rootId);
   var data = [];
   
   for (var i = 0; i < deptFolders.length; i++) {
@@ -742,8 +901,8 @@ async function refreshStructure() {
   }
   
   // Cache the fresh structure
-  DATA_MAP[ROOT_FOLDER_ID] = data;
-  structureLoadedMap[ROOT_FOLDER_ID] = true;
+  DATA_MAP[rootId] = data;
+  structureLoadedMap[rootId] = true;
   setCachedData(getCacheKey('STRUCTURE'), data);
   
   console.log('[DriveAPI] Structure refreshed and cached');
@@ -756,6 +915,7 @@ async function refreshStructure() {
  * @returns {Object} Cache status info
  */
 function getCacheStatus() {
+  var rootId = getRootFolderId();
   var structureCacheKey = getCacheKey('STRUCTURE');
   var hasCache = false;
   var cacheAge = null;
@@ -782,7 +942,7 @@ function getCacheStatus() {
     cacheAge: cacheAge,
     cacheAgeFormatted: cacheAge ? formatCacheAge(cacheAge) : null,
     isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false,
-    folderType: ROOT_FOLDER_ID === 'DRIVE_root_id_GOES_HERE' ? 'Notes' : 'Textbooks'
+    folderType: rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks'
   };
 }
 

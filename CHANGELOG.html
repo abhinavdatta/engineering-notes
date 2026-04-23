@@ -185,11 +185,297 @@
       </div>
     </div>
 
+    <!-- Version 1.8 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.8</span>
+        <span class="version-date">Latest - Smart Navigation & Auto-Refresh</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Back Button</strong> - Added "← Back" button in header of all views (Department, Subject, Unit)</li>
+          <li><strong>Smart Back Navigation</strong> - Back button uses browser history (<code>history.back()</code>) for intuitive navigation</li>
+          <li><strong>Silent Auto-Refresh</strong> - Cache automatically refreshes in background if older than 12 hours</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Removed Manual Refresh Button</strong> - No longer needed with silent auto-refresh</li>
+          <li><strong>Back Button Styling</strong> - Green accent for Notes, Blue accent for Textbooks</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Cookie Consent Typo</strong> - Fixed <code>DECLENSED</code> → <code>DECLINED</code> causing JavaScript errors</li>
+          <li><strong>updateBackButton Null Error</strong> - Added null check to prevent crashes when back button element doesn't exist</li>
+          <li><strong>Error Messages</strong> - Improved error messages with actual error details instead of generic "Error loading data"</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (5)</h4>
+        <ul>
+          <li>pages/notes.html</li>
+          <li>pages/textbooks.html</li>
+          <li>css/notes.css</li>
+          <li>css/textbooks.css</li>
+          <li>js/drive-api.js</li>
+          <li>js/navigation.js</li>
+          <li>js/cookie-consent.js</li>
+          <li>js/notes-app.js</li>
+          <li>js/textbooks-app.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.7 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.7</span>
+        <span class="version-date">Unified Navigation Across All Pages</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Unified Navigation Design</strong> - Notes and Textbooks pages now use the same clean, modern navbar as the home page</li>
+          <li><strong>Modern Navbar Component</strong> - Added reusable navbar styles in common.css with logo, breadcrumb, theme switcher, and mobile menu</li>
+          <li><strong>Improved Theme Switcher</strong> - Compact pill design with icon-only buttons (☀️ 🌙 ⬛) across all pages</li>
+          <li><strong>Mobile Menu Overlay</strong> - Added hamburger menu with slide-in overlay for mobile devices on all pages</li>
+          <li><strong>Page-Specific Accents</strong> - Notes page uses green accent, Textbooks page uses blue accent in navbar elements</li>
+          <li><strong>Simplified Breadcrumb</strong> - Compact breadcrumb in navbar with arrow separators</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Navigation Consistency</strong> - All three pages (home, notes, textbooks) now have consistent navigation styling</li>
+          <li><strong>Theme Switching</strong> - Theme buttons now work correctly on notes and textbooks pages</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (5)</h4>
+        <ul>
+          <li>css/common.css</li>
+          <li>css/notes.css</li>
+          <li>css/textbooks.css</li>
+          <li>pages/notes.html</li>
+          <li>pages/textbooks.html</li>
+          <li>js/navigation.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.6.2 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.6.2</span>
+        <span class="version-date">Clean Navigation Redesign</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Complete Navigation Redesign</strong> - Clean, minimal fixed navbar with blur effect</li>
+          <li><strong>Compact Theme Switcher</strong> - Icon-only buttons in a pill design (☀️ 🌙 ⬛)</li>
+          <li><strong>Mobile Menu</strong> - Hamburger menu with slide-in overlay for mobile devices</li>
+          <li><strong>Improved Hero Section</strong> - Better typography, spacing, and visual hierarchy</li>
+          <li><strong>Cleaner Feature Cards</strong> - Simpler design with accent color borders on hover</li>
+          <li><strong>Better Responsive Design</strong> - Navigation links hidden on mobile, accessible via menu</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Removed</h3>
+        <ul class="feature-list removed">
+          <li>Removed cluttered theme button labels (now icon-only)</li>
+          <li>Removed old header layout with wrapping elements</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (3)</h4>
+        <ul>
+          <li>index.html</li>
+          <li>css/home.css</li>
+          <li>js/home-app.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.6.1 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.6.1</span>
+        <span class="version-date">Theme & Dynamic Color Fix</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Missing themes.css</strong> - index.html was not loading themes.css, causing theme buttons to not work at all</li>
+          <li><strong>Hardcoded Colors in home.css</strong> - Replaced all hardcoded black/white colors with CSS variables for dynamic theming</li>
+          <li><strong>Text Visibility</strong> - Text now uses <code>var(--text-primary)</code> and adapts to all background colors and themes</li>
+          <li><strong>Theme Button Styling</strong> - Fixed theme toggle buttons styling for home page header</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>index.html</strong> - Added <code>&lt;link rel="stylesheet" href="css/themes.css"&gt;</code> as first CSS file</li>
+          <li><strong>home.css</strong> - Complete rewrite using CSS variables throughout:
+            <ul>
+              <li><code>var(--text-primary)</code> for all text colors</li>
+              <li><code>var(--bg-secondary)</code> for card backgrounds</li>
+              <li><code>var(--accent-color)</code> for accent elements</li>
+              <li><code>var(--border-color)</code> for borders</li>
+            </ul>
+          </li>
+          <li>Added theme-specific overrides for light, dark, and pure-black modes</li>
+          <li>Stars/canvas opacity reduced in dark themes for better readability</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (2)</h4>
+        <ul>
+          <li>index.html</li>
+          <li>css/home.css</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.6 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.6</span>
+        <span class="version-date">Starry Night Sky Background</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Starry Night Sky Background</strong> - Beautiful animated space-themed background on home page</li>
+          <li><strong>Twinkling Stars</strong> - 100 stars with varying colors (white, blue-tinted, warm-tinted) that drift upward and twinkle</li>
+          <li><strong>Mouse Trail Effect</strong> - Glowing cyan/teal dots that follow cursor with connecting lines creating a magical trail</li>
+          <li><strong>Color-Changing Filter</strong> - Subtle red overlay that pulses every 30 seconds for ambient atmosphere</li>
+          <li><strong>Landscape Silhouette</strong> - Dark mountain silhouettes at the bottom for depth and visual interest</li>
+          <li><strong>Glassmorphism Cards</strong> - Feature cards now have frosted glass effect with neon glow on hover</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>home.css</strong> - Complete redesign with dark gradient background, canvas-based animation, glassmorphism UI</li>
+          <li><strong>home-app.js</strong> - Replaced particle system with Star and Dot classes for interactive canvas animation</li>
+          <li><strong>index.html</strong> - Added canvas element, filter overlay, and landscape silhouette</li>
+          <li>Removed old floating shapes/icons CSS animation (replaced with canvas-based stars)</li>
+          <li>Mouse cursor remains visible (not hidden) for better usability</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Technical Details</h3>
+        <ul class="feature-list">
+          <li>Stars use <code>requestAnimationFrame</code> for smooth 60fps animation</li>
+          <li>Each star has randomized twinkle speed, phase, and color variation</li>
+          <li>Mouse trail dots fade out naturally with connecting lines to previous dots</li>
+          <li>Canvas automatically resizes on window resize</li>
+          <li>All animations are CSS/Canvas based (no external libraries)</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (3)</h4>
+        <ul>
+          <li>index.html</li>
+          <li>css/home.css</li>
+          <li>js/home-app.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 1.5 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v1.5</span>
+        <span class="version-date">Comprehensive Mobile Responsive Design</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Mobile Card View for Home Page</strong> - Notes page now shows mobile-friendly card layout on small screens (was showing cramped table before)</li>
+          <li><strong>Comprehensive Responsive Breakpoints</strong> - Added 4 breakpoints: 768px (tablet), 480px (small phone), 360px (extra small phone)</li>
+          <li><strong>Touch-Optimized UI Elements</strong> - Larger touch targets, proper spacing for mobile interaction</li>
+          <li><strong>Home Page Contribute Section</strong> - Prominent "Have Notes to Share?" section on main landing page encouraging users to share their notes</li>
+          <li><strong>Contribute / Send Notes Feature</strong> - Floating action button + contribute sections on notes/textbooks pages</li>
+          <li><strong>Email Pre-filled Subject</strong> - Contribute links now pre-fill email subject line</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>index.html</strong> - Added prominent "Have Notes to Share?" contribute section</li>
+          <li><strong>common.css</strong> - Complete mobile responsive overhaul with cleaner header layout + contribute button styles</li>
+          <li><strong>home.css</strong> - Responsive header, hero section, feature cards + contribute section for mobile</li>
+          <li><strong>notes.css</strong> - Mobile styles for hero, filter bar, unit cards, and info boxes</li>
+          <li><strong>textbooks.css</strong> - Same mobile improvements as notes.css with blue accent color</li>
+          <li><strong>notes.html</strong> - Added contribute section + floating "Send Notes" button</li>
+          <li><strong>textbooks.html</strong> - Added contribute section + floating "Send Books" button</li>
+          <li><strong>notes-app.js</strong> - Added mobile card view to <code>renderHome()</code> function (was missing!)</li>
+          <li>Tables automatically switch to card layouts on mobile devices</li>
+          <li>Filter buttons scroll horizontally on mobile instead of wrapping</li>
+          <li>Unit cards use 2-column grid on mobile instead of auto-fill</li>
+          <li>Header reorganized: Logo centered, theme toggle inline, buttons compact</li>
+          <li>"Filter:" label hidden on mobile to save space</li>
+          <li>All fonts and padding reduced proportionally on smaller screens</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Missing Mobile View in Notes</strong> - The <code>renderHome()</code> in notes-app.js only had table view, now includes mobile cards</li>
+          <li><strong>Cluttery Mobile Layout</strong> - All pages now properly reflow content for small screens</li>
+          <li><strong>Header Overflow</strong> - Theme toggle, refresh button, and breadcrumb now stack properly on mobile</li>
+          <li><strong>Department Links Overflow</strong> - Horizontal scroll for department quick links on mobile</li>
+          <li><strong>Button Sizes</strong> - All buttons now have appropriate sizes for touch interaction on mobile</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (9)</h4>
+        <ul>
+          <li>index.html</li>
+          <li>js/notes-app.js</li>
+          <li>css/common.css</li>
+          <li>css/home.css</li>
+          <li>css/notes.css</li>
+          <li>css/textbooks.css</li>
+          <li>pages/notes.html</li>
+          <li>pages/textbooks.html</li>
+          <li>CHANGELOG.html</li>
+        </ul>
+      </div>
+    </div>
+
     <!-- Version 1.4 -->
     <div class="version">
       <div class="version-header">
         <span class="version-badge">v1.4</span>
-        <span class="version-date">Latest - Dynamic ROOT_FOLDER_ID Fix</span>
+        <span class="version-date">Dynamic ROOT_FOLDER_ID Fix</span>
       </div>
       
       <div class="feature-group">
@@ -385,9 +671,9 @@
       <div class="feature-group">
         <h3>Google Drive API</h3>
         <ul class="feature-list">
-          <li><strong>API Key:</strong> <code>AIzaSyCC8BbNNG2HhwEJ74GRBoos_lvREUPUN2Y</code></li>
-          <li><strong>Notes Drive ID:</strong> <code>1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG</code></li>
-          <li><strong>Textbooks Drive ID:</strong> <code>1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi</code></li>
+          <li><strong>API Key:</strong> <code>YOUR_API_KEY_HERE</code></li>
+          <li><strong>Notes Drive ID:</strong> <code>YOUR_NOTES_FOLDER_ID</code></li>
+          <li><strong>Textbooks Drive ID:</strong> <code>YOUR_TEXTBOOKS_FOLDER_ID</code></li>
           <li><strong>Cache TTL:</strong> 24 hours (86400000 ms)</li>
         </ul>
       </div>
@@ -396,8 +682,8 @@
     <!-- Footer -->
     <p style="text-align: center; color: #94a3b8; margin-top: 32px;">
       Made with ❤️ for engineering students<br>
-      <a href="https://github.com/abhinavdatta" style="color: #64748b;">GitHub</a> · 
-      <a href="https://enginotes.pages.dev" style="color: #64748b;">Website</a>
+      <a href="https://github.com/YOUR_USERNAME" style="color: #64748b;">GitHub</a> · 
+      <a href="https://your-domain.com" style="color: #64748b;">Website</a>
     </p>
   </div>
 </body>

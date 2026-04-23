@@ -171,12 +171,15 @@ function escapeHtml(str) {
 }
 
 /**
- * Renders a table of files
+ * Renders a table of files (desktop) and cards (mobile)
  * @param {Array} files - Array of file objects
  * @returns {string} HTML string
  */
 function renderFilesTable(files) {
-  var html = '<div class="table-container"><table>';
+  var html = '';
+  
+  // Desktop table view
+  html += '<div class="table-container"><table>';
   html += '<thead><tr><th>#</th><th>File</th><th>Type</th><th>Actions</th></tr></thead><tbody>';
   
   files.forEach(function(f, i) {
@@ -195,6 +198,31 @@ function renderFilesTable(files) {
   });
   
   html += '</tbody></table></div>';
+  
+  // Mobile card view
+  html += '<div class="file-cards">';
+  
+  files.forEach(function(f, i) {
+    var type = detectFileType(f.name);
+    var displayName = f.name.replace(/\.[^/.]+$/, '');
+    
+    html += '<div class="file-card">';
+    html += '<div class="file-card-header">';
+    html += '<div class="file-card-number">' + (i + 1) + '</div>';
+    html += '<div class="file-card-info">';
+    html += '<div class="file-card-name">' + displayName + '</div>';
+    html += '<div class="file-card-filename">' + f.name + ' • ' + type + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '<div class="file-card-actions">';
+    html += '<button class="view-green-btn" onclick="openModal(\'' + f.id + '\', \'' + escapeHtml(f.name) + '\')">View</button>';
+    html += '<button class="open-btn" onclick="openTab(\'' + f.id + '\')">Open</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  html += '</div>';
+  
   return html;
 }
 
@@ -268,6 +296,8 @@ function openTab(id) {
 
 async function init() {
   try {
+    console.log('[NotesApp] Starting initialization...');
+    
     // Hide ads on home view
     if (typeof toggleAds === 'function') {
       toggleAds(false);
@@ -278,15 +308,31 @@ async function init() {
     
     // Check if already loaded
     if (structureLoaded && DATA.length > 0) {
+      console.log('[NotesApp] Using cached data');
       updateDeptButtons();
       updateBackButton();
       renderHome();
       updateCacheStatus();
+      
+      // Restore from URL hash if present
+      if (typeof initFromHash === 'function') {
+        initFromHash();
+        if (currentDeptId || currentSubjectId || currentUnitId || currentSubfolderId) {
+          restoreFromState({
+            deptId: currentDeptId,
+            subjectId: currentSubjectId,
+            unitId: currentUnitId,
+            subfolderId: currentSubfolderId
+          });
+        }
+      }
       return;
     }
     
     // Build structure from Google Drive
+    console.log('[NotesApp] Building structure from Drive...');
     await buildStructure();
+    console.log('[NotesApp] Structure built successfully, DATA length:', DATA.length);
     
     // Update UI
     updateDeptButtons();
@@ -294,17 +340,34 @@ async function init() {
     renderHome();
     updateCacheStatus();
     
+    // Restore from URL hash if present
+    if (typeof initFromHash === 'function') {
+      initFromHash();
+      if (currentDeptId || currentSubjectId || currentUnitId || currentSubfolderId) {
+        restoreFromState({
+          deptId: currentDeptId,
+          subjectId: currentSubjectId,
+          unitId: currentUnitId,
+          subfolderId: currentSubfolderId
+        });
+      }
+    }
+    
   } catch (error) {
-    console.error('Error loading data:', error);
-    document.getElementById('home-content').innerHTML = '<div class="no-data"><p>Error loading data. Please refresh the page.</p></div>';
+    console.error('[NotesApp] Error loading data:', error);
+    var errorMsg = error && error.message ? error.message : 'Unknown error';
+    document.getElementById('home-content').innerHTML = '<div class="no-data"><p>Error loading data: ' + errorMsg + '</p><p><button onclick="location.reload()">Refresh Page</button></p></div>';
   }
 }
 
 /**
  * Renders the home view
+ * Shows both desktop table and mobile card views
  */
 function renderHome() {
   var html = '<h2 class="section-title">Choose Department</h2>';
+  
+  // Desktop table view
   html += '<div class="table-container"><table>';
   html += '<thead><tr><th>Code</th><th>Department</th><th>Action</th></tr></thead><tbody>';
   
@@ -317,6 +380,23 @@ function renderHome() {
   });
   
   html += '</tbody></table></div>';
+  
+  // Mobile card view
+  html += '<div class="file-cards">';
+  
+  DATA.forEach(function(d) {
+    html += '<div class="file-card" onclick="goToDept(\'' + d.id + '\')" style="cursor:pointer;">';
+    html += '<div class="file-card-header">';
+    html += '<div class="code-badge" style="flex-shrink:0;">' + d.code + '</div>';
+    html += '<div class="file-card-info">';
+    html += '<div class="file-card-name">' + d.name + '</div>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+  });
+  
+  html += '</div>';
+  
   document.getElementById('home-content').innerHTML = html;
 }
 
