@@ -1,0 +1,898 @@
+/**
+ * ============================================================
+ * CALCULATOR.CSS - Marks Calculator Styles
+ * ============================================================
+ */
+
+/* ============================================================
+   PAGE HEADER
+   ============================================================ */
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ============================================================
+   CALC SECTION BASE
+   ============================================================ */
+.calc-section {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px var(--card-shadow);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* ============================================================
+   MARKS PROGRESS BAR
+   ============================================================ */
+.marks-bar-container {
+  background: var(--bg-tertiary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.marks-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.marks-bar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.marks-bar-value {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: var(--accent-color);
+}
+
+.marks-bar {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.marks-bar-track {
+  position: relative;
+  height: 12px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  overflow: visible;
+  border: 1px solid var(--border-color);
+}
+
+.marks-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  pointer-events: none;
+}
+
+/* Fill colors for each type */
+.ct-fill {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.sessional-fill {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.assign-fill {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+/* Pointer (marker) on the bar */
+.marks-bar-pointer {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border: 3px solid;
+  border-radius: 50%;
+  transition: left 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ct-pointer {
+  border-color: #10b981;
+}
+
+.sessional-pointer {
+  border-color: #3b82f6;
+}
+
+.assign-pointer {
+  border-color: #f59e0b;
+}
+
+.pointer-value {
+  font-size: 10px;
+  font-weight: 700;
+  color: #333;
+}
+
+.marks-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Input fields below the bar */
+.marks-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.marks-inputs.single {
+  grid-template-columns: 1fr;
+  max-width: 200px;
+}
+
+.mark-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mark-input label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mark-input input {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.mark-input input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.mark-input input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   TOTAL DISPLAY
+   ============================================================ */
+.total-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+  border-radius: 16px;
+  border: 1px solid var(--accent-color);
+  margin-top: 8px;
+  gap: 20px;
+}
+
+.total-info {
+  flex: 1;
+}
+
+.total-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.total-bar {
+  margin-top: 8px;
+}
+
+.total-bar-track {
+  height: 8px;
+  background: var(--bg-primary);
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.total-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #3b82f6, #a855f7);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.total-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.total-value-container {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.total-value {
+  font-size: 48px;
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(135deg, var(--accent-color), #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.total-max {
+  font-size: 18px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* ============================================================
+   SIMULATOR SECTION
+   ============================================================ */
+.simulator-section {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.05));
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.simulator-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.simulator-container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .simulator-container {
+    flex-direction: row;
+    align-items: center;
+    gap: 48px;
+  }
+  
+  .simulator-progress-wrapper {
+    flex: 1;
+  }
+  
+  .grade-display {
+    min-width: 200px;
+  }
+}
+
+/* External Score Progress Bar */
+.simulator-progress-wrapper {
+  width: 100%;
+}
+
+.external-bar-container {
+  background: var(--bg-tertiary);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.external-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.external-bar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.external-bar-value {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: #8b5cf6;
+}
+
+.external-bar {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.external-bar-track {
+  position: relative;
+  height: 12px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  overflow: visible;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.external-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #8b5cf6, #a855f7);
+  border-radius: 6px;
+  transition: width 0.3s ease;
+  pointer-events: none;
+}
+
+.external-bar-pointer {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border: 3px solid #8b5cf6;
+  border-radius: 50%;
+  transition: left 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.external-bar-pointer .pointer-value {
+  font-size: 10px;
+  font-weight: 700;
+  color: #8b5cf6;
+}
+
+.external-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Quick Select Buttons */
+.external-quick-select {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.quick-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Courier New', monospace;
+}
+
+.quick-btn:hover {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.quick-btn.active {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border-color: #8b5cf6;
+}
+
+.grade-display {
+  text-align: center;
+  padding: 24px;
+  background: var(--bg-tertiary);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.grade-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.grade-value {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  transition: color 0.3s;
+}
+
+.grade-total {
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  color: var(--text-secondary);
+}
+
+.grade-total span {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Grade colors */
+.grade-ex { color: #a855f7; }
+.grade-ap { color: #10b981; }
+.grade-a { color: #3b82f6; }
+.grade-bp { color: #f59e0b; }
+.grade-b { color: #f97316; }
+.grade-c { color: #71717a; }
+.grade-f { color: #ef4444; }
+
+/* ============================================================
+   GRADE CARDS
+   ============================================================ */
+.grade-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.grade-card {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s;
+}
+
+.grade-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--card-shadow);
+}
+
+.grade-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.grade-card-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.grade-card-target {
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+  background: var(--bg-primary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--text-muted);
+}
+
+.grade-card-marks {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.grade-card-marks small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.grade-card-status {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.status-impossible {
+  color: #ef4444;
+}
+
+.status-secured {
+  color: #10b981;
+}
+
+.status-required {
+  color: var(--text-muted);
+}
+
+.status-easy {
+  color: #10b981;
+}
+
+/* Grade card color variants */
+.grade-card.purple { border-left: 4px solid #a855f7; }
+.grade-card.purple .grade-card-label { color: #a855f7; }
+.grade-card.purple { background: rgba(168, 85, 247, 0.05); }
+
+.grade-card.emerald { border-left: 4px solid #10b981; }
+.grade-card.emerald .grade-card-label { color: #10b981; }
+.grade-card.emerald { background: rgba(16, 185, 129, 0.05); }
+
+.grade-card.blue { border-left: 4px solid #3b82f6; }
+.grade-card.blue .grade-card-label { color: #3b82f6; }
+.grade-card.blue { background: rgba(59, 130, 246, 0.05); }
+
+.grade-card.amber { border-left: 4px solid #f59e0b; }
+.grade-card.amber .grade-card-label { color: #f59e0b; }
+.grade-card.amber { background: rgba(245, 158, 11, 0.05); }
+
+.grade-card.orange { border-left: 4px solid #f97316; }
+.grade-card.orange .grade-card-label { color: #f97316; }
+.grade-card.orange { background: rgba(249, 115, 22, 0.05); }
+
+.grade-card.zinc { border-left: 4px solid #71717a; }
+.grade-card.zinc .grade-card-label { color: #71717a; }
+.grade-card.zinc { background: rgba(113, 113, 122, 0.05); }
+
+/* ============================================================
+   SGPA SECTION
+   ============================================================ */
+.sgpa-display,
+.cgpa-display {
+  text-align: right;
+}
+
+.sgpa-label,
+.cgpa-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+}
+
+.sgpa-value,
+.cgpa-value {
+  font-size: 32px;
+  font-weight: 800;
+  font-family: 'Courier New', monospace;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cgpa-value {
+  background: linear-gradient(135deg, #10b981, #14b8a6);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Subjects Table */
+.subjects-table {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.subjects-header {
+  display: grid;
+  grid-template-columns: 1fr 80px 120px 40px;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-primary);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.subjects-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.subject-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 120px 40px;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  align-items: center;
+}
+
+.subject-row:last-child {
+  border-bottom: none;
+}
+
+.subject-row input,
+.subject-row select {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.subject-row input:focus,
+.subject-row select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.subject-row select {
+  cursor: pointer;
+}
+
+.delete-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.add-subject-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.add-subject-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   CGPA SECTION
+   ============================================================ */
+.semesters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.semester-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.semester-input label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.semester-input input {
+  width: 100%;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 16px;
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.semester-input input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background: var(--bg-secondary);
+}
+
+.semester-input input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   RESPONSIVE STYLES
+   ============================================================ */
+@media (max-width: 768px) {
+  .calc-section {
+    padding: 16px;
+  }
+  
+  .section-title {
+    font-size: 16px;
+  }
+  
+  .marks-bar-container {
+    padding: 16px;
+  }
+  
+  .total-display {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .total-info {
+    width: 100%;
+  }
+  
+  .total-value {
+    font-size: 36px;
+  }
+  
+  .grade-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .subjects-header {
+    display: none;
+  }
+  
+  .subject-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .subject-row input,
+  .subject-row select {
+    width: 100%;
+  }
+  
+  .col-action,
+  .delete-btn {
+    display: none;
+  }
+  
+  .semesters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .sgpa-display,
+  .cgpa-display {
+    text-align: left;
+    margin-top: 12px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 22px;
+  }
+  
+  .marks-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .marks-inputs.single {
+    max-width: none;
+  }
+  
+  .grade-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .grade-card {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .grade-card-header {
+    width: 100%;
+  }
+  
+  .semesters-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .semester-input input {
+    padding: 10px;
+    font-size: 14px;
+  }
+}

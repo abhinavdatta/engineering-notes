@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator - EngNotes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23a855f7'>C</text></svg>">
+  
+  <!-- CSS: themes.css must load first -->
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/calculator.css">
+  <link rel="stylesheet" href="css/cookie-consent.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">EN</span>
+      <span class="brand-text">Eng<span>Notes</span></span>
+    </a>
+    
+    <div class="navbar-menu">
+      <a href="index.html" class="navbar-link">Home</a>
+      <a href="notes.html" class="navbar-link">Notes</a>
+      <a href="textbooks.html" class="navbar-link">Textbooks</a>
+      
+      <div class="theme-switcher">
+        <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')" title="Light">Light</button>
+        <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')" title="Dark">Dark</button>
+        <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')" title="Black">Black</button>
+      </div>
+      
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+    <a href="index.html" class="mobile-menu-link">Home</a>
+    <a href="notes.html" class="mobile-menu-link">Notes</a>
+    <a href="textbooks.html" class="mobile-menu-link">Textbooks</a>
+    <div class="theme-switcher">
+      <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">Light</button>
+      <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">Black</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main">
+    <!-- Header -->
+    <div class="page-header">
+      <h1 class="page-title">Marks Calculator</h1>
+      <p class="page-subtitle">Calculate your internals, GPA, and projected grades</p>
+    </div>
+
+    <!-- Internal Marks Calculator -->
+    <section class="calc-section internal-section">
+      <div class="section-header">
+        <h2 class="section-title">Internal Marks</h2>
+      </div>
+      
+      <!-- Class Tests Progress Bar -->
+      <div class="marks-bar-container">
+        <div class="marks-bar-header">
+          <span class="marks-bar-title">Class Tests</span>
+          <span class="marks-bar-value" id="ctDisplay">0 / 10</span>
+        </div>
+        <div class="marks-bar">
+          <div class="marks-bar-track">
+            <div class="marks-bar-fill ct-fill" id="ctFill" style="width: 0%"></div>
+            <div class="marks-bar-pointer ct-pointer" id="ctPointer" style="left: 0%">
+              <span class="pointer-value" id="ctPointerValue">0</span>
+            </div>
+          </div>
+          <div class="marks-bar-labels">
+            <span>0</span>
+            <span>5</span>
+            <span>10</span>
+          </div>
+        </div>
+        <div class="marks-inputs">
+          <div class="mark-input">
+            <label>CT 1</label>
+            <input type="number" id="ct1" placeholder="0" min="0" max="10" oninput="calculateInternals()">
+          </div>
+          <div class="mark-input">
+            <label>CT 2</label>
+            <input type="number" id="ct2" placeholder="0" min="0" max="10" oninput="calculateInternals()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Sessionals Progress Bar -->
+      <div class="marks-bar-container">
+        <div class="marks-bar-header">
+          <span class="marks-bar-title">Sessionals</span>
+          <span class="marks-bar-value" id="sessionalDisplay">0 / 20</span>
+        </div>
+        <div class="marks-bar">
+          <div class="marks-bar-track">
+            <div class="marks-bar-fill sessional-fill" id="sessionalFill" style="width: 0%"></div>
+            <div class="marks-bar-pointer sessional-pointer" id="sessionalPointer" style="left: 0%">
+              <span class="pointer-value" id="sessionalPointerValue">0</span>
+            </div>
+          </div>
+          <div class="marks-bar-labels">
+            <span>0</span>
+            <span>10</span>
+            <span>20</span>
+          </div>
+        </div>
+        <div class="marks-inputs">
+          <div class="mark-input">
+            <label>Sessional 1</label>
+            <input type="number" id="sessional1" placeholder="0" min="0" max="20" oninput="calculateInternals()">
+          </div>
+          <div class="mark-input">
+            <label>Sessional 2</label>
+            <input type="number" id="sessional2" placeholder="0" min="0" max="20" oninput="calculateInternals()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Assignment Progress Bar -->
+      <div class="marks-bar-container">
+        <div class="marks-bar-header">
+          <span class="marks-bar-title">Assignment</span>
+          <span class="marks-bar-value" id="assignDisplay">0 / 10</span>
+        </div>
+        <div class="marks-bar">
+          <div class="marks-bar-track">
+            <div class="marks-bar-fill assign-fill" id="assignFill" style="width: 0%"></div>
+            <div class="marks-bar-pointer assign-pointer" id="assignPointer" style="left: 0%">
+              <span class="pointer-value" id="assignPointerValue">0</span>
+            </div>
+          </div>
+          <div class="marks-bar-labels">
+            <span>0</span>
+            <span>5</span>
+            <span>10</span>
+          </div>
+        </div>
+        <div class="marks-inputs single">
+          <div class="mark-input">
+            <label>Assignment Marks</label>
+            <input type="number" id="assignment" placeholder="0" min="0" max="10" oninput="calculateInternals()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Total Internal -->
+      <div class="total-display">
+        <div class="total-info">
+          <span class="total-label">Total Internals Secured</span>
+          <div class="total-bar">
+            <div class="total-bar-track">
+              <div class="total-bar-fill" id="totalFill" style="width: 0%"></div>
+            </div>
+            <div class="total-bar-labels">
+              <span>0</span>
+              <span>20</span>
+              <span>40</span>
+            </div>
+          </div>
+        </div>
+        <div class="total-value-container">
+          <span class="total-value" id="totalInternals">0</span>
+          <span class="total-max">/ 40</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- What If Simulator -->
+    <section class="calc-section simulator-section">
+      <div class="section-header">
+        <h2 class="section-title">"What If" Simulator</h2>
+      </div>
+      <p class="simulator-desc">Adjust your external exam score (out of 100) to see your projected final grade.</p>
+      
+      <div class="simulator-container">
+        <div class="simulator-progress-wrapper">
+          <!-- External Score Progress Bar -->
+          <div class="external-bar-container">
+            <div class="external-bar-header">
+              <span class="external-bar-title">External Exam Score</span>
+              <span class="external-bar-value" id="externalDisplay">60 / 100</span>
+            </div>
+            <div class="external-bar">
+              <div class="external-bar-track" id="externalBarTrack">
+                <div class="external-bar-fill" id="externalFill" style="width: 60%"></div>
+                <div class="external-bar-pointer" id="externalPointer" style="left: 60%">
+                  <span class="pointer-value" id="externalPointerValue">60</span>
+                </div>
+              </div>
+              <div class="external-bar-labels">
+                <span>0</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+              </div>
+            </div>
+            <!-- Quick select buttons -->
+            <div class="external-quick-select">
+              <button class="quick-btn" onclick="setExternalValue(0)">0</button>
+              <button class="quick-btn" onclick="setExternalValue(25)">25</button>
+              <button class="quick-btn" onclick="setExternalValue(50)">50</button>
+              <button class="quick-btn active" onclick="setExternalValue(60)">60</button>
+              <button class="quick-btn" onclick="setExternalValue(75)">75</button>
+              <button class="quick-btn" onclick="setExternalValue(100)">100</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grade-display">
+          <div class="grade-label">Projected Grade</div>
+          <div class="grade-value" id="projectedGrade">B+</div>
+          <div class="grade-total">Total: <span id="totalMarks">36</span> / 100</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grade Cards -->
+    <section class="calc-section grades-section">
+      <div class="section-header">
+        <h2 class="section-title">Marks Required for Each Grade</h2>
+      </div>
+      
+      <div class="grade-cards" id="gradeCards">
+        <!-- Generated by JS -->
+      </div>
+    </section>
+
+    <!-- SGPA Calculator -->
+    <section class="calc-section sgpa-section">
+      <div class="section-header">
+        <h2 class="section-title">SGPA Estimator</h2>
+        <div class="sgpa-display">
+          <span class="sgpa-label">Estimated SGPA</span>
+          <span class="sgpa-value" id="sgpaValue">0.00</span>
+        </div>
+      </div>
+      
+      <div class="subjects-table">
+        <div class="subjects-header">
+          <span class="col-subject">Subject</span>
+          <span class="col-credits">Credits</span>
+          <span class="col-grade">Grade</span>
+          <span class="col-action"></span>
+        </div>
+        <div class="subjects-list" id="subjectsList">
+          <!-- Generated by JS -->
+        </div>
+      </div>
+      
+      <button class="add-subject-btn" onclick="addSubject()">
+        <span>+</span> Add Subject
+      </button>
+    </section>
+
+    <!-- CGPA Tracker -->
+    <section class="calc-section cgpa-section">
+      <div class="section-header">
+        <h2 class="section-title">CGPA Tracker</h2>
+        <div class="cgpa-display">
+          <span class="cgpa-label">Cumulative GPA</span>
+          <span class="cgpa-value" id="cgpaValue">0.00</span>
+        </div>
+      </div>
+      
+      <div class="semesters-grid">
+        <div class="semester-input">
+          <label>Sem 1</label>
+          <input type="number" id="sem1" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 2</label>
+          <input type="number" id="sem2" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 3</label>
+          <input type="number" id="sem3" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 4</label>
+          <input type="number" id="sem4" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 5</label>
+          <input type="number" id="sem5" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 6</label>
+          <input type="number" id="sem6" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 7</label>
+          <input type="number" id="sem7" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+        <div class="semester-input">
+          <label>Sem 8</label>
+          <input type="number" id="sem8" placeholder="0.0" min="0" max="10" step="0.01" oninput="calculateCGPA()">
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html" class="footer-link">Home</a>
+      <a href="notes.html" class="footer-link">Notes</a>
+      <a href="textbooks.html" class="footer-link">Textbooks</a>
+      <a href="#" target="_blank" class="footer-link">GitHub</a>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/theme-manager.js"></script>
+  <script src="js/calculator.js"></script>
+</body>
+</html>

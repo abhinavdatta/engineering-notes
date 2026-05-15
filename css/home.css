@@ -132,7 +132,16 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
 }
 
 .navbar-brand .brand-icon {
-  font-size: 28px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent-color), #00d9ff);
+  color: #fff;
 }
 
 .navbar-brand .brand-text {
@@ -274,7 +283,7 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   width: 100%;
-  max-width: 700px;
+  max-width: 1000px;
   margin-bottom: 48px;
 }
 
@@ -320,10 +329,34 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
   --card-accent: #00d9ff;
 }
 
+.feature-card.purple {
+  --card-accent: #a855f7;
+}
+
 .feature-card-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-  display: block;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 28px;
+  font-weight: 700;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--card-accent), rgba(255,255,255,0.1));
+  color: #fff;
+}
+
+.feature-card.green .feature-card-icon {
+  background: linear-gradient(135deg, var(--accent-color), #059669);
+}
+
+.feature-card.blue .feature-card-icon {
+  background: linear-gradient(135deg, #00d9ff, #0284c7);
+}
+
+.feature-card.purple .feature-card-icon {
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
 }
 
 .feature-card-title {
@@ -370,8 +403,17 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
 }
 
 .contribute-section-icon {
-  font-size: 40px;
-  margin-bottom: 12px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  font-size: 28px;
+  font-weight: 700;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-color), #00d9ff);
+  color: #fff;
 }
 
 .contribute-section h2 {
@@ -498,7 +540,9 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
   }
 
   .feature-card-icon {
-    font-size: 36px;
+    width: 52px;
+    height: 52px;
+    font-size: 22px;
   }
 
   .feature-card-title {
@@ -527,7 +571,9 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
   }
 
   .navbar-brand .brand-icon {
-    font-size: 22px;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
   }
 
   .navbar-brand .brand-text {
@@ -558,7 +604,9 @@ body:not([data-theme="dark"]):not([data-theme="pure-black"]) {
   }
 
   .feature-card-icon {
-    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
     margin-bottom: 12px;
   }
 

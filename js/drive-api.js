@@ -37,16 +37,18 @@
 /**
  * Google API Key for Drive API access
  * @constant {string}
+ * TODO: Replace with your actual Google Drive API key
  */
-var API_KEY = 'YOUR_API_KEY_HERE';
+var API_KEY = 'YOUR_GOOGLE_DRIVE_API_KEY';
 
 /**
  * Default Root folder ID (fallback)
  * Notes: 'YOUR_NOTES_FOLDER_ID'
  * Textbooks: 'YOUR_TEXTBOOKS_FOLDER_ID'
  * @constant {string}
+ * TODO: Replace with your actual Google Drive folder ID
  */
-var DEFAULT_ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
+var DEFAULT_ROOT_FOLDER_ID = 'YOUR_ROOT_FOLDER_ID';
 
 /**
  * Cache TTL in milliseconds (24 hours)
@@ -247,7 +249,7 @@ function clearCurrentCache() {
   filesCache = {};
   foldersCache = {};
   
-  var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+  var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
   console.log('[DriveAPI] Cache cleared for', folderType);
 }
 
@@ -671,7 +673,7 @@ async function buildStructure() {
   if (cacheInfo.data && cacheInfo.data.length > 0) {
     DATA_MAP[rootId] = cacheInfo.data;
     structureLoadedMap[rootId] = true;
-    var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+    var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
     console.log('[DriveAPI] Loaded from cache for', folderType, '- Age:', formatCacheAge(cacheInfo.age));
     
     // Auto-refresh in background if cache is stale
@@ -684,7 +686,7 @@ async function buildStructure() {
   }
   
   // Fetch from API
-  var folderType = rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks';
+  var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
   console.log('[DriveAPI] Fetching from API for', folderType);
   
   try {
@@ -942,7 +944,7 @@ function getCacheStatus() {
     cacheAge: cacheAge,
     cacheAgeFormatted: cacheAge ? formatCacheAge(cacheAge) : null,
     isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false,
-    folderType: rootId === 'YOUR_NOTES_FOLDER_ID' ? 'Notes' : 'Textbooks'
+    folderType: rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks'
   };
 }
 

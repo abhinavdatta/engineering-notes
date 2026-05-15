@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ============================================================
+       NOTES.HTML - Class Resources Page
+       ============================================================
+       This page displays Notes, Question Papers, and Lab Manuals.
+       
+       CSS Files (load in order):
+       1. themes.css - Theme variables (must be first)
+       2. common.css - Shared styles
+       3. notes.css  - Page-specific styles (green accent)
+       4. ads.css    - Ad spaces and adblock popup
+       5. cookie-consent.css - Cookie banner styles
+       
+       JS Files (load in order):
+       1. theme-manager.js - Theme initialization
+       2. cookie-consent.js - Cookie consent and caching
+       3. drive-api.js     - Google Drive functions
+       4. navigation.js    - UI rendering
+       5. bot-protection.js- Security
+       6. notes-app.js     - Page initialization
+       ============================================================ -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Resources - EngNotes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2322c55e'>N</text></svg>">
+  
+  <!-- CSS: Themes must load first to define CSS variables -->
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/notes.css">
+  <link rel="stylesheet" href="css/ads.css">
+  <link rel="stylesheet" href="css/cookie-consent.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION BAR
+       ============================================================ -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">EN</span>
+      <span class="brand-text">Eng<span>Notes</span></span>
+    </a>
+    
+    <div class="navbar-menu">
+      <div class="navbar-breadcrumb" id="navbar-breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">→</span>
+        <span>Class Resources</span>
+      </div>
+      
+      <div class="theme-switcher">
+        <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')" title="Light">Light</button>
+        <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')" title="Dark">Dark</button>
+        <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')" title="Black">Black</button>
+      </div>
+
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+    
+    <!-- Navigation Path in Menu -->
+    <div class="mobile-nav-path">
+      <a href="index.html" class="mobile-nav-path-link">Home</a>
+      <span class="mobile-nav-separator">→</span>
+      <span class="mobile-nav-current">Class Resources</span>
+    </div>
+    
+    <a href="textbooks.html" class="mobile-menu-link">Textbooks</a>
+    <a href="#" target="_blank" class="mobile-menu-link">About</a>
+    <a href="#" target="_blank" class="mobile-menu-link">Report Issue</a>
+    <div class="theme-switcher">
+      <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">Light</button>
+      <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">Black</button>
+    </div>
+  </div>
+
+  <!-- Department Quick Links (populated by JS) -->
+  <div class="dept-links" id="dept-links"></div>
+
+  <!-- ============================================================
+       TOP AD BANNER (Only shown in department view)
+       ============================================================ -->
+  <div class="ad-dept-top" id="ad-top">
+    <div class="ad-label">Advertisement</div>
+    <span>Ad Space - 728x90</span>
+  </div>
+
+  <!-- ============================================================
+       HOME VIEW - Department Selection
+       ============================================================ -->
+  <div id="home-view">
+    <div class="hero">
+      <h1>Class Resources</h1>
+      <p>Notes, Question Papers & Lab Manuals for All Departments</p>
+      <div class="hero-notice">Under Construction</div>
+    </div>
+    <div class="main">
+      <!-- Department table rendered here by JS -->
+      <div id="home-content">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p style="margin-top:16px;color:var(--text-secondary);">Loading from Google Drive...</p>
+        </div>
+      </div>
+
+      <!-- Info boxes -->
+      <div class="info-boxes">
+        <div class="info-box">
+          <h3>How to Download</h3>
+          <ol>
+            <li>Click on your department</li>
+            <li>Select your semester</li>
+            <li>Choose a subject</li>
+            <li>Pick a unit to view files</li>
+          </ol>
+        </div>
+        <div class="info-box">
+          <h3>Contribute</h3>
+          <p>Send study materials to<br><a href="mailto:your-email@example.com" target="_blank">your-email@example.com</a></p>
+          <p style="margin-top:12px;"><strong>Google Drive:</strong><br><a href="https://drive.google.com/drive/folders/YOUR_NOTES_FOLDER_ID" target="_blank">Open Notes Drive →</a></p>
+        </div>
+      </div>
+
+      <!-- Contribute Section -->
+      <div class="contribute-section">
+        <h3>Have Notes to Share?</h3>
+        <p>Help your fellow students by contributing your notes, question papers, or lab manuals!</p>
+        <a href="mailto:your-email@example.com?subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="email-link">
+          Send Notes via Email
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       DEPARTMENT VIEW - Subjects by Semester
+       ============================================================ -->
+  <div id="dept-view" class="hidden">
+    <div class="dept-header">
+      <button id="header-back-btn" class="header-back-btn" onclick="history.back()">← Back</button>
+      <h1 class="dept-title" id="dept-title">Department</h1>
+      <p class="dept-info">Class Resources</p>
+      <p class="dept-count" id="dept-count">0 subjects</p>
+    </div>
+    <div class="filter-bar">
+      <span>Filter: </span><span id="semester-filters"></span>
+    </div>
+    <div class="main" id="dept-content"></div>
+    <!-- Inline Ad in Department View -->
+    <div class="ad-dept-inline" id="ad-dept-inline">
+      <div class="ad-label">Advertisement</div>
+      <span>Ad Space - 728x90</span>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SUBJECT VIEW - Unit Selection
+       ============================================================ -->
+  <div id="subject-view" class="hidden">
+    <div class="dept-header">
+      <button id="header-back-btn" class="header-back-btn" onclick="history.back()">← Back</button>
+      <h1 class="dept-title" id="subject-title">Subject</h1>
+      <p class="dept-info">
+        <span class="subject-badge" id="subject-code">CODE</span>
+        Sem <span id="subject-sem">1</span> | <span id="subject-dept-code">DEPT</span>
+      </p>
+    </div>
+    <div class="main" id="subject-content"></div>
+  </div>
+
+  <!-- ============================================================
+       UNIT VIEW - Files List
+       ============================================================ -->
+  <div id="unit-view" class="hidden">
+    <div class="dept-header">
+      <button id="header-back-btn" class="header-back-btn" onclick="history.back()">← Back</button>
+      <h1 class="dept-title" id="unit-title">Unit</h1>
+      <p class="dept-info" id="unit-info">Subject</p>
+    </div>
+    <div class="main" id="unit-content"></div>
+  </div>
+
+  <!-- ============================================================
+       FLOATING CONTRIBUTE BUTTON
+       ============================================================ -->
+  <div class="contribute-fab">
+    <a href="mailto:your-email@example.com?subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="contribute-btn">
+      <span class="fab-text">Send Notes</span>
+    </a>
+  </div>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="javascript:void(0)" onclick="goHome()">Home</a>
+      <a href="textbooks.html">Textbooks</a>
+      <a href="#" target="_blank">About</a>
+      <a href="#" target="_blank">Report</a>
+    </div>
+    <!-- Cookie Status Indicator -->
+    <div id="cookie-status" class="cookie-status"></div>
+  </footer>
+
+  <!-- ============================================================
+       PDF VIEWER MODAL
+       ============================================================ -->
+  <div id="pdf-modal" class="modal-overlay hidden">
+    <div class="modal-header">
+      <div><span class="modal-title" id="modal-title">PDF</span><span class="modal-type" id="modal-type">NOTES</span></div>
+      <div>
+        <button class="modal-open-btn" onclick="openInDrive()">Open in Drive</button>
+        <button class="modal-close-btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+    <div class="modal-body"><iframe id="pdf-iframe" src=""></iframe></div>
+    <div class="modal-footer">File: <span id="modal-filename">file.pdf</span></div>
+  </div>
+
+  <!-- ============================================================
+       COOKIE CONSENT BANNER
+       ============================================================ -->
+  <div id="cookie-banner" class="cookie-banner hidden">
+    <div class="cookie-content">
+      <div class="cookie-text">
+        <h3>Cookie Consent</h3>
+        <p>We use cookies to cache the folder structure and reduce API calls. This makes the website faster. <a href="https://policies.google.com/privacy" target="_blank">Learn more</a></p>
+      </div>
+      <div class="cookie-buttons">
+        <button class="cookie-decline-btn" onclick="declineCookies()">Decline</button>
+        <button class="cookie-accept-btn" onclick="acceptCookies()">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       JAVASCRIPT FILES
+       ============================================================ -->
+  <script>
+    // Set the root folder for Notes before loading drive-api.js
+    // TODO: Replace with your actual Google Drive folder ID for Notes
+    window.ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
+  </script>
+  <script src="js/theme-manager.js"></script>
+  <script src="js/cookie-consent.js"></script>
+  <script src="js/drive-api.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/bot-protection.js"></script>
+  <script src="js/notes-app.js"></script>
+</body>
+</html>

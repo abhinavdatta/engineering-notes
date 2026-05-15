@@ -214,7 +214,7 @@ function initFromHash() {
 
 function goHome() {
   var p = new URLSearchParams(window.location.search).get('XTransformPort');
-  window.location.href = p ? '../index.html?XTransformPort=' + p : 'https://your-domain.com';
+  window.location.href = p ? '../index.html?XTransformPort=' + p : 'index.html';
 }
 
 function goToDept(id) {
@@ -351,7 +351,7 @@ function createSubfolderView() {
    ============================================================ */
 
 function updateBreadcrumb() {
-  var html = '<a href="https://your-domain.com">Home</a> → <span>Class Resources</span>';
+  var html = '<a href="index.html">Home</a> → <span>Class Resources</span>';
   
   if (currentDeptId) {
     var d = getDeptById(currentDeptId);
@@ -391,7 +391,7 @@ function updateBreadcrumb() {
   var navbarBreadcrumb = document.getElementById('navbar-breadcrumb');
   if (navbarBreadcrumb) {
     // Simpler breadcrumb for navbar
-    var navHtml = '<a href="https://your-domain.com">Home</a>';
+    var navHtml = '<a href="index.html">Home</a>';
     navHtml += '<span class="separator">→</span>';
     navHtml += '<span>Class Resources</span>';
     
@@ -464,36 +464,38 @@ function updateBackButton() {
    ============================================================ */
 
 function renderHome() {
-  var html = '<h2 class="section-title">Choose Department</h2>';
-  
-  // Desktop table view
-  html += '<div class="table-container"><table>';
-  html += '<thead><tr><th>Code</th><th>Department</th><th>Action</th></tr></thead><tbody>';
-  
-  DATA.forEach(function(d) {
-    html += '<tr>';
-    html += '<td><span class="code-badge">' + d.code + '</span></td>';
-    html += '<td style="font-weight:500;">' + d.name + '</td>';
-    html += '<td><button class="view-btn" onclick="goToDept(\'' + d.id + '\')">View →</button></td>';
-    html += '</tr>';
-  });
-  
-  html += '</tbody></table></div>';
-  
-  // Mobile card view
-  html += '<div class="file-cards">';
+  var html = '<div class="department-section">';
+  html += '<div class="department-section-header">';
+  html += '<h2 class="department-section-title">Select Your Department</h2>';
+  html += '<p class="department-section-subtitle">Browse study materials organized by engineering discipline</p>';
+  html += '</div>';
+  html += '<div class="department-grid">';
   
   DATA.forEach(function(d) {
-    html += '<div class="file-card" onclick="goToDept(\'' + d.id + '\')" style="cursor:pointer;">';
-    html += '<div class="file-card-header">';
-    html += '<div class="code-badge" style="flex-shrink:0;">' + d.code + '</div>';
-    html += '<div class="file-card-info">';
-    html += '<div class="file-card-name">' + d.name + '</div>';
+    // Count total subjects
+    var totalSubjects = 0;
+    if (d.semesters) {
+      for (var sem in d.semesters) {
+        totalSubjects += d.semesters[sem].length;
+      }
+    }
+    
+    html += '<div class="department-card" data-dept="' + d.code + '" onclick="goToDept(\'' + d.id + '\')">';
+    html += '<div class="dept-card-accent"></div>';
+    html += '<div class="dept-card-content">';
+    html += '<div class="dept-card-badge">' + d.code + '</div>';
+    html += '<div class="dept-card-info">';
+    html += '<div class="dept-card-name">' + d.name + '</div>';
+    html += '<div class="dept-card-count">' + totalSubjects + ' subjects available</div>';
+    html += '</div>';
+    html += '<div class="dept-card-arrow">';
+    html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
     html += '</div>';
     html += '</div>';
     html += '</div>';
   });
   
+  html += '</div>';
   html += '</div>';
   
   document.getElementById('home-content').innerHTML = html;
@@ -535,35 +537,23 @@ function renderDeptTable() {
     if (currentSemester !== 'all' && sem != currentSemester) return;
     if (subs.length === 0) return;
     
-    html += '<div style="margin-bottom:24px;">';
-    html += '<h3 class="sem-title">' + getSemesterName(sem) + ' Semester (' + subs.length + ' subjects)</h3>';
+    html += '<div class="semester-section">';
+    html += '<div class="semester-header">';
+    html += '<span class="semester-badge">' + getSemesterName(sem) + ' Semester</span>';
+    html += '<span class="semester-count">' + subs.length + ' subjects</span>';
+    html += '</div>';
     
-    // Desktop table view
-    html += '<div class="table-container"><table>';
-    html += '<thead><tr><th>Code</th><th>Subject</th><th>Units</th><th>Action</th></tr></thead><tbody>';
-    
-    subs.forEach(function(sub) {
-      html += '<tr>';
-      html += '<td style="font-weight:600;">' + sub.code + '</td>';
-      html += '<td>' + sub.name + '</td>';
-      html += '<td style="text-align:center;">' + sub.units.length + '</td>';
-      html += '<td><button class="open-btn" onclick="goToSubject(\'' + sub.id + '\')">Open</button></td>';
-      html += '</tr>';
-    });
-    
-    html += '</tbody></table></div>';
-    
-    // Mobile card view
-    html += '<div class="file-cards">';
+    html += '<div class="subject-grid">';
     
     subs.forEach(function(sub) {
-      html += '<div class="file-card" onclick="goToSubject(\'' + sub.id + '\')" style="cursor:pointer;">';
-      html += '<div class="file-card-header">';
-      html += '<div class="code-badge" style="flex-shrink:0;">' + sub.code + '</div>';
-      html += '<div class="file-card-info">';
-      html += '<div class="file-card-name">' + sub.name + '</div>';
-      html += '<div class="file-card-filename">' + sub.units.length + ' units</div>';
+      html += '<div class="subject-card" onclick="goToSubject(\'' + sub.id + '\')">';
+      html += '<div class="subject-card-header">';
+      html += '<span class="subject-code">' + sub.code + '</span>';
+      html += '<span class="subject-name">' + sub.name + '</span>';
       html += '</div>';
+      html += '<div class="subject-card-footer">';
+      html += '<span class="subject-units">' + sub.units.length + ' units</span>';
+      html += '<button class="subject-open-btn" onclick="event.stopPropagation(); goToSubject(\'' + sub.id + '\')">Open</button>';
       html += '</div>';
       html += '</div>';
     });

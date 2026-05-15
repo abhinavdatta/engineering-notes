@@ -296,41 +296,11 @@ async function init() {
   }
 }
 
-function renderHome() {
-  var html = '<h2 class="section-title">Choose Department</h2>';
-  
-  // Desktop table view
-  html += '<div class="table-container"><table>';
-  html += '<thead><tr><th>Code</th><th>Department</th><th>Action</th></tr></thead><tbody>';
-  
-  DATA.forEach(function(d) {
-    html += '<tr>';
-    html += '<td><span class="code-badge">' + d.code + '</span></td>';
-    html += '<td style="font-weight:500;">' + d.name + '</td>';
-    html += '<td><button class="view-btn" onclick="goToDept(\'' + d.id + '\')">View →</button></td>';
-    html += '</tr>';
-  });
-  
-  html += '</tbody></table></div>';
-  
-  // Mobile card view
-  html += '<div class="file-cards">';
-  
-  DATA.forEach(function(d) {
-    html += '<div class="file-card" onclick="goToDept(\'' + d.id + '\')" style="cursor:pointer;">';
-    html += '<div class="file-card-header">';
-    html += '<div class="code-badge" style="flex-shrink:0;">' + d.code + '</div>';
-    html += '<div class="file-card-info">';
-    html += '<div class="file-card-name">' + d.name + '</div>';
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
-  });
-  
-  html += '</div>';
-  
-  document.getElementById('home-content').innerHTML = html;
-}
+/**
+ * Renders the home view
+ * Uses the modern card-based design from navigation.js
+ * Note: renderHome() is defined in navigation.js with department cards
+ */
 
 function createSubfolderView() {
   if (document.getElementById('subfolder-view')) return;
