@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Redesign Preview - Notes & Textbooks</title>
+  <link rel="stylesheet" href="css/themes.css">
+  <style>
+    /* ============================================
+       PREVIEW PAGE BASE STYLES
+       ============================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    
+    .preview-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .preview-header {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+      color: white;
+      border-radius: 16px;
+      margin-bottom: 30px;
+    }
+    
+    .preview-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .preview-header p {
+      opacity: 0.8;
+      font-size: 15px;
+    }
+    
+    .preview-section {
+      margin-bottom: 40px;
+    }
+    
+    .preview-section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .preview-section-title .badge {
+      background: #10b981;
+      color: white;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ============================================
+       REDESIGNED HERO SECTION - NOTES
+       ============================================ */
+    .hero-new {
+      background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
+      padding: 60px 30px;
+      border-radius: 16px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-new::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    
+    .hero-new::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+    
+    .hero-new h1 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    
+    .hero-new .subtitle {
+      font-size: 17px;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+    
+    .hero-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 25px;
+    }
+    
+    .hero-stat {
+      text-align: left;
+    }
+    
+    .hero-stat .number {
+      font-size: 28px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    
+    .hero-stat .label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+    
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      backdrop-filter: blur(10px);
+    }
+
+    /* ============================================
+       REDESIGNED HERO SECTION - TEXTBOOKS
+       ============================================ */
+    .hero-textbooks {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+    }
+
+    /* ============================================
+       DEPARTMENT CARDS - NEW DESIGN
+       ============================================ */
+    .departments-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .dept-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dept-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--card-accent, #10b981), var(--card-accent-end, #059669));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .dept-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.15);
+      border-color: transparent;
+    }
+    
+    .dept-card:hover::before {
+      opacity: 1;
+    }
+    
+    .dept-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .dept-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+    
+    .dept-icon.eie { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    .dept-icon.ece { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .dept-icon.eee { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .dept-icon.cse { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .dept-icon.me { background: linear-gradient(135deg, #6b7280, #4b5563); }
+    .dept-icon.ce { background: linear-gradient(135deg, #10b981, #059669); }
+    .dept-icon.it { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+    .dept-icon.ai { background: linear-gradient(135deg, #ec4899, #db2777); }
+    
+    .dept-info h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    
+    .dept-info .code {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .dept-stats {
+      display: flex;
+      gap: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+    }
+    
+    .dept-stat {
+      text-align: center;
+    }
+    
+    .dept-stat .value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    
+    .dept-stat .label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .dept-arrow {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      transition: all 0.3s ease;
+    }
+    
+    .dept-card:hover .dept-arrow {
+      background: #10b981;
+      color: white;
+      transform: translateX(4px);
+    }
+
+    /* ============================================
+       SEMESTER SECTION - NEW DESIGN
+       ============================================ */
+    .semester-section {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 20px;
+    }
+    
+    .semester-header {
+      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      padding: 20px 24px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .semester-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .semester-badge {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    
+    .semester-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    
+    .semester-count {
+      font-size: 13px;
+      color: #64748b;
+      background: #f1f5f9;
+      padding: 4px 12px;
+      border-radius: 6px;
+    }
+    
+    .subjects-list {
+      padding: 16px;
+    }
+    
+    .subject-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 8px;
+      border: 1px solid transparent;
+    }
+    
+    .subject-item:hover {
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+    
+    .subject-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .subject-code {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'SF Mono', 'Consolas', monospace;
+      min-width: 80px;
+      text-align: center;
+    }
+    
+    .subject-details {
+      flex: 1;
+    }
+    
+    .subject-details h4 {
+      font-size: 15px;
+      font-weight: 500;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+    
+    .subject-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    
+    .subject-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    
+    .subject-type {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .subject-type.bs { background: #dbeafe; color: #1d4ed8; }
+    .subject-type.es { background: #fef3c7; color: #b45309; }
+    .subject-type.pc { background: #dcfce7; color: #15803d; }
+    .subject-type.hs { background: #fce7f3; color: #be185d; }
+    .subject-type.mc { background: #f3e8ff; color: #7c3aed; }
+
+    /* ============================================
+       UNIT CARDS - NEW DESIGN
+       ============================================ */
+    .units-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+    
+    .unit-card-new {
+      background: white;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .unit-card-new:hover {
+      border-color: #10b981;
+      transform: scale(1.02);
+      box-shadow: 0 8px 16px -4px rgba(16, 185, 129, 0.2);
+    }
+    
+    .unit-number {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .unit-card-new h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+    
+    .unit-card-new .files-count {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+    
+    .unit-card-new .indicator {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+    
+    .unit-card-new.empty .indicator {
+      background: #f59e0b;
+    }
+    
+    .unit-card-new.empty .unit-number {
+      background: linear-gradient(135deg, #94a3b8, #64748b);
+    }
+
+    /* ============================================
+       FILE LIST - NEW DESIGN
+       ============================================ */
+    .files-container {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+    }
+    
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid #f1f5f9;
+      transition: all 0.2s ease;
+    }
+    
+    .file-item:hover {
+      background: #f8fafc;
+    }
+    
+    .file-item:last-child {
+      border-bottom: none;
+    }
+    
+    .file-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: white;
+    }
+    
+    .file-icon.pdf { background: linear-gradient(135deg, #ef4444, #dc2626); }
+    .file-icon.doc { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .file-icon.ppt { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .file-icon.img { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+    
+    .file-details {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .file-details h4 {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1e293b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .file-details .meta {
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      gap: 12px;
+      margin-top: 2px;
+    }
+    
+    .file-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .file-btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    
+    .file-btn.view {
+      background: #10b981;
+      color: white;
+    }
+    
+    .file-btn.view:hover {
+      background: #059669;
+    }
+    
+    .file-btn.download {
+      background: #f1f5f9;
+      color: #475569;
+    }
+    
+    .file-btn.download:hover {
+      background: #e2e8f0;
+    }
+
+    /* ============================================
+       INFO CARDS - NEW DESIGN
+       ============================================ */
+    .info-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .info-card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      border: 1px solid #e2e8f0;
+    }
+    
+    .info-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    
+    .info-card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .info-card-icon.download { background: #dbeafe; color: #2563eb; }
+    .info-card-icon.contribute { background: #dcfce7; color: #15803d; }
+    .info-card-icon.help { background: #fef3c7; color: #b45309; }
+    
+    .info-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    
+    .info-card ol {
+      padding-left: 20px;
+      font-size: 14px;
+      color: #64748b;
+    }
+    
+    .info-card ol li {
+      margin-bottom: 6px;
+    }
+    
+    .info-card p {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+    
+    .info-card .email-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #10b981;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+      transition: all 0.2s ease;
+    }
+    
+    .info-card .email-link:hover {
+      background: #059669;
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       CONTRIBUTE SECTION - NEW DESIGN
+       ============================================ */
+    .contribute-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border: 2px dashed #10b981;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+    
+    .contribute-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+    
+    .contribute-card p {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+    
+    .contribute-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .contribute-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    /* ============================================
+       FILTER BAR - NEW DESIGN
+       ============================================ */
+    .filter-bar-new {
+      display: flex;
+      gap: 8px;
+      padding: 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .filter-btn-new {
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid #e2e8f0;
+      background: white;
+      color: #64748b;
+    }
+    
+    .filter-btn-new:hover {
+      border-color: #10b981;
+      color: #10b981;
+    }
+    
+    .filter-btn-new.active {
+      background: #10b981;
+      color: white;
+      border-color: #10b981;
+    }
+
+    /* ============================================
+       BACK BUTTON - NEW DESIGN
+       ============================================ */
+    .back-btn-new {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 2px solid #e2e8f0;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+    }
+    
+    .back-btn-new:hover {
+      border-color: #10b981;
+      color: #10b981;
+      transform: translateX(-4px);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .preview-container {
+        padding: 12px;
+      }
+      
+      .hero-new {
+        padding: 40px 20px;
+      }
+      
+      .hero-new h1 {
+        font-size: 26px;
+      }
+      
+      .hero-stats {
+        gap: 20px;
+      }
+      
+      .hero-stat .number {
+        font-size: 22px;
+      }
+      
+      .departments-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .dept-card {
+        padding: 20px;
+      }
+      
+      .units-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      
+      .unit-card-new {
+        padding: 16px;
+      }
+      
+      .unit-number {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+      
+      .file-item {
+        flex-wrap: wrap;
+      }
+      
+      .file-actions {
+        width: 100%;
+        margin-top: 12px;
+      }
+      
+      .file-btn {
+        flex: 1;
+        text-align: center;
+      }
+      
+      .filter-bar-new {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding: 12px;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .filter-btn-new {
+        flex-shrink: 0;
+        padding: 6px 14px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-new h1 {
+        font-size: 22px;
+      }
+      
+      .hero-stats {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .dept-card-header {
+        gap: 12px;
+      }
+      
+      .dept-icon {
+        width: 44px;
+        height: 44px;
+      }
+      
+      .dept-info h3 {
+        font-size: 15px;
+      }
+      
+      .dept-stats {
+        gap: 12px;
+      }
+      
+      .units-grid {
+        gap: 8px;
+      }
+      
+      .unit-card-new {
+        padding: 12px;
+      }
+      
+      .unit-number {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+      }
+      
+      .unit-card-new h4 {
+        font-size: 12px;
+      }
+      
+      .subject-item {
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      
+      .subject-code {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-container">
+    <!-- Preview Header -->
+    <div class="preview-header">
+      <h1>UI Redesign Preview</h1>
+      <p>Notes & Textbooks Pages - Clean, Professional Design Without Emojis</p>
+    </div>
+
+    <!-- ==========================================
+         SECTION 1: NOTES PAGE - HOME VIEW
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Notes Page - Home View
+        <span class="badge">New</span>
+      </h2>
+      
+      <!-- Hero Section -->
+      <div class="hero-new" style="margin-bottom: 24px;">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>Under Construction</span>
+          </div>
+          <h1>Class Resources</h1>
+          <p class="subtitle">Notes, Question Papers & Lab Manuals for All Departments</p>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="number">6+</div>
+              <div class="label">Departments</div>
+            </div>
+            <div class="hero-stat">
+              <div class="number">100+</div>
+              <div class="label">Subjects</div>
+            </div>
+            <div class="hero-stat">
+              <div class="number">500+</div>
+              <div class="label">Resources</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department Cards -->
+      <div class="departments-grid">
+        <div class="dept-card" style="--card-accent: #8b5cf6; --card-accent-end: #7c3aed;">
+          <div class="dept-card-header">
+            <div class="dept-icon eie">EIE</div>
+            <div class="dept-info">
+              <h3>Electronics & Instrumentation Engineering</h3>
+              <span class="code">24 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">156</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #f59e0b; --card-accent-end: #d97706;">
+          <div class="dept-card-header">
+            <div class="dept-icon ece">ECE</div>
+            <div class="dept-info">
+              <h3>Electronics & Communication Engineering</h3>
+              <span class="code">22 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">142</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #ef4444; --card-accent-end: #dc2626;">
+          <div class="dept-card-header">
+            <div class="dept-icon eee">EEE</div>
+            <div class="dept-info">
+              <h3>Electrical & Electronics Engineering</h3>
+              <span class="code">20 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">128</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #3b82f6; --card-accent-end: #2563eb;">
+          <div class="dept-card-header">
+            <div class="dept-icon cse">CSE</div>
+            <div class="dept-info">
+              <h3>Computer Science & Engineering</h3>
+              <span class="code">26 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">198</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #6b7280; --card-accent-end: #4b5563;">
+          <div class="dept-card-header">
+            <div class="dept-icon me">ME</div>
+            <div class="dept-info">
+              <h3>Mechanical Engineering</h3>
+              <span class="code">18 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">112</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #10b981; --card-accent-end: #059669;">
+          <div class="dept-card-header">
+            <div class="dept-icon ce">CE</div>
+            <div class="dept-info">
+              <h3>Civil Engineering</h3>
+              <span class="code">16 subjects available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">8</div>
+              <div class="label">Semesters</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">98</div>
+              <div class="label">Files</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 2: DEPARTMENT VIEW (SUBJECTS LIST)
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Department View - Subjects by Semester
+        <span class="badge">New</span>
+      </h2>
+
+      <!-- Back Button -->
+      <button class="back-btn-new">← Back to Departments</button>
+
+      <!-- Department Header -->
+      <div class="hero-new" style="margin-bottom: 20px; padding: 30px;">
+        <div class="hero-content">
+          <h1 style="font-size: 28px;">Electronics & Instrumentation Engineering</h1>
+          <p class="subtitle">Class Resources - Notes, Question Papers & Lab Manuals</p>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar-new">
+        <button class="filter-btn-new active">All</button>
+        <button class="filter-btn-new">Sem 1</button>
+        <button class="filter-btn-new">Sem 2</button>
+        <button class="filter-btn-new">Sem 3</button>
+        <button class="filter-btn-new">Sem 4</button>
+        <button class="filter-btn-new">Sem 5</button>
+        <button class="filter-btn-new">Sem 6</button>
+      </div>
+
+      <!-- Semester Section -->
+      <div class="semester-section">
+        <div class="semester-header">
+          <div class="semester-title">
+            <span class="semester-badge">Semester 1</span>
+            <h3>First Year - First Semester</h3>
+          </div>
+          <span class="semester-count">8 Subjects</span>
+        </div>
+        <div class="subjects-list">
+          <div class="subject-item">
+            <span class="subject-code">24MA101</span>
+            <div class="subject-details">
+              <h4>Mathematics I - Linear Algebra, Series and Calculus</h4>
+              <div class="subject-meta">
+                <span>3 Credits</span>
+                <span>Basic Science</span>
+              </div>
+            </div>
+            <span class="subject-type bs">BS</span>
+          </div>
+          <div class="subject-item">
+            <span class="subject-code">24CY102</span>
+            <div class="subject-details">
+              <h4>Engineering Chemistry</h4>
+              <div class="subject-meta">
+                <span>3 Credits</span>
+                <span>Basic Science</span>
+              </div>
+            </div>
+            <span class="subject-type bs">BS</span>
+          </div>
+          <div class="subject-item">
+            <span class="subject-code">24CS101</span>
+            <div class="subject-details">
+              <h4>Problem Solving with Python</h4>
+              <div class="subject-meta">
+                <span>4.5 Credits</span>
+                <span>Engineering Science</span>
+              </div>
+            </div>
+            <span class="subject-type es">ES</span>
+          </div>
+          <div class="subject-item">
+            <span class="subject-code">24ME181</span>
+            <div class="subject-details">
+              <h4>Engineering Graphics</h4>
+              <div class="subject-meta">
+                <span>2.5 Credits</span>
+                <span>Engineering Science</span>
+              </div>
+            </div>
+            <span class="subject-type es">ES</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semester 2 -->
+      <div class="semester-section">
+        <div class="semester-header">
+          <div class="semester-title">
+            <span class="semester-badge">Semester 2</span>
+            <h3>First Year - Second Semester</h3>
+          </div>
+          <span class="semester-count">9 Subjects</span>
+        </div>
+        <div class="subjects-list">
+          <div class="subject-item">
+            <span class="subject-code">24MA102</span>
+            <div class="subject-details">
+              <h4>Mathematics II - Differential Equations & Computational Methods</h4>
+              <div class="subject-meta">
+                <span>4 Credits</span>
+                <span>Basic Science</span>
+              </div>
+            </div>
+            <span class="subject-type bs">BS</span>
+          </div>
+          <div class="subject-item">
+            <span class="subject-code">24PH102</span>
+            <div class="subject-details">
+              <h4>Engineering Physics</h4>
+              <div class="subject-meta">
+                <span>3 Credits</span>
+                <span>Basic Science</span>
+              </div>
+            </div>
+            <span class="subject-type bs">BS</span>
+          </div>
+          <div class="subject-item">
+            <span class="subject-code">24EN101</span>
+            <div class="subject-details">
+              <h4>Communicative English</h4>
+              <div class="subject-meta">
+                <span>4.5 Credits</span>
+                <span>Humanities</span>
+              </div>
+            </div>
+            <span class="subject-type hs">HS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 3: SUBJECT VIEW (UNITS)
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Subject View - Units Selection
+        <span class="badge">New</span>
+      </h2>
+
+      <button class="back-btn-new">← Back to Subjects</button>
+
+      <!-- Subject Header -->
+      <div class="hero-new" style="margin-bottom: 20px; padding: 24px;">
+        <div class="hero-content">
+          <div class="hero-badge" style="margin-bottom: 8px;">24MA101</div>
+          <h1 style="font-size: 24px;">Mathematics I</h1>
+          <p class="subtitle">Linear Algebra, Series and Calculus</p>
+        </div>
+      </div>
+
+      <!-- Units Grid -->
+      <div class="units-grid">
+        <div class="unit-card-new">
+          <div class="indicator"></div>
+          <div class="unit-number">1</div>
+          <h4>Unit 1</h4>
+          <span class="files-count">12 files</span>
+        </div>
+        <div class="unit-card-new">
+          <div class="indicator"></div>
+          <div class="unit-number">2</div>
+          <h4>Unit 2</h4>
+          <span class="files-count">8 files</span>
+        </div>
+        <div class="unit-card-new">
+          <div class="indicator"></div>
+          <div class="unit-number">3</div>
+          <h4>Unit 3</h4>
+          <span class="files-count">15 files</span>
+        </div>
+        <div class="unit-card-new">
+          <div class="indicator"></div>
+          <div class="unit-number">4</div>
+          <h4>Unit 4</h4>
+          <span class="files-count">6 files</span>
+        </div>
+        <div class="unit-card-new">
+          <div class="indicator"></div>
+          <div class="unit-number">5</div>
+          <h4>Unit 5</h4>
+          <span class="files-count">10 files</span>
+        </div>
+        <div class="unit-card-new empty">
+          <div class="indicator"></div>
+          <div class="unit-number">QP</div>
+          <h4>Question Papers</h4>
+          <span class="files-count">3 files</span>
+        </div>
+        <div class="unit-card-new empty">
+          <div class="indicator"></div>
+          <div class="unit-number">LB</div>
+          <h4>Lab Manuals</h4>
+          <span class="files-count">2 files</span>
+        </div>
+        <div class="unit-card-new empty">
+          <div class="indicator"></div>
+          <div class="unit-number">OT</div>
+          <h4>Other Resources</h4>
+          <span class="files-count">5 files</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 4: FILE LIST VIEW
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Files List View
+        <span class="badge">New</span>
+      </h2>
+
+      <button class="back-btn-new">← Back to Units</button>
+
+      <!-- Unit Header -->
+      <div class="hero-new" style="margin-bottom: 20px; padding: 20px;">
+        <div class="hero-content">
+          <h1 style="font-size: 22px;">Unit 1 - Linear Algebra</h1>
+          <p class="subtitle">Mathematics I | 12 Files Available</p>
+        </div>
+      </div>
+
+      <!-- Files List -->
+      <div class="files-container">
+        <div class="file-item">
+          <div class="file-icon pdf">PDF</div>
+          <div class="file-details">
+            <h4>Linear Algebra - Complete Notes</h4>
+            <div class="meta">
+              <span>2.4 MB</span>
+              <span>Updated: 15 Jan 2025</span>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button class="file-btn view">View</button>
+            <button class="file-btn download">Download</button>
+          </div>
+        </div>
+        <div class="file-item">
+          <div class="file-icon pdf">PDF</div>
+          <div class="file-details">
+            <h4>Matrix Operations - Handwritten Notes</h4>
+            <div class="meta">
+              <span>1.8 MB</span>
+              <span>Updated: 10 Jan 2025</span>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button class="file-btn view">View</button>
+            <button class="file-btn download">Download</button>
+          </div>
+        </div>
+        <div class="file-item">
+          <div class="file-icon doc">DOC</div>
+          <div class="file-details">
+            <h4>Practice Problems - Eigen Values</h4>
+            <div class="meta">
+              <span>856 KB</span>
+              <span>Updated: 08 Jan 2025</span>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button class="file-btn view">View</button>
+            <button class="file-btn download">Download</button>
+          </div>
+        </div>
+        <div class="file-item">
+          <div class="file-icon ppt">PPT</div>
+          <div class="file-details">
+            <h4>Vector Spaces - Presentation</h4>
+            <div class="meta">
+              <span>3.2 MB</span>
+              <span>Updated: 05 Jan 2025</span>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button class="file-btn view">View</button>
+            <button class="file-btn download">Download</button>
+          </div>
+        </div>
+        <div class="file-item">
+          <div class="file-icon img">IMG</div>
+          <div class="file-details">
+            <h4>Important Formulas - Quick Reference</h4>
+            <div class="meta">
+              <span>420 KB</span>
+              <span>Updated: 02 Jan 2025</span>
+            </div>
+          </div>
+          <div class="file-actions">
+            <button class="file-btn view">View</button>
+            <button class="file-btn download">Download</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 5: TEXTBOOKS PAGE
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Textbooks Page - Home View
+        <span class="badge">New</span>
+      </h2>
+
+      <!-- Textbooks Hero -->
+      <div class="hero-new hero-textbooks" style="margin-bottom: 24px;">
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span>Under Construction</span>
+          </div>
+          <h1>Textbooks</h1>
+          <p class="subtitle">Semester Textbooks & Reference Books for All Departments</p>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="number">200+</div>
+              <div class="label">Textbooks</div>
+            </div>
+            <div class="hero-stat">
+              <div class="number">50+</div>
+              <div class="label">Reference Books</div>
+            </div>
+            <div class="hero-stat">
+              <div class="number">6</div>
+              <div class="label">Departments</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Department Cards for Textbooks -->
+      <div class="departments-grid">
+        <div class="dept-card" style="--card-accent: #2563eb; --card-accent-end: #1d4ed8;">
+          <div class="dept-card-header">
+            <div class="dept-icon eie">EIE</div>
+            <div class="dept-info">
+              <h3>Electronics & Instrumentation</h3>
+              <span class="code">Textbooks available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">32</div>
+              <div class="label">Textbooks</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">18</div>
+              <div class="label">References</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+
+        <div class="dept-card" style="--card-accent: #2563eb; --card-accent-end: #1d4ed8;">
+          <div class="dept-card-header">
+            <div class="dept-icon cse">CSE</div>
+            <div class="dept-info">
+              <h3>Computer Science & Engineering</h3>
+              <span class="code">Textbooks available</span>
+            </div>
+          </div>
+          <div class="dept-stats">
+            <div class="dept-stat">
+              <div class="value">45</div>
+              <div class="label">Textbooks</div>
+            </div>
+            <div class="dept-stat">
+              <div class="value">24</div>
+              <div class="label">References</div>
+            </div>
+          </div>
+          <div class="dept-arrow">→</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         SECTION 6: INFO CARDS & CONTRIBUTE
+         ========================================== -->
+    <div class="preview-section">
+      <h2 class="preview-section-title">
+        Info Cards & Contribute Section
+        <span class="badge">New</span>
+      </h2>
+
+      <div class="info-cards-grid">
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon download">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7,10 12,15 17,10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </div>
+            <h3>How to Download</h3>
+          </div>
+          <ol>
+            <li>Click on your department</li>
+            <li>Select your semester</li>
+            <li>Choose a subject</li>
+            <li>Pick a unit to view files</li>
+          </ol>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon contribute">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+            </div>
+            <h3>Contribute</h3>
+          </div>
+          <p>Help your fellow students by contributing notes, question papers, or lab manuals!</p>
+          <a href="#" class="email-link">Send via Email</a>
+        </div>
+
+        <div class="info-card">
+          <div class="info-card-header">
+            <div class="info-card-icon help">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </div>
+            <h3>Need Help?</h3>
+          </div>
+          <p>Found broken links or have suggestions? Report issues on GitHub or contact us via email.</p>
+        </div>
+      </div>
+
+      <!-- Contribute Card -->
+      <div class="contribute-card" style="margin-top: 20px;">
+        <h3>Have Notes to Share?</h3>
+        <p>Help your fellow students by contributing your notes, question papers, or lab manuals!</p>
+        <a href="#" class="contribute-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          Send Notes via Email
+        </a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - EngNotes</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2310b981'>EN</text></svg>">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/cookie-consent.css">
+  <style>
+    .privacy-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 20px 40px;
+    }
+    
+    .privacy-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .privacy-header h1 {
+      font-size: 36px;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    
+    .privacy-header .updated {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    .privacy-section {
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+    }
+    
+    .privacy-section h2 {
+      font-size: 20px;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .privacy-section h3 {
+      font-size: 16px;
+      color: var(--text-primary);
+      margin: 16px 0 8px;
+    }
+    
+    .privacy-section p {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    
+    .privacy-section ul {
+      color: var(--text-secondary);
+      margin-left: 20px;
+      line-height: 1.8;
+    }
+    
+    .privacy-section ul li {
+      margin-bottom: 8px;
+    }
+    
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.1));
+      border-left: 4px solid #10b981;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    
+    .highlight-box p {
+      margin: 0;
+      color: var(--text-primary);
+    }
+    
+    .warning-box {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(217, 119, 6, 0.1));
+      border-left: 4px solid #f59e0b;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    
+    .warning-box p {
+      margin: 0;
+      color: var(--text-primary);
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    
+    .data-table th,
+    .data-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .data-table th {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+    
+    .data-table td {
+      color: var(--text-secondary);
+    }
+    
+    .contact-info {
+      background: var(--bg-primary);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .contact-info a {
+      color: #10b981;
+      text-decoration: none;
+    }
+    
+    .contact-info a:hover {
+      text-decoration: underline;
+    }
+    
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #10b981;
+      text-decoration: none;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .privacy-container {
+        padding: 100px 16px 30px;
+      }
+      
+      .privacy-header h1 {
+        font-size: 28px;
+      }
+      
+      .privacy-section {
+        padding: 16px;
+      }
+      
+      .data-table {
+        font-size: 14px;
+      }
+      
+      .data-table th,
+      .data-table td {
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">EN</span>
+      <span class="brand-text">Eng<span>Notes</span></span>
+    </a>
+    
+    <div class="navbar-menu">
+      <div class="navbar-breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">→</span>
+        <span>Privacy Policy</span>
+      </div>
+      
+      <div class="theme-switcher">
+        <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')" title="Light">Light</button>
+        <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')" title="Dark">Dark</button>
+        <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')" title="Black">Black</button>
+      </div>
+
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+    <a href="index.html" class="mobile-menu-link">Home</a>
+    <a href="notes.html" class="mobile-menu-link">Class Resources</a>
+    <a href="textbooks.html" class="mobile-menu-link">Textbooks</a>
+    <a href="calculator.html" class="mobile-menu-link">Calculator</a>
+    <div class="theme-switcher">
+      <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">Light</button>
+      <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">Black</button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="privacy-container">
+    <a href="index.html" class="back-link">← Back to Home</a>
+    
+    <div class="privacy-header">
+      <h1>Privacy Policy</h1>
+      <p class="updated">Last Updated: May 27, 2025</p>
+    </div>
+
+    <!-- Introduction -->
+    <div class="privacy-section">
+      <h2>1. Introduction</h2>
+      <p>Welcome to EngNotes. We are committed to protecting your privacy and ensuring you have a positive experience on our website. This Privacy Policy explains how we handle information when you use our engineering notes and textbooks platform.</p>
+      
+      <div class="highlight-box">
+        <p><strong>Key Point:</strong> EngNotes is a client-side only application. We do not collect, store, or transmit any personal data to our servers. All data processing happens locally in your browser.</p>
+      </div>
+    </div>
+
+    <!-- Information We DO NOT Collect -->
+    <div class="privacy-section">
+      <h2>2. Information We DO NOT Collect</h2>
+      <p>We want to be crystal clear: EngNotes does not collect any of the following:</p>
+      <ul>
+        <li><strong>Personal Information:</strong> Names, email addresses, phone numbers, or any identifying information</li>
+        <li><strong>Account Data:</strong> We don't have user accounts, logins, or registration</li>
+        <li><strong>Browsing History:</strong> We don't track which pages you visit or files you access</li>
+        <li><strong>IP Addresses:</strong> We don't log or store IP addresses</li>
+        <li><strong>Cookies for Tracking:</strong> We don't use tracking cookies or analytics</li>
+        <li><strong>Third-Party Data Sharing:</strong> We don't share any data because we don't collect any</li>
+      </ul>
+    </div>
+
+    <!-- Local Storage -->
+    <div class="privacy-section">
+      <h2>3. Local Storage & Cookies</h2>
+      <p>EngNotes uses browser local storage to improve your experience. This data never leaves your device.</p>
+      
+      <h3>What We Store Locally:</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data Type</th>
+            <th>Purpose</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Theme Preference</td>
+            <td>Remember your light/dark/black theme choice</td>
+            <td>Until you clear browser data</td>
+          </tr>
+          <tr>
+            <td>Cookie Consent</td>
+            <td>Remember if you accepted or declined cookies</td>
+            <td>Until you clear browser data</td>
+          </tr>
+          <tr>
+            <td>Folder Cache</td>
+            <td>Cache Google Drive folder structure for faster loading</td>
+            <td>24 hours (auto-refreshes)</td>
+          </tr>
+          <tr>
+            <td>Calculator Data</td>
+            <td>Saved GPA/CGPA calculations (only if you save them)</td>
+            <td>Until you clear browser data</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="warning-box">
+        <p><strong>Note for Brave Users:</strong> Due to Brave browser's privacy policies, local storage caching may not work. This means the site will load folder data from Google Drive on each visit instead of using cached data.</p>
+      </div>
+
+      <h3>Your Cookie Consent Choice:</h3>
+      <p>When you first visit EngNotes, you'll see a cookie consent banner. You can:</p>
+      <ul>
+        <li><strong>Accept:</strong> Allows caching of folder structure for faster loading</li>
+        <li><strong>Decline:</strong> No caching is used; data is fetched fresh on each visit</li>
+      </ul>
+      <p>You can change your choice at any time by clearing your browser's local storage for this site.</p>
+    </div>
+
+    <!-- Google Drive API -->
+    <div class="privacy-section">
+      <h2>4. Google Drive API</h2>
+      <p>EngNotes fetches educational content from Google Drive using the Google Drive API. Here's what you should know:</p>
+      <ul>
+        <li><strong>API Calls:</strong> When you browse notes or textbooks, your browser makes direct requests to Google's servers</li>
+        <li><strong>No Authentication Required:</strong> We use a public API key; you don't need a Google account</li>
+        <li><strong>Google's Privacy Policy:</strong> These requests are subject to <a href="https://policies.google.com/privacy" target="_blank" style="color: #10b981;">Google's Privacy Policy</a></li>
+        <li><strong>What Google May Log:</strong> Google may log API requests including your IP address and requested file IDs</li>
+      </ul>
+      
+      <div class="highlight-box">
+        <p><strong>Transparency:</strong> The API key used is embedded in the client-side code. This is intentional for a public, read-only educational resource. The key is restricted to only access public folder contents.</p>
+      </div>
+    </div>
+
+    <!-- Third-Party Services -->
+    <div class="privacy-section">
+      <h2>5. Third-Party Services</h2>
+      
+      <h3>Google Drive</h3>
+      <p>All educational content (notes, textbooks, question papers) is hosted on Google Drive. When you view a PDF or file:</p>
+      <ul>
+        <li>The file opens in Google's built-in PDF viewer</li>
+        <li>Google's terms of service apply to that interaction</li>
+        <li>We don't control what Google logs during file viewing</li>
+      </ul>
+
+      <h3>External Links</h3>
+      <p>Our site contains links to external services:</p>
+      <ul>
+        <li><strong>Gmail:</strong> For contacting us or contributing notes</li>
+        <li><strong>GitHub:</strong> For reporting issues or viewing our profile</li>
+        <li><strong>Google Drive:</strong> For direct access to folders</li>
+      </ul>
+      <p>These external sites have their own privacy policies.</p>
+    </div>
+
+    <!-- User Content -->
+    <div class="privacy-section">
+      <h2>6. Contributing Content</h2>
+      <p>If you choose to contribute notes or textbooks via email:</p>
+      <ul>
+        <li>Your email and any information you share is handled by Gmail/Google</li>
+        <li>We receive your email at our contact address</li>
+        <li>Contributed content may be uploaded to our public Google Drive folders</li>
+        <li>Please don't include personal information in contributed materials</li>
+      </ul>
+    </div>
+
+    <!-- Data Security -->
+    <div class="privacy-section">
+      <h2>7. Data Security</h2>
+      <p>Since EngNotes doesn't collect or store any user data on our servers:</p>
+      <ul>
+        <li>There's no database to breach</li>
+        <li>There's no user accounts to compromise</li>
+        <li>All data stored is local to your browser only</li>
+        <li>Clearing your browser data removes all EngNotes data</li>
+      </ul>
+    </div>
+
+    <!-- Your Rights -->
+    <div class="privacy-section">
+      <h2>8. Your Rights</h2>
+      <p>Because we don't collect personal data, there's nothing to request, delete, or export. However, you have full control over:</p>
+      <ul>
+        <li><strong>Local Data:</strong> Clear your browser's local storage/site data anytime</li>
+        <li><strong>Theme Preference:</strong> Change themes anytime via the theme switcher</li>
+        <li><strong>Cache:</strong> Cache automatically expires after 24 hours</li>
+        <li><strong>Cookie Consent:</strong> Change your choice by clearing site data</li>
+      </ul>
+    </div>
+
+    <!-- Children's Privacy -->
+    <div class="privacy-section">
+      <h2>9. Children's Privacy</h2>
+      <p>EngNotes is an educational resource intended for college/university students. Since we don't collect any personal information:</p>
+      <ul>
+        <li>We don't knowingly collect data from anyone, including children</li>
+        <li>No age verification is needed since no data is collected</li>
+        <li>Parents and guardians can be assured no personal data is gathered</li>
+      </ul>
+    </div>
+
+    <!-- Changes to Policy -->
+    <div class="privacy-section">
+      <h2>10. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated "Last Updated" date. We encourage you to review this policy periodically.</p>
+    </div>
+
+    <!-- Contact -->
+    <div class="privacy-section">
+      <h2>11. Contact Us</h2>
+      <p>If you have questions about this Privacy Policy or EngNotes in general, you can reach us at:</p>
+      <div class="contact-info">
+        <p><strong>Email:</strong> <a href="https://mail.google.com/mail/?view=cm&fs=1&to=your-email@example.com" target="_blank">your-email@example.com</a></p>
+        <p><strong>GitHub:</strong> <a href="#" target="_blank">your-github-repo</a></p>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="privacy-section">
+      <h2>Summary</h2>
+      <div class="highlight-box">
+        <p><strong>In short:</strong> EngNotes is a privacy-focused educational platform. We don't track you, we don't collect your data, and we don't have user accounts. Everything is stored locally in your browser and you have full control over your data.</p>
+      </div>
+    </div>
+
+    <!-- Back Link -->
+    <a href="index.html" class="back-link">← Back to Home</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="index.html">Home</a>
+      <a href="notes.html">Class Resources</a>
+      <a href="textbooks.html">Textbooks</a>
+      <a href="calculator.html">Calculator</a>
+      <a href="CHANGELOG.html">Changelog</a>
+    </div>
+    <div id="cookie-status" class="cookie-status"></div>
+  </footer>
+
+  <!-- Cookie Banner -->
+  <div id="cookie-banner" class="cookie-banner hidden">
+    <div class="cookie-content">
+      <div class="cookie-text">
+        <h3>Cookie Consent</h3>
+        <p>We use cookies to cache the folder structure and reduce API calls. This makes the website faster. <a href="privacy.html">Privacy Policy</a></p>
+      </div>
+      <div class="cookie-buttons">
+        <button class="cookie-decline-btn" onclick="declineCookies()">Decline</button>
+        <button class="cookie-accept-btn" onclick="acceptCookies()">Accept</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/config.js"></script>
+  <script src="js/theme-manager.js"></script>
+  <script src="js/cookie-consent.js"></script>
+</body>
+</html>

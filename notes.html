@@ -14,12 +14,13 @@
        5. cookie-consent.css - Cookie banner styles
        
        JS Files (load in order):
-       1. theme-manager.js - Theme initialization
-       2. cookie-consent.js - Cookie consent and caching
-       3. drive-api.js     - Google Drive functions
-       4. navigation.js    - UI rendering
-       5. bot-protection.js- Security
-       6. notes-app.js     - Page initialization
+       1. config.js        - Environment configuration (MUST BE FIRST)
+       2. theme-manager.js - Theme initialization
+       3. cookie-consent.js - Cookie consent and caching
+       4. drive-api.js     - Google Drive functions
+       5. navigation.js    - UI rendering
+       6. bot-protection.js- Security
+       7. notes-app.js     - Page initialization
        ============================================================ -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,14 +40,14 @@
        NAVIGATION BAR
        ============================================================ -->
   <nav class="navbar">
-    <a href="index.html" class="navbar-brand">
+    <a href="https://enginotes.pages.dev" class="navbar-brand">
       <span class="brand-icon">EN</span>
       <span class="brand-text">Eng<span>Notes</span></span>
     </a>
     
     <div class="navbar-menu">
       <div class="navbar-breadcrumb" id="navbar-breadcrumb">
-        <a href="index.html">Home</a>
+        <a href="https://enginotes.pages.dev">Home</a>
         <span class="separator">→</span>
         <span>Class Resources</span>
       </div>
@@ -67,14 +68,14 @@
     
     <!-- Navigation Path in Menu -->
     <div class="mobile-nav-path">
-      <a href="index.html" class="mobile-nav-path-link">Home</a>
+      <a href="https://enginotes.pages.dev" class="mobile-nav-path-link">Home</a>
       <span class="mobile-nav-separator">→</span>
       <span class="mobile-nav-current">Class Resources</span>
     </div>
     
     <a href="textbooks.html" class="mobile-menu-link">Textbooks</a>
-    <a href="#" target="_blank" class="mobile-menu-link">About</a>
-    <a href="#" target="_blank" class="mobile-menu-link">Report Issue</a>
+    <a href="https://github.com/abhinavdatta" target="_blank" class="mobile-menu-link">About</a>
+    <a href="https://github.com/abhinavdatta/engineering-notes/issues" target="_blank" class="mobile-menu-link">Report Issue</a>
     <div class="theme-switcher">
       <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">Light</button>
       <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
@@ -124,8 +125,8 @@
         </div>
         <div class="info-box">
           <h3>Contribute</h3>
-          <p>Send study materials to<br><a href="mailto:your-email@example.com" target="_blank">your-email@example.com</a></p>
-          <p style="margin-top:12px;"><strong>Google Drive:</strong><br><a href="https://drive.google.com/drive/folders/YOUR_NOTES_FOLDER_ID" target="_blank">Open Notes Drive →</a></p>
+          <p>Send study materials to<br><a href="https://mail.google.com/mail/?view=cm&fs=1&to=mailtest65066@gmail.com" target="_blank">mailtest65066@gmail.com</a></p>
+          <p style="margin-top:12px;"><strong>Google Drive:</strong><br><a href="https://drive.google.com/drive/folders/1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG" target="_blank">Open Notes Drive →</a></p>
         </div>
       </div>
 
@@ -133,7 +134,7 @@
       <div class="contribute-section">
         <h3>Have Notes to Share?</h3>
         <p>Help your fellow students by contributing your notes, question papers, or lab manuals!</p>
-        <a href="mailto:your-email@example.com?subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="email-link">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mailtest65066@gmail.com&subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="email-link">
           Send Notes via Email
         </a>
       </div>
@@ -192,7 +193,7 @@
        FLOATING CONTRIBUTE BUTTON
        ============================================================ -->
   <div class="contribute-fab">
-    <a href="mailto:your-email@example.com?subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="contribute-btn">
+    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=mailtest65066@gmail.com&subject=Contributing%20Notes%20for%20EngNotes" target="_blank" class="contribute-btn">
       <span class="fab-text">Send Notes</span>
     </a>
   </div>
@@ -204,8 +205,9 @@
     <div class="footer-links">
       <a href="javascript:void(0)" onclick="goHome()">Home</a>
       <a href="textbooks.html">Textbooks</a>
-      <a href="#" target="_blank">About</a>
-      <a href="#" target="_blank">Report</a>
+      <a href="https://github.com/abhinavdatta" target="_blank">About</a>
+      <a href="https://github.com/abhinavdatta/engineering-notes/issues" target="_blank">Report</a>
+      <a href="privacy.html">Privacy</a>
     </div>
     <!-- Cookie Status Indicator -->
     <div id="cookie-status" class="cookie-status"></div>
@@ -233,7 +235,7 @@
     <div class="cookie-content">
       <div class="cookie-text">
         <h3>Cookie Consent</h3>
-        <p>We use cookies to cache the folder structure and reduce API calls. This makes the website faster. <a href="https://policies.google.com/privacy" target="_blank">Learn more</a></p>
+        <p>We use cookies to cache the folder structure and reduce API calls. This makes the website faster. <a href="privacy.html">Learn more</a></p>
       </div>
       <div class="cookie-buttons">
         <button class="cookie-decline-btn" onclick="declineCookies()">Decline</button>
@@ -245,10 +247,14 @@
   <!-- ============================================================
        JAVASCRIPT FILES
        ============================================================ -->
+  <!-- config.js MUST load first to set up window.CONFIG -->
+  <script src="js/config.js"></script>
   <script>
-    // Set the root folder for Notes before loading drive-api.js
-    // TODO: Replace with your actual Google Drive folder ID for Notes
-    window.ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
+    // Set the root folder for Notes from CONFIG
+    // CONFIG is loaded from config.js or injected by Cloudflare Worker
+    if (window.CONFIG && window.CONFIG.NOTES_FOLDER_ID) {
+      window.ROOT_FOLDER_ID = window.CONFIG.NOTES_FOLDER_ID;
+    }
   </script>
   <script src="js/theme-manager.js"></script>
   <script src="js/cookie-consent.js"></script>

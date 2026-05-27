@@ -1,77 +1,66 @@
-# EngNotes - Template v2.3
+# EngNotes - Template v2.4
 
 This is the **template version** of EngNotes with all sensitive information replaced by placeholders.
 
-## Setup Instructions
+## Quick Start
 
-### 1. Google Drive API Key
+### Option 1: Cloudflare Pages (Recommended)
 
-Replace the placeholder in `js/drive-api.js`:
+1. **Fork or clone this repository**
+2. **Connect to Cloudflare Pages**:
+   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+   - Pages > Create a project > Connect to Git
+   - Select your repository
 
-```javascript
-// Find this line:
-var API_KEY = 'YOUR_GOOGLE_DRIVE_API_KEY';
+3. **Set Environment Variables**:
+   - Go to Pages > Your Project > Settings > Environment Variables
+   - Add the following variables:
 
-// Replace with your actual API key:
-var API_KEY = 'your-actual-api-key-here';
-```
+   | Variable | Description | Required |
+   |----------|-------------|----------|
+   | `GOOGLE_DRIVE_API_KEY` | Your Google Drive API key | Yes |
+   | `NOTES_FOLDER_ID` | Google Drive folder ID for notes | Yes |
+   | `TEXTBOOKS_FOLDER_ID` | Google Drive folder ID for textbooks | Yes |
+   | `CONTACT_EMAIL` | Your contact email | No |
+   | `CACHE_TTL_HOURS` | Cache duration in hours (default: 24) | No |
 
-### 2. Google Drive Folder IDs
+4. **Deploy** - Cloudflare will automatically deploy your site
 
-Replace the folder IDs in the respective HTML files:
+### Option 2: Static Hosting (Manual Config)
 
-**In `notes.html`:**
-```javascript
-// Find this line:
-window.ROOT_FOLDER_ID = 'YOUR_NOTES_FOLDER_ID';
+1. **Copy `js/config.example.js` to `js/config.js`**
+2. **Replace placeholders with your actual values**
+3. **Upload all files to your hosting provider**
 
-// Replace with your Notes folder ID:
-window.ROOT_FOLDER_ID = '1abc...your-folder-id';
-```
+## Environment Variables
 
-**In `textbooks.html`:**
-```javascript
-// Find this line:
-window.ROOT_FOLDER_ID = 'YOUR_TEXTBOOKS_FOLDER_ID';
+### Required Variables
 
-// Replace with your Textbooks folder ID:
-window.ROOT_FOLDER_ID = '1xyz...your-folder-id';
-```
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `GOOGLE_DRIVE_API_KEY` | Google Drive API key | `AIzaSy...` |
+| `NOTES_FOLDER_ID` | Folder ID for notes | `1SNnQiyuSNuJUSbs...` |
+| `TEXTBOOKS_FOLDER_ID` | Folder ID for textbooks | `1qdcMtjkSDhOFol...` |
 
-### 3. Email Addresses
+### Optional Variables
 
-Replace all instances of `your-email@example.com` with your actual email:
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `CONTACT_EMAIL` | Contact email address | `your-email@example.com` |
+| `CACHE_TTL_HOURS` | Cache duration in hours | `24` |
+| `ENABLE_ANALYTICS` | Enable analytics | `false` |
+| `ENABLE_ADS` | Show ad placeholders | `true` |
 
-**Files to update:**
-- `index.html`
-- `notes.html`
-- `textbooks.html`
-
-**Find:** `your-email@example.com`  
-**Replace with:** `your-actual-email@gmail.com`
-
-### 4. Links (Optional)
-
-Update these placeholder links in all HTML files:
-
-| Placeholder | Replace With |
-|-------------|--------------|
-| `href="#"` (About) | Your GitHub profile or website |
-| `href="#"` (Report) | Your issue tracker URL |
-| `href="#"` (GitHub) | Your GitHub profile |
-| `YOUR_NOTES_FOLDER_ID` | Your Google Drive Notes folder ID |
-| `YOUR_TEXTBOOKS_FOLDER_ID` | Your Google Drive Textbooks folder ID |
-
-### 5. Google Cloud Console Setup
+## Google Cloud Console Setup
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing
 3. Enable **Google Drive API**
 4. Create **API Key** (not OAuth)
 5. Add **HTTP Referrer restriction**: `yourdomain.com/*`
-6. Copy the API key to `js/drive-api.js`
+6. Copy the API key to your environment variables
 
-## Folder Structure for Your Google Drive
+## Folder Structure for Google Drive
 
 ```
 Root Folder (Notes)
@@ -127,32 +116,55 @@ The system auto-detects department codes from folder names:
 | Information Technology | IT | Purple |
 | Mechanical | ME | Cyan |
 
-## Testing Locally
+## Files Structure
 
-1. Set up a local server (e.g., Python, Node.js)
-2. Open `index.html` in browser
-3. Check browser console for errors
-4. Verify Google Drive API calls work
+```
+template/
+├── index.html          # Home page
+├── notes.html          # Class resources page
+├── textbooks.html      # Textbooks page
+├── calculator.html     # GPA/CGPA calculator
+├── CHANGELOG.html      # Version history
+├── _worker.js          # Cloudflare Worker for env injection
+├── wrangler.toml       # Cloudflare configuration
+├── .env.example        # Environment variables template
+├── js/
+│   ├── config.js       # Environment configuration (PLACEHOLDERS)
+│   ├── drive-api.js    # Google Drive API module
+│   ├── navigation.js   # UI rendering
+│   ├── calculator.js   # Calculator logic
+│   └── ...
+├── css/
+│   ├── themes.css      # Theme variables
+│   ├── common.css      # Shared styles
+│   └── ...
+└── docs/
+    └── ...
+```
 
-## Deployment
+## Local Development
 
-Upload all files to:
-- **Cloudflare Pages** (recommended)
-- **GitHub Pages**
-- **Netlify**
-- Any static hosting
+1. Set up a local server (Python, Node.js, etc.)
+2. Copy `js/config.js` and update with your values
+3. Open `index.html` in browser
+4. Check browser console for errors
 
-## Files Checklist
+## Security Notes
 
-Before deploying, ensure you've updated:
+- **Never commit** `.env` or `config.js` with real credentials
+- Use Cloudflare's Environment Variables for production
+- Restrict your Google API key to your domain only
+- The `_worker.js` injects env vars at runtime securely
 
-- [ ] `js/drive-api.js` - API key
-- [ ] `notes.html` - ROOT_FOLDER_ID
-- [ ] `textbooks.html` - ROOT_FOLDER_ID
-- [ ] `index.html` - Email addresses and links
-- [ ] `notes.html` - Email addresses and links
-- [ ] `textbooks.html` - Email addresses and links
-- [ ] `CHANGELOG.html` - Config section with your IDs
+## Deployment Checklist
+
+Before deploying, ensure you've set:
+
+- [ ] `GOOGLE_DRIVE_API_KEY` - In Cloudflare Dashboard
+- [ ] `NOTES_FOLDER_ID` - In Cloudflare Dashboard
+- [ ] `TEXTBOOKS_FOLDER_ID` - In Cloudflare Dashboard
+- [ ] `CONTACT_EMAIL` - (optional)
+- [ ] Google API Key restricted to your domain
 
 ## Support
 
@@ -160,6 +172,7 @@ For issues or questions, check:
 1. Browser console for errors
 2. Network tab for API call failures
 3. Google Cloud Console for API key restrictions
+4. Cloudflare Pages logs for Worker errors
 
 ## License
 

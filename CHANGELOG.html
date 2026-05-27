@@ -179,34 +179,186 @@
           <div class="stat-label">CSS Files</div>
         </div>
         <div class="stat">
-          <div class="stat-value">4</div>
+          <div class="stat-value">5</div>
           <div class="stat-label">HTML Pages</div>
         </div>
       </div>
     </div>
 
-    <!-- Version 2.3 -->
+    <!-- Version 3.0 -->
     <div class="version">
       <div class="version-header">
-        <span class="version-badge">v2.3</span>
-        <span class="version-date">Latest - Template Package Ready</span>
+        <span class="version-badge">v3.0</span>
+        <span class="version-date">Latest - Simplified Config for Direct Upload</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Removed some functions Functions</strong> Fixed issues with Deployment for Cloudflare</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Security</h3>
+        <ul class="feature-list">
+          <li>Added some security fixes</li>
+        </ul>
+      </div>
+
+      <div class="file-list">
+        <h4>Files Changed</h4>
+        <ul>
+          <li>js/config.js (simplified)</li>
+          <li>functions/ (removed)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 2.7 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v2.7</span>
+        <span class="version-date">Improved Config & Error Handling</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Improved config.js</strong> - Better error handling with HTML response detection</li>
+          <li><strong>Error Banner</strong> - Clear visual error when config fails to load</li>
+          <li><strong>API Function</strong> - Added CORS OPTIONS handler</li>
+        </ul>
+      </div>
+
+      <div class="file-list">
+        <h4>Files Changed (2)</h4>
+        <ul>
+          <li>functions/api/config.js</li>
+          <li>js/config.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 2.6 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v2.6</span>
+        <span class="version-date">Secure Environment Variables via API</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>/api/config Endpoint</strong> - Cloudflare Pages Function that returns env vars securely</li>
+          <li><strong>Runtime Config Loading</strong> - Frontend fetches config from API endpoint</li>
+          <li><strong>Config Ready Promise</strong> - CONFIG.ready() for async initialization</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>config.js Refactored</strong> - Fetches from /api/config instead of hardcoded values</li>
+          <li><strong>Removed _worker.js</strong> - Using Pages Functions instead (fixes Error 1019)</li>
+          <li><strong>Improved Security</strong> - API keys stored in Cloudflare Environment Variables</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Fixed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Cloudflare Error 1019</strong> - Switched to Pages Functions approach</li>
+        </ul>
+      </div>
+
+      <div class="file-list">
+        <h4>Files Changed (4)</h4>
+        <ul>
+          <li>functions/api/config.js (new)</li>
+          <li>js/config.js (updated)</li>
+          <li>_worker.js (removed)</li>
+          <li>CHANGELOG.html</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 2.5 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v2.5</span>
+        <span class="version-date">Privacy Policy Page</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Privacy Policy Page</strong> - Comprehensive privacy policy page (privacy.html)</li>
+          <li><strong>Privacy-Focused Design</strong> - Documents that no personal data is collected</li>
+          <li><strong>Cookie Policy Details</strong> - Explains local storage usage and cookie consent</li>
+          <li><strong>Google Drive API Disclosure</strong> - Transparent about API usage</li>
+        </ul>
       </div>
       
       <div class="feature-group">
         <h3>Changed</h3>
         <ul class="feature-list changed">
-          <li><strong>Template Package</strong> - Created distributable template_v2.3.zip file</li>
-          <li><strong>Clean Placeholders</strong> - All sensitive data replaced with clear placeholders</li>
-          <li><strong>Documentation</strong> - Comprehensive README with setup instructions</li>
+          <li><strong>Footer Links</strong> - Added Privacy Policy link to all page footers</li>
+          <li><strong>Cookie Banner</strong> - Updated "Learn more" link to point to privacy.html</li>
         </ul>
       </div>
       
       <div class="file-list">
-        <h4>Files</h4>
+        <h4>Files Changed (6)</h4>
         <ul>
-          <li>template_v2.3.zip</li>
-          <li>README.md</li>
+          <li>privacy.html (new)</li>
+          <li>index.html</li>
+          <li>notes.html</li>
+          <li>textbooks.html</li>
+          <li>calculator.html</li>
           <li>CHANGELOG.html</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 2.4 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v2.4</span>
+        <span class="version-date">Environment Variables Support</span>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>config.js</strong> - Centralized configuration file with environment variable support</li>
+          <li><strong>_worker.js</strong> - Cloudflare Worker for secure env injection at runtime</li>
+          <li><strong>wrangler.toml</strong> - Cloudflare Pages configuration file</li>
+          <li><strong>.env / .env.example</strong> - Environment variables files</li>
+        </ul>
+      </div>
+      
+      <div class="feature-group">
+        <h3>Changed</h3>
+        <ul class="feature-list changed">
+          <li><strong>Environment Variables</strong> - API keys and folder IDs now configurable via env vars</li>
+          <li><strong>Cloudflare Integration</strong> - Full support for Cloudflare Variables and Secrets</li>
+          <li><strong>drive-api.js</strong> - Updated to read from window.CONFIG object</li>
+          <li><strong>All HTML Files</strong> - Updated to load config.js before other scripts</li>
+        </ul>
+      </div>
+      
+      <div class="file-list">
+        <h4>Files Changed (8)</h4>
+        <ul>
+          <li>js/config.js (new)</li>
+          <li>js/drive-api.js</li>
+          <li>_worker.js (new)</li>
+          <li>wrangler.toml (new)</li>
+          <li>.env (new)</li>
+          <li>.env.example (new)</li>
+          <li>notes.html</li>
+          <li>textbooks.html</li>
         </ul>
       </div>
     </div>
@@ -867,20 +1019,10 @@
       <div class="feature-group">
         <h3>Google Drive API</h3>
         <ul class="feature-list">
-          <li><strong>API Key:</strong> <code>YOUR_GOOGLE_DRIVE_API_KEY</code></li>
-          <li><strong>Notes Drive ID:</strong> <code>YOUR_NOTES_FOLDER_ID</code></li>
-          <li><strong>Textbooks Drive ID:</strong> <code>YOUR_TEXTBOOKS_FOLDER_ID</code></li>
+          <li><strong>API Key:</strong> <code>AIzaSyCC8BbNNG2HhwEJ74GRBoos_lvREUPUN2Y</code></li>
+          <li><strong>Notes Drive ID:</strong> <code>1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG</code></li>
+          <li><strong>Textbooks Drive ID:</strong> <code>1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi</code></li>
           <li><strong>Cache TTL:</strong> 24 hours (86400000 ms)</li>
-        </ul>
-      </div>
-      
-      <div class="feature-group">
-        <h3>Setup Instructions</h3>
-        <ul class="feature-list">
-          <li>Replace <code>YOUR_GOOGLE_DRIVE_API_KEY</code> in <code>js/drive-api.js</code> with your actual Google Drive API key</li>
-          <li>Replace <code>YOUR_NOTES_FOLDER_ID</code> in <code>notes.html</code> with your Google Drive folder ID for notes</li>
-          <li>Replace <code>YOUR_TEXTBOOKS_FOLDER_ID</code> in <code>textbooks.html</code> with your Google Drive folder ID for textbooks</li>
-          <li>Replace <code>your-email@example.com</code> with your contact email</li>
         </ul>
       </div>
     </div>
@@ -888,8 +1030,8 @@
     <!-- Footer -->
     <p style="text-align: center; color: #94a3b8; margin-top: 32px;">
       Made with ❤️ for engineering students<br>
-      <a href="#" style="color: #64748b;">GitHub</a> · 
-      <a href="#" style="color: #64748b;">Website</a>
+      <a href="https://github.com/abhinavdatta" style="color: #64748b;">GitHub</a> · 
+      <a href="https://enginotes.pages.dev" style="color: #64748b;">Website</a>
     </p>
   </div>
 </body>

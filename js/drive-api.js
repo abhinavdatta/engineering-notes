@@ -9,16 +9,22 @@
  * - Caching API responses (with cookie consent)
  * - Building the folder structure
  * 
+ * CONFIGURATION:
+ * - All configuration is loaded from window.CONFIG (see config.js)
+ * - Set environment variables in Cloudflare Dashboard or config.js
+ * - Required: GOOGLE_DRIVE_API_KEY, NOTES_FOLDER_ID, TEXTBOOKS_FOLDER_ID
+ * 
  * CACHING:
  * - Uses cacheManager for localStorage caching
  * - Only caches if user has accepted cookies
- * - Cache TTL: 24 hours by default
+ * - Cache TTL: Configurable via CACHE_TTL_HOURS (default: 24)
  * - Separate cache for Notes and Textbooks (based on ROOT_FOLDER_ID)
  * 
  * USAGE:
- * 1. Set window.ROOT_FOLDER_ID BEFORE loading this script
- * 2. Call loadGoogleAPI() to initialize the API client
- * 3. Use fetchFolders() and loadFilesFromFolder() to get data
+ * 1. Load config.js BEFORE this script
+ * 2. Set window.ROOT_FOLDER_ID BEFORE loading this script (or use CONFIG)
+ * 3. Call loadGoogleAPI() to initialize the API client
+ * 4. Use fetchFolders() and loadFilesFromFolder() to get data
  * 
  * FUNCTIONS:
  * - loadGoogleAPI()         : Initialize Google API client
@@ -31,30 +37,47 @@
  */
 
 /* ============================================================
-   API CONFIGURATION
+   API CONFIGURATION - Uses window.CONFIG from config.js
    ============================================================ */
 
 /**
- * Google API Key for Drive API access
- * @constant {string}
- * TODO: Replace with your actual Google Drive API key
+ * Gets the API key from CONFIG
+ * @returns {string} Google API Key
  */
-var API_KEY = 'YOUR_GOOGLE_DRIVE_API_KEY';
+function getApiKey() {
+  return (window.CONFIG && window.CONFIG.GOOGLE_DRIVE_API_KEY) || 'YOUR_GOOGLE_DRIVE_API_KEY';
+}
 
 /**
- * Default Root folder ID (fallback)
- * Notes: 'YOUR_NOTES_FOLDER_ID'
- * Textbooks: 'YOUR_TEXTBOOKS_FOLDER_ID'
- * @constant {string}
- * TODO: Replace with your actual Google Drive folder ID
+ * Gets the default root folder ID (Notes folder)
+ * @returns {string} Default root folder ID
  */
-var DEFAULT_ROOT_FOLDER_ID = 'YOUR_ROOT_FOLDER_ID';
+function getDefaultRootFolderId() {
+  return (window.CONFIG && window.CONFIG.NOTES_FOLDER_ID) || 'YOUR_NOTES_FOLDER_ID';
+}
 
 /**
- * Cache TTL in milliseconds (24 hours)
+ * Gets cache TTL from CONFIG
+ * @returns {number} Cache TTL in milliseconds
+ */
+function getCacheTTL() {
+  if (window.CONFIG && typeof window.CONFIG.getCacheTTL === 'function') {
+    return window.CONFIG.getCacheTTL();
+  }
+  return 24 * 60 * 60 * 1000; // Default: 24 hours
+}
+
+/**
+ * Cache TTL in milliseconds (dynamic, from CONFIG)
+ */
+var CACHE_TTL = getCacheTTL();
+
+/**
+ * Auto-refresh threshold in milliseconds (12 hours)
+ * If cache is older than this, refresh silently in background
  * @constant {number}
  */
-var CACHE_TTL = 24 * 60 * 60 * 1000;
+var AUTO_REFRESH_THRESHOLD = 12 * 60 * 60 * 1000;
 
 /**
  * Auto-refresh threshold in milliseconds (12 hours)
@@ -99,7 +122,14 @@ var DATA_MAP = {};
  * @returns {string} Current root folder ID
  */
 function getRootFolderId() {
-  return window.ROOT_FOLDER_ID || DEFAULT_ROOT_FOLDER_ID;
+  // Priority: window.ROOT_FOLDER_ID > CONFIG > Default
+  if (window.ROOT_FOLDER_ID) {
+    return window.ROOT_FOLDER_ID;
+  }
+  if (window.CONFIG && window.CONFIG.NOTES_FOLDER_ID) {
+    return window.CONFIG.NOTES_FOLDER_ID;
+  }
+  return getDefaultRootFolderId();
 }
 
 // Define ROOT_FOLDER_ID as a getter that always reads from window
@@ -249,8 +279,22 @@ function clearCurrentCache() {
   filesCache = {};
   foldersCache = {};
   
-  var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
+  var folderType = getFolderType(rootId);
   console.log('[DriveAPI] Cache cleared for', folderType);
+}
+
+/**
+ * Gets the folder type name (Notes/Textbooks) from folder ID
+ * @param {string} folderId - The folder ID
+ * @returns {string} 'Notes' or 'Textbooks'
+ */
+function getFolderType(folderId) {
+  var notesId = (window.CONFIG && window.CONFIG.NOTES_FOLDER_ID) || 'YOUR_NOTES_FOLDER_ID';
+  var textbooksId = (window.CONFIG && window.CONFIG.TEXTBOOKS_FOLDER_ID) || 'YOUR_TEXTBOOKS_FOLDER_ID';
+  
+  if (folderId === notesId) return 'Notes';
+  if (folderId === textbooksId) return 'Textbooks';
+  return 'Unknown';
 }
 
 /**
@@ -292,7 +336,7 @@ function loadGoogleAPI() {
       console.log('[DriveAPI] Google API script loaded');
       window.gapi.load('client', function() {
         window.gapi.client.init({
-          apiKey: API_KEY,
+          apiKey: getApiKey(),
           discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
         }).then(function() {
           console.log('[DriveAPI] Google API client initialized');
@@ -673,7 +717,7 @@ async function buildStructure() {
   if (cacheInfo.data && cacheInfo.data.length > 0) {
     DATA_MAP[rootId] = cacheInfo.data;
     structureLoadedMap[rootId] = true;
-    var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
+    var folderType = getFolderType(rootId);
     console.log('[DriveAPI] Loaded from cache for', folderType, '- Age:', formatCacheAge(cacheInfo.age));
     
     // Auto-refresh in background if cache is stale
@@ -686,7 +730,7 @@ async function buildStructure() {
   }
   
   // Fetch from API
-  var folderType = rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks';
+  var folderType = getFolderType(rootId);
   console.log('[DriveAPI] Fetching from API for', folderType);
   
   try {
@@ -943,8 +987,8 @@ function getCacheStatus() {
     hasCache: hasCache,
     cacheAge: cacheAge,
     cacheAgeFormatted: cacheAge ? formatCacheAge(cacheAge) : null,
-    isFresh: cacheAge ? cacheAge < (CACHE_TTL / 2) : false,
-    folderType: rootId === DEFAULT_ROOT_FOLDER_ID ? 'Notes' : 'Textbooks'
+    isFresh: cacheAge ? cacheAge < (getCacheTTL() / 2) : false,
+    folderType: getFolderType(rootId)
   };
 }
 
