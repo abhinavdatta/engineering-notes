@@ -113,7 +113,8 @@ function restoreFromState(state) {
     currentSubjectId = null;
     currentUnitId = null;
     currentSubfolderId = null;
-    
+
+    hideAllViews();
     document.getElementById('home-view').classList.remove('hidden');
     toggleAds(false);
     updateBreadcrumb();
@@ -214,7 +215,7 @@ function initFromHash() {
 
 function goHome() {
   var p = new URLSearchParams(window.location.search).get('XTransformPort');
-  window.location.href = p ? '../index.html?XTransformPort=' + p : 'index.html';
+  window.location.href = p ? '../index.html?XTransformPort=' + p : 'https://enginotes.pages.dev';
 }
 
 function goToDept(id) {
@@ -351,7 +352,7 @@ function createSubfolderView() {
    ============================================================ */
 
 function updateBreadcrumb() {
-  var html = '<a href="index.html">Home</a> → <span>Class Resources</span>';
+  var html = '<a href="https://enginotes.pages.dev">Home</a> → <span>Class Resources</span>';
   
   if (currentDeptId) {
     var d = getDeptById(currentDeptId);
@@ -391,7 +392,7 @@ function updateBreadcrumb() {
   var navbarBreadcrumb = document.getElementById('navbar-breadcrumb');
   if (navbarBreadcrumb) {
     // Simpler breadcrumb for navbar
-    var navHtml = '<a href="index.html">Home</a>';
+    var navHtml = '<a href="https://enginotes.pages.dev">Home</a>';
     navHtml += '<span class="separator">→</span>';
     navHtml += '<span>Class Resources</span>';
     

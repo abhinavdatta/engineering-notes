@@ -1,179 +1,432 @@
-# EngNotes - Template v2.4
+<div align="center">
 
-This is the **template version** of EngNotes with all sensitive information replaced by placeholders.
+# 📚 EngNotes
 
-## Quick Start
+**Engineering Notes & Textbooks Platform**
 
-### Option 1: Cloudflare Pages (Recommended)
+A modern static website where engineering students can access notes, textbooks, question papers, and lab manuals — all powered by Google Drive, with smart caching, multi-theme support, and a built-in GPA/CGPA calculator.
 
-1. **Fork or clone this repository**
-2. **Connect to Cloudflare Pages**:
-   - Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
-   - Pages > Create a project > Connect to Git
-   - Select your repository
+[![Version](https://img.shields.io/badge/version-3.2.1-blue?style=flat-square)](CHANGELOG.md)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Deploy](https://img.shields.io/badge/deploy-Cloudflare%20Pages-orange?style=flat-square)](https://pages.cloudflare.com/)
 
-3. **Set Environment Variables**:
-   - Go to Pages > Your Project > Settings > Environment Variables
-   - Add the following variables:
+</div>
 
-   | Variable | Description | Required |
-   |----------|-------------|----------|
-   | `GOOGLE_DRIVE_API_KEY` | Your Google Drive API key | Yes |
-   | `NOTES_FOLDER_ID` | Google Drive folder ID for notes | Yes |
-   | `TEXTBOOKS_FOLDER_ID` | Google Drive folder ID for textbooks | Yes |
-   | `CONTACT_EMAIL` | Your contact email | No |
-   | `CACHE_TTL_HOURS` | Cache duration in hours (default: 24) | No |
+---
 
-4. **Deploy** - Cloudflare will automatically deploy your site
+## ✨ Features
 
-### Option 2: Static Hosting (Manual Config)
+| Category | Highlights |
+|----------|-----------|
+| 📁 **Content** | Google Drive integration, 24-hour smart caching, GDPR cookie consent |
+| 🎨 **Design** | Light / Dark / AMOLED themes, animated star background, glassmorphism cards, hover aura effects |
+| 🧮 **Tools** | Internal marks calculator, GPA/CGPA calculator, "What If" grade projector |
+| 🔒 **Security** | 15-layer bot protection, Cloudflare Worker API proxy (key never hits the client) |
+| 📊 **SEO** | JSON-LD structured data, Open Graph tags, Twitter Cards, per-page meta tags |
 
-1. **Copy `js/config.example.js` to `js/config.js`**
-2. **Replace placeholders with your actual values**
-3. **Upload all files to your hosting provider**
+---
 
-## Environment Variables
+## 🚀 Quick Start
 
-### Required Variables
+Pick the setup that fits your deployment target:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `GOOGLE_DRIVE_API_KEY` | Google Drive API key | `AIzaSy...` |
-| `NOTES_FOLDER_ID` | Folder ID for notes | `1SNnQiyuSNuJUSbs...` |
-| `TEXTBOOKS_FOLDER_ID` | Folder ID for textbooks | `1qdcMtjkSDhOFol...` |
+### Option 1 — Cloudflare Pages ⭐ (Recommended)
 
-### Optional Variables
+Most secure: your API key stays server-side, never in the browser.
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `CONTACT_EMAIL` | Contact email address | `your-email@example.com` |
-| `CACHE_TTL_HOURS` | Cache duration in hours | `24` |
-| `ENABLE_ANALYTICS` | Enable analytics | `false` |
-| `ENABLE_ADS` | Show ad placeholders | `true` |
+1. Fork or clone this repo and push to GitHub.
 
-## Google Cloud Console Setup
+2. In the [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Pages → Create → Connect to Git**, link your repo.
 
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing
-3. Enable **Google Drive API**
-4. Create **API Key** (not OAuth)
-5. Add **HTTP Referrer restriction**: `yourdomain.com/*`
-6. Copy the API key to your environment variables
+3. Add these environment variables under **Settings → Environment Variables**:
 
-## Folder Structure for Google Drive
+   | Variable | Description | Example |
+   |----------|-------------|---------|
+   | `GOOGLE_DRIVE_API_KEY` | Google Drive API key | `AIzaSy...` |
+   | `NOTES_FOLDER_ID` | Root folder ID for notes | `1SNnQiyu...` |
+   | `TEXTBOOKS_FOLDER_ID` | Root folder ID for textbooks | `1qdcMtjk...` |
+
+4. Set the API key as a **Cloudflare Secret** for the Worker:
+   ```bash
+   npm install -g wrangler
+   wrangler login
+   wrangler secret put GOOGLE_DRIVE_API_KEY
+   # Paste your key when prompted
+   ```
+
+5. Cloudflare deploys automatically on every push. Done.
+
+---
+
+### Option 2 — Static Hosting (GitHub Pages, Netlify, Vercel)
+
+> ⚠️ **Security note:** This approach exposes your API key in the browser console. Use Option 1 for any public deployment.
+
+1. Copy the config template:
+   ```bash
+   cp js/config.example.js js/config.js
+   ```
+
+2. Fill in your values in `js/config.js`:
+   ```javascript
+   window.CONFIG = {
+     GOOGLE_DRIVE_API_KEY: 'YOUR_GOOGLE_DRIVE_API_KEY',
+     NOTES_FOLDER_ID:      'YOUR_NOTES_FOLDER_ID',
+     TEXTBOOKS_FOLDER_ID:  'YOUR_TEXTBOOKS_FOLDER_ID',
+     CONTACT_EMAIL:        'your-email@example.com',
+     CACHE_TTL_HOURS:      24,
+     ENABLE_ANALYTICS:     false,
+     ENABLE_ADS:           true
+   };
+   ```
+
+3. Upload all files to your host and you're live.
+
+---
+
+### Option 3 — Local Development
+
+```bash
+# Python
+python -m http.server 8000
+
+# Node.js
+npx serve .
+
+# PHP
+php -S localhost:8000
+```
+
+Then copy `config.js` with your credentials (see Option 2) and open `http://localhost:8000`.
+
+---
+
+## ⚙️ Setup Guide
+
+### 1 — Google Cloud Console
+
+1. Go to [console.cloud.google.com](https://console.cloud.google.com/) and create or select a project.
+2. Enable the **Google Drive API**.
+3. Create an **API Key** under **Credentials → Create Credentials → API Key**.
+4. Restrict the key: set **HTTP referrers** to `yourdomain.com/*` (add `localhost:*` for local testing).
+5. Copy the key.
+
+---
+
+### 2 — Google Drive Folder Structure
+
+Create two root folders in Drive and organize them like this:
+
+**Notes:**
+```
+Notes/
+├── Computer Science/
+│   ├── Sem 1/
+│   │   ├── Data Structures/
+│   │   │   ├── Unit-1/
+│   │   │   │   ├── notes.pdf
+│   │   │   │   ├── question-paper.pdf
+│   │   │   │   └── lab-manual.pdf
+│   │   │   └── Unit-2/
+│   │   └── Algorithms/
+│   └── Sem 2/
+├── Electronics (ECE)/
+└── Mechanical (ME)/
+```
+
+**Textbooks:**
+```
+Textbooks/
+├── Computer Science/
+│   ├── Sem 1/
+│   │   └── Data Structures/
+│   │       ├── Unit-1/
+│   │       │   ├── textbook.pdf
+│   │       │   └── reference-book.pdf
+│   │       └── Unit-2/
+│   └── Sem 2/
+└── Electronics (ECE)/
+```
+
+---
+
+### 3 — Get Folder IDs
+
+Open each root folder in Google Drive and grab the ID from the URL:
 
 ```
-Root Folder (Notes)
-├── Computer Science
-│   ├── Sem 1
-│   │   ├── Subject Name
-│   │   │   ├── Unit-1
-│   │   │   │   └── notes.pdf
-│   │   │   └── Unit-2
-│   │   └── Another Subject
-│   ├── Sem 2
-│   └── ...
-├── Electronics
-└── ...
-
-Root Folder (Textbooks)
-├── Computer Science
-│   ├── Sem 1
-│   │   ├── Subject Name
-│   │   │   ├── Unit-1
-│   │   │   └── Unit-2
-│   │   └── ...
-│   └── ...
-└── ...
+https://drive.google.com/drive/folders/THIS_IS_YOUR_FOLDER_ID
 ```
 
-### Supported Naming Patterns
+Repeat for both the Notes and Textbooks folders.
 
-**Semester Detection:**
-- `Sem 1`, `Sem 2`, `Sem 3`, etc.
-- `Semester 1`, `Semester 2`, etc.
-- `S1`, `S2`, `S3`, etc.
-- `1st Sem`, `2nd Sem`, etc.
+---
 
-**Unit Detection:**
-- `Unit-1`, `Unit-2`, etc.
-- `U-1`, `U-2`, etc.
-- `Module-1`, `Module-2`, etc.
-- `Chapter-1`, `Chapter-2`, etc.
+## 🗂️ File Structure
 
-## Department Codes
+```
+enginotes/
+├── index.html              # Home page
+├── notes.html              # Class Resources
+├── textbooks.html          # Textbooks
+├── calculator.html         # GPA/CGPA calculator
+├── privacy.html            # Privacy policy
+├── CHANGELOG.html / .md    # Version history
+├── _worker.js              # Cloudflare Worker (API proxy)
+├── wrangler.toml           # Worker configuration
+├── js/
+│   ├── config.example.js   # ← copy this to config.js
+│   ├── config.js           # Your local config (gitignored)
+│   ├── drive-api.js        # Google Drive API client
+│   ├── navigation.js       # UI rendering
+│   ├── calculator.js       # Calculator logic
+│   ├── cookie-consent.js   # Consent banner & cache
+│   ├── theme-manager.js    # Theme switching
+│   ├── bot-protection.js   # Bot detection
+│   ├── logger.js           # Debug logging
+│   ├── notes-app.js        # Notes page init
+│   ├── textbooks-app.js    # Textbooks page init
+│   └── home-app.js         # Home page init
+├── css/
+│   ├── themes.css          # CSS variables (colors, spacing)
+│   ├── base.css            # Reset & typography
+│   ├── layout.css          # Navbar, footer, containers
+│   ├── components.css      # Buttons, cards, modals
+│   ├── utilities.css       # Helper classes
+│   ├── home.css
+│   ├── notes.css
+│   ├── textbooks.css
+│   ├── calculator.css
+│   ├── cookie-consent.css
+│   └── ads.css
+```
 
-The system auto-detects department codes from folder names:
+---
+
+## 🎨 Department Color Codes
+
+Departments are auto-detected from folder names and color-coded throughout the UI:
 
 | Department | Code | Color |
 |------------|------|-------|
-| Artificial Intelligence / AIDS | AIDS | Pink |
-| Civil | CE | Blue |
-| Computer Science | CSE | Green |
-| Electronics | ECE | Orange |
-| Electrical | EEE | Yellow |
-| Instrumentation | EIE | Red |
-| Information Technology | IT | Purple |
-| Mechanical | ME | Cyan |
+| Electronics & Instrumentation | EIE | 🔴 Red `#ef4444` |
+| Electronics & Communication | ECE | 🟠 Orange `#f97316` |
+| Electrical & Electronics | EEE | 🟡 Yellow `#eab308` |
+| Computer Science | CSE | 🟢 Green `#22c55e` |
+| Mechanical | ME | 🩵 Cyan `#06b6d4` |
+| Civil | CE | 🔵 Blue `#3b82f6` |
+| Information Technology | IT | 🟣 Purple `#8b5cf6` |
+| Artificial Intelligence | AI | 🩷 Pink `#ec4899` |
+| AI & Data Science | AIDS | 🩷 Pink `#ec4899` |
 
-## Files Structure
+---
+
+## 📱 Naming Conventions
+
+The app auto-parses these common naming patterns:
+
+**Semesters:** `Sem 1`, `Semester 1`, `S1`, `1st Sem`
+
+**Units:** `Unit-1`, `U-1`, `Module-1`, `Chapter-1`
+
+---
+
+## 🔧 Advanced Configuration
+
+### API Proxy (Cloudflare Worker)
+
+`_worker.js` proxies all Drive requests so your API key is never sent to the client.
+
+**Endpoints:**
+
+| Endpoint | Description |
+|----------|-------------|
+| `/api/drive/list?folderId=ID` | List folders and files |
+| `/api/drive/files?folderId=ID` | List files only |
+| `/api/drive/folder?fileId=ID` | Get folder metadata |
+
+---
+
+### Caching
+
+Caching is opt-in via the cookie consent banner:
+
+| State | Behavior |
+|-------|----------|
+| Accepted | 24-hour localStorage cache (`enginotes-notes-data`, `enginotes-textbooks-data`) |
+| Declined | Fresh fetch on every visit |
+| Brave browser | Cache blocked by Brave policies |
+
+**Clear cache manually (browser console):**
+```javascript
+localStorage.clear();
+// Or target a specific key:
+localStorage.removeItem('enginotes-notes-data');
+```
+
+---
+
+### Themes
+
+| Theme | Description |
+|-------|-------------|
+| Light | Default bright theme |
+| Dark | Slate colors, reduced contrast |
+| Pure Black | AMOLED-optimized — great for OLED screens |
+
+Theme preference is persisted in `localStorage`.
+
+---
+
+## 🔒 Security
+
+### API Key
+
+- **Cloudflare Pages (recommended):** key stored as a Cloudflare Secret, proxied through `_worker.js` — never reaches the browser.
+- **Static hosting:** store in `config.js`, add `config.js` to `.gitignore`, and **never commit it**.
+
+### Bot Protection
+
+A 15-layer scoring system blocks automated scrapers:
+
+1. Headless Chrome detection
+2. PhantomJS detection
+3. WebDriver flag check
+4. PhantomJS properties
+5. Nightmare.js detection
+6. Chrome automation check
+7. Plugins validation
+8. Languages validation
+9. Screen dimension check
+10. Window Chrome object check
+11. Timing-based detection
+12. DevTools protocol check
+13. Permissions API check
+14. WebGL fingerprinting
+15. Scoring threshold (≥4 points → blocked)
+
+### CSP Headers (Optional)
+
+Add a `/_headers` file for Cloudflare Pages:
 
 ```
-template/
-├── index.html          # Home page
-├── notes.html          # Class resources page
-├── textbooks.html      # Textbooks page
-├── calculator.html     # GPA/CGPA calculator
-├── CHANGELOG.html      # Version history
-├── _worker.js          # Cloudflare Worker for env injection
-├── wrangler.toml       # Cloudflare configuration
-├── .env.example        # Environment variables template
-├── js/
-│   ├── config.js       # Environment configuration (PLACEHOLDERS)
-│   ├── drive-api.js    # Google Drive API module
-│   ├── navigation.js   # UI rendering
-│   ├── calculator.js   # Calculator logic
-│   └── ...
-├── css/
-│   ├── themes.css      # Theme variables
-│   ├── common.css      # Shared styles
-│   └── ...
-└── docs/
-    └── ...
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://apis.google.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.googleusercontent.com; frame-src 'self' https://drive.google.com;
 ```
 
-## Local Development
+---
 
-1. Set up a local server (Python, Node.js, etc.)
-2. Copy `js/config.js` and update with your values
-3. Open `index.html` in browser
-4. Check browser console for errors
+## 🌐 Deployment Options
 
-## Security Notes
+| Platform | SSL | CDN | Worker Support | Setup |
+|----------|-----|-----|----------------|-------|
+| **Cloudflare Pages** ⭐ | ✅ | ✅ Global | ✅ | Push to Git → auto-deploy |
+| **Netlify / Vercel** | ✅ | ✅ | ✅ Edge functions | Push to Git → auto-deploy |
+| **GitHub Pages** | ✅ | Partial | ❌ | Enable in repo settings |
+| **Static host** | ❌ Usually | ❌ | ❌ | Manual FTP/upload |
 
-- **Never commit** `.env` or `config.js` with real credentials
-- Use Cloudflare's Environment Variables for production
-- Restrict your Google API key to your domain only
-- The `_worker.js` injects env vars at runtime securely
+---
 
-## Deployment Checklist
+## 🧪 Pre-Deploy Checklist
 
-Before deploying, ensure you've set:
+```
+□ Test on localhost with a real API key
+□ All pages load without console errors
+□ Theme switching works (all 3 themes)
+□ Cookie consent — accept and decline flows
+□ Notes page loads departments and navigates correctly
+□ Textbooks page loads departments
+□ File preview and download work
+□ All calculators produce correct results
+□ Mobile layout at 768px and 480px
+□ Brave browser — caching gracefully blocked
+```
 
-- [ ] `GOOGLE_DRIVE_API_KEY` - In Cloudflare Dashboard
-- [ ] `NOTES_FOLDER_ID` - In Cloudflare Dashboard
-- [ ] `TEXTBOOKS_FOLDER_ID` - In Cloudflare Dashboard
-- [ ] `CONTACT_EMAIL` - (optional)
-- [ ] Google API Key restricted to your domain
+---
 
-## Support
+## 📊 Analytics (Optional)
 
-For issues or questions, check:
-1. Browser console for errors
-2. Network tab for API call failures
-3. Google Cloud Console for API key restrictions
-4. Cloudflare Pages logs for Worker errors
+1. Create a Google Analytics account and get your tracking ID (`GA-XXXXXXXXXX`).
+2. In `js/config.js`:
+   ```javascript
+   ENABLE_ANALYTICS: true,
+   GA_TRACKING_ID: 'GA-XXXXXXXXXX'
+   ```
+3. Add the tracking script to your HTML files.
 
-## License
+---
 
-MIT License - Feel free to use and modify for your own projects.
+## 🤝 Contributing
+
+Contributions welcome. Good places to start:
+
+- New themes or UI/UX improvements
+- Additional calculator modes
+- Bug fixes
+
+Open an issue or submit a PR.
+
+---
+
+## 🎯 Version History
+
+### Current Version: 3.2.1
+
+**v3.2.1 - Theme Background Fix:**
+- Fixed theme background not changing in index.html
+- Fixed CSS selector from `body:not([data-theme="dark"]):not([data-theme="pure-black"])` to `html:not([data-theme="dark"]):not([data-theme="pure-black"]) body`
+- Added smooth transition for theme background changes
+- Fixed minor bugs
+
+**v3.2 - Bug Fixes & UX Improvements:**
+- Fixed cookie consent "Change" button (DECLENSED → DECLINED typo)
+- Fixed navigation state management with `hideAllViews()` call
+- Fixed department view bug where subjects appeared below departments
+- Added beautiful hover aura gradient effects on interactive elements
+- Multi-layered glowing auras on feature cards
+- Animated rotating gradient halos on buttons
+- Smooth underlines with glow effects on navigation links
+- Pulsing background glow on footer elements
+- Improved browser back button navigation
+
+**v3.1.6:**
+- Cookie consent "Change" button now works for both accepted and declined states
+- Fixed navigation bug where subjects appeared below departments when going back
+- Enhanced hover aura gradient effects on interactive elements
+- Updated Privacy Policy with latest security features and Cloudflare Worker details
+- Improved view state management for seamless navigation
+
+**Previous Major Features (v3.1.0 - v3.1.5):**
+- Complete API key removal from client-side (zero exposure)
+- API proxy for secure key storage via Cloudflare Workers
+- Enhanced bot protection (15 detection methods)
+- Folder and file ordering fixes (alphabetical sorting)
+- Environment variable debugging tools
+- Content Security Policy headers
+- Rate limiting and bot detection
+- Department color variables for all themes
+- Debug logging system (Logger.js)
+- CSS architecture improvements (split CSS)
+- Complete SEO meta tags
+
+**Security Improvements:**
+- API key never exposed to browser console
+- All Drive API calls go through Worker proxy
+- Zero client-side API key references
+- Cloudflare Secrets for secure key management
+
+See [CHANGELOG.md](CHANGELOG.md) for complete version history.
+
+---
+
+## 📝 License
+
+MIT — free to use and modify for your own projects.
+
+---
+
+<div align="center">Made with ❤️ for engineering students</div>

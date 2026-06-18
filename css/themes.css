@@ -31,17 +31,27 @@
   --bg-primary: #f8fafc;      /* Main page background */
   --bg-secondary: #ffffff;     /* Cards, tables background */
   --bg-tertiary: #f1f5f9;      /* Hover states, section backgrounds */
-  
+
   /* Text Colors */
   --text-primary: #1e293b;     /* Main text color */
   --text-secondary: #64748b;   /* Secondary text, descriptions */
   --text-muted: #94a3b8;       /* Muted text, placeholders */
-  
+
   /* Border & Accent Colors */
   --border-color: #e2e8f0;     /* Border color for cards, dividers */
   --accent-color: #10b981;     /* Primary accent (green for notes) */
   --accent-hover: #059669;     /* Accent color on hover */
-  
+
+  /* Department Colors (Light Theme) */
+  --dept-cse-color: #22c55e;   /* Computer Science - Green */
+  --dept-ece-color: #f97316;   /* Electronics - Orange */
+  --dept-eee-color: #eab308;   /* Electrical - Yellow */
+  --dept-aids-color: #ec4899;  /* AI & Data Science - Pink */
+  --dept-it-color: #a855f7;    /* Information Technology - Purple */
+  --dept-me-color: #06b6d4;    /* Mechanical - Cyan */
+  --dept-ce-color: #3b82f6;    /* Civil - Blue */
+  --dept-eie-color: #ef4444;   /* Instrumentation - Red */
+
   /* Component-specific Colors */
   --header-bg: #ffffff;        /* Header background */
   --hero-gradient-start: #10b981;  /* Hero section gradient start */
@@ -63,17 +73,27 @@
   --bg-primary: #1e293b;       /* Dark slate background */
   --bg-secondary: #334155;     /* Cards, tables background */
   --bg-tertiary: #475569;      /* Hover states, section backgrounds */
-  
+
   /* Text Colors */
   --text-primary: #f1f5f9;     /* Light text for dark background */
   --text-secondary: #cbd5e1;   /* Secondary text */
   --text-muted: #94a3b8;       /* Muted text */
-  
+
   /* Border & Accent Colors */
   --border-color: #475569;     /* Visible borders on dark */
   --accent-color: #34d399;     /* Brighter accent for dark mode */
   --accent-hover: #10b981;     /* Accent on hover */
-  
+
+  /* Department Colors (Dark Theme - Brighter for visibility) */
+  --dept-cse-color: #4ade80;   /* Computer Science - Green */
+  --dept-ece-color: #fb923c;   /* Electronics - Orange */
+  --dept-eee-color: #facc15;   /* Electrical - Yellow */
+  --dept-aids-color: #f472b6;  /* AI & Data Science - Pink */
+  --dept-it-color: #c084fc;    /* Information Technology - Purple */
+  --dept-me-color: #22d3ee;    /* Mechanical - Cyan */
+  --dept-ce-color: #60a5fa;    /* Civil - Blue */
+  --dept-eie-color: #f87171;   /* Instrumentation - Red */
+
   /* Component-specific Colors */
   --header-bg: #0f172a;        /* Darker header */
   --hero-gradient-start: #059669;
@@ -96,17 +116,27 @@
   --bg-primary: #000000;       /* Pure black - key for AMOLED */
   --bg-secondary: #0a0a0a;     /* Near black for cards */
   --bg-tertiary: #171717;      /* Slightly lighter for contrast */
-  
+
   /* Text Colors */
   --text-primary: #ffffff;     /* Pure white text */
   --text-secondary: #d4d4d4;   /* Slightly dimmed secondary */
   --text-muted: #737373;       /* Gray muted text */
-  
+
   /* Border & Accent Colors */
   --border-color: #262626;     /* Visible borders on black */
   --accent-color: #4ade80;     /* Bright green accent */
   --accent-hover: #22c55e;     /* Accent on hover */
-  
+
+  /* Department Colors (Pure Black Theme - Brightest for high contrast) */
+  --dept-cse-color: #4ade80;   /* Computer Science - Green */
+  --dept-ece-color: #fb923c;   /* Electronics - Orange */
+  --dept-eee-color: #facc15;   /* Electrical - Yellow */
+  --dept-aids-color: #f472b6;  /* AI & Data Science - Pink */
+  --dept-it-color: #c084fc;    /* Information Technology - Purple */
+  --dept-me-color: #22d3ee;    /* Mechanical - Cyan */
+  --dept-ce-color: #60a5fa;    /* Civil - Blue */
+  --dept-eie-color: #f87171;   /* Instrumentation - Red */
+
   /* Component-specific Colors */
   --header-bg: #000000;
   --hero-gradient-start: #166534;

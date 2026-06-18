@@ -1,37 +1,34 @@
 /**
  * ============================================================
- * DRIVE-API.JS - Google Drive API Module
+ * DRIVE-API.JS - Google Drive API Module (Proxy Version)
  * ============================================================
- * 
- * This module handles all Google Drive API interactions:
- * - Loading the Google API client
- * - Fetching folders and files
+ *
+ * This module handles all Google Drive API interactions via Worker proxy:
+ * - Fetching folders and files through /api/drive/* endpoints
  * - Caching API responses (with cookie consent)
  * - Building the folder structure
- * 
+ *
  * CONFIGURATION:
  * - All configuration is loaded from window.CONFIG (see config.js)
- * - Set environment variables in Cloudflare Dashboard or config.js
- * - Required: GOOGLE_DRIVE_API_KEY, NOTES_FOLDER_ID, TEXTBOOKS_FOLDER_ID
- * 
+ * - Required: NOTES_FOLDER_ID, TEXTBOOKS_FOLDER_ID
+ * - API key is handled server-side by Worker (no client exposure)
+ *
  * CACHING:
  * - Uses cacheManager for localStorage caching
  * - Only caches if user has accepted cookies
  * - Cache TTL: Configurable via CACHE_TTL_HOURS (default: 24)
  * - Separate cache for Notes and Textbooks (based on ROOT_FOLDER_ID)
- * 
+ *
  * USAGE:
  * 1. Load config.js BEFORE this script
  * 2. Set window.ROOT_FOLDER_ID BEFORE loading this script (or use CONFIG)
- * 3. Call loadGoogleAPI() to initialize the API client
- * 4. Use fetchFolders() and loadFilesFromFolder() to get data
- * 
+ * 3. Use fetchFolders() and buildStructure() to get data
+ *
  * FUNCTIONS:
- * - loadGoogleAPI()         : Initialize Google API client
  * - fetchFolders(parentId)  : Get all folders in a parent
  * - fetchFiles(parentId)    : Get all files in a folder (not subfolders)
- * - loadFilesFromFolder(id) : Get all files including from subfolders
  * - buildStructure()        : Build complete folder structure
+ * - refreshStructure()      : Force refresh from API
  * - clearDriveCache()       : Clear all cached Drive data
  * ============================================================
  */
@@ -39,14 +36,6 @@
 /* ============================================================
    API CONFIGURATION - Uses window.CONFIG from config.js
    ============================================================ */
-
-/**
- * Gets the API key from CONFIG
- * @returns {string} Google API Key
- */
-function getApiKey() {
-  return (window.CONFIG && window.CONFIG.GOOGLE_DRIVE_API_KEY) || 'YOUR_GOOGLE_DRIVE_API_KEY';
-}
 
 /**
  * Gets the default root folder ID (Notes folder)
@@ -71,13 +60,6 @@ function getCacheTTL() {
  * Cache TTL in milliseconds (dynamic, from CONFIG)
  */
 var CACHE_TTL = getCacheTTL();
-
-/**
- * Auto-refresh threshold in milliseconds (12 hours)
- * If cache is older than this, refresh silently in background
- * @constant {number}
- */
-var AUTO_REFRESH_THRESHOLD = 12 * 60 * 60 * 1000;
 
 /**
  * Auto-refresh threshold in milliseconds (12 hours)
@@ -141,13 +123,13 @@ Object.defineProperty(window, '_rootFolderIdGetter', {
  * Convenience getter for current DATA
  */
 Object.defineProperty(window, 'DATA', {
-  get: function() { 
+  get: function() {
     var rootId = getRootFolderId();
-    return DATA_MAP[rootId] || []; 
+    return DATA_MAP[rootId] || [];
   },
-  set: function(val) { 
+  set: function(val) {
     var rootId = getRootFolderId();
-    DATA_MAP[rootId] = val; 
+    DATA_MAP[rootId] = val;
   }
 });
 
@@ -155,13 +137,13 @@ Object.defineProperty(window, 'DATA', {
  * Convenience getter for structureLoaded
  */
 Object.defineProperty(window, 'structureLoaded', {
-  get: function() { 
+  get: function() {
     var rootId = getRootFolderId();
-    return structureLoadedMap[rootId] || false; 
+    return structureLoadedMap[rootId] || false;
   },
-  set: function(val) { 
+  set: function(val) {
     var rootId = getRootFolderId();
-    structureLoadedMap[rootId] = val; 
+    structureLoadedMap[rootId] = val;
   }
 });
 
@@ -222,6 +204,41 @@ var DEPT_CODES = {
 };
 
 /* ============================================================
+   PROXY API FETCH FUNCTIONS
+   ============================================================ */
+
+/**
+ * Fetches from the Drive API proxy endpoint
+ * @param {string} endpoint - API endpoint (list, get, search)
+ * @param {Object} params - Query parameters
+ * @returns {Promise<Object>} Response data
+ */
+async function fetchFromProxy(endpoint, params) {
+  var url = '/api/drive/' + endpoint;
+  var queryString = Object.keys(params)
+    .map(function(key) {
+      return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+    })
+    .join('&');
+
+  if (queryString) {
+    url += '?' + queryString;
+  }
+
+  try {
+    var response = await fetch(url);
+    if (!response.ok) {
+      var errorText = await response.text();
+      throw new Error('API Error ' + response.status + ': ' + errorText);
+    }
+    return await response.json();
+  } catch (error) {
+    Logger.error('[DriveAPI] Fetch error:', error);
+    throw error;
+  }
+}
+
+/* ============================================================
    CACHE HELPER FUNCTIONS
    ============================================================ */
 
@@ -255,12 +272,12 @@ function setCachedData(key, value) {
 function clearCurrentCache() {
   var rootId = getRootFolderId();
   var prefix = getCachePrefix();
-  
+
   // Clear localStorage cache for this ROOT_FOLDER_ID only
   if (typeof cacheManager !== 'undefined') {
     // Remove structure cache
     cacheManager.remove(getCacheKey('STRUCTURE'));
-    
+
     // Remove folder and file caches (need to iterate localStorage)
     for (var i = localStorage.length - 1; i >= 0; i--) {
       var key = localStorage.key(i);
@@ -269,18 +286,18 @@ function clearCurrentCache() {
       }
     }
   }
-  
+
   // Clear memory cache for this ROOT_FOLDER_ID
   delete DATA_MAP[rootId];
   delete structureLoadedMap[rootId];
-  
+
   // Clear file/folder caches (keyed by folder ID, but we can't easily filter)
   // These will be repopulated on next fetch
   filesCache = {};
   foldersCache = {};
-  
+
   var folderType = getFolderType(rootId);
-  console.log('[DriveAPI] Cache cleared for', folderType);
+  Logger.log('[DriveAPI] Cache cleared for', folderType);
 }
 
 /**
@@ -291,7 +308,7 @@ function clearCurrentCache() {
 function getFolderType(folderId) {
   var notesId = (window.CONFIG && window.CONFIG.NOTES_FOLDER_ID) || 'YOUR_NOTES_FOLDER_ID';
   var textbooksId = (window.CONFIG && window.CONFIG.TEXTBOOKS_FOLDER_ID) || 'YOUR_TEXTBOOKS_FOLDER_ID';
-  
+
   if (folderId === notesId) return 'Notes';
   if (folderId === textbooksId) return 'Textbooks';
   return 'Unknown';
@@ -304,56 +321,14 @@ function clearDriveCache() {
   if (typeof cacheManager !== 'undefined') {
     cacheManager.clear();
   }
-  
+
   // Clear all memory caches
   filesCache = {};
   foldersCache = {};
   structureLoadedMap = {};
   DATA_MAP = {};
-  
-  console.log('[DriveAPI] All cache cleared');
-}
 
-/* ============================================================
-   LOAD GOOGLE API FUNCTION
-   ============================================================ */
-
-/**
- * Loads the Google API client library
- * @returns {Promise} Resolves when API is ready
- */
-function loadGoogleAPI() {
-  return new Promise(function(resolve, reject) {
-    if (window.gapi && window.gapi.client) {
-      resolve();
-      return;
-    }
-    
-    var script = document.createElement('script');
-    script.src = 'https://apis.google.com/js/api.js';
-    
-    script.onload = function() {
-      console.log('[DriveAPI] Google API script loaded');
-      window.gapi.load('client', function() {
-        window.gapi.client.init({
-          apiKey: getApiKey(),
-          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']
-        }).then(function() {
-          console.log('[DriveAPI] Google API client initialized');
-          resolve();
-        }, function(err) {
-          console.error('[DriveAPI] Failed to initialize client:', err);
-          reject(err);
-        });
-      });
-    };
-    
-    script.onerror = function(err) {
-      console.error('[DriveAPI] Failed to load Google API script:', err);
-      reject(err);
-    };
-    document.head.appendChild(script);
-  });
+  Logger.log('[DriveAPI] All cache cleared');
 }
 
 /* ============================================================
@@ -369,49 +344,48 @@ function loadGoogleAPI() {
 async function fetchFolders(parentId) {
   // Create cache key specific to this ROOT_FOLDER_ID
   var cacheKey = getCacheKey('FOLDERS', parentId);
-  
+
   // Check memory cache first (fastest)
   if (foldersCache[cacheKey]) {
     return foldersCache[cacheKey];
   }
-  
+
   // Check localStorage cache (if consent given)
   var cached = getCachedData(cacheKey);
   if (cached) {
     foldersCache[cacheKey] = cached;
     return cached;
   }
-  
-  // Fetch from API
-  await loadGoogleAPI();
-  
+
+  // Fetch from proxy API
   var allFolders = [];
   var pageToken = null;
-  
+
   do {
     var params = {
+      folderId: parentId,
       q: "'" + parentId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false",
       orderBy: 'name',
-      fields: 'nextPageToken, files(id, name)',
+      fields: 'files(id,name),nextPageToken',
       pageSize: 1000
     };
-    
+
     if (pageToken) {
       params.pageToken = pageToken;
     }
-    
-    var response = await window.gapi.client.drive.files.list(params);
-    var files = response.result.files || [];
-    
+
+    var data = await fetchFromProxy('list', params);
+    var files = data.files || [];
+
     allFolders = allFolders.concat(files);
-    pageToken = response.result.nextPageToken;
-    
+    pageToken = data.nextPageToken;
+
   } while (pageToken);
-  
+
   // Cache results
   foldersCache[cacheKey] = allFolders;
   setCachedData(cacheKey, allFolders);
-  
+
   return allFolders;
 }
 
@@ -428,48 +402,47 @@ async function fetchFolders(parentId) {
 async function fetchFiles(parentId) {
   // Create cache key specific to this ROOT_FOLDER_ID
   var cacheKey = getCacheKey('FILES', parentId);
-  
+
   // Check memory cache first
   if (filesCache[cacheKey]) {
     return filesCache[cacheKey];
   }
-  
+
   // Check localStorage cache
   var cached = getCachedData(cacheKey);
   if (cached) {
     filesCache[cacheKey] = cached;
     return cached;
   }
-  
-  await loadGoogleAPI();
-  
+
   var allFiles = [];
   var pageToken = null;
-  
+
   do {
     var params = {
+      folderId: parentId,
       q: "'" + parentId + "' in parents and mimeType != 'application/vnd.google-apps.folder' and trashed = false",
       orderBy: 'name',
-      fields: 'nextPageToken, files(id, name, mimeType)',
+      fields: 'files(id,name,mimeType,webViewLink,size,createdTime,modifiedTime),nextPageToken',
       pageSize: 1000
     };
-    
+
     if (pageToken) {
       params.pageToken = pageToken;
     }
-    
-    var response = await window.gapi.client.drive.files.list(params);
-    var files = response.result.files || [];
-    
+
+    var data = await fetchFromProxy('list', params);
+    var files = data.files || [];
+
     allFiles = allFiles.concat(files);
-    pageToken = response.result.nextPageToken;
-    
+    pageToken = data.nextPageToken;
+
   } while (pageToken);
-  
+
   // Cache results
   filesCache[cacheKey] = allFiles;
   setCachedData(cacheKey, allFiles);
-  
+
   return allFiles;
 }
 
@@ -488,7 +461,7 @@ async function getFolderContents(folderId) {
     fetchFolders(folderId),
     fetchFiles(folderId)
   ]);
-  
+
   return { folders: folders, files: files };
 }
 
@@ -504,11 +477,11 @@ async function getFolderContents(folderId) {
 function detectSemester(name) {
   var lower = name.toLowerCase();
   var match = lower.match(/sem\s*(\d)|semester\s*(\d)|s(\d)|(\d)(?:st|nd|rd|th)\s*sem/i);
-  
+
   if (match) {
     return parseInt(match[1] || match[2] || match[3] || match[4]);
   }
-  
+
   return null;
 }
 
@@ -523,7 +496,7 @@ function detectSemester(name) {
  */
 function detectUnitNumber(name) {
   var lower = name.toLowerCase();
-  
+
   var patterns = [
     /unit\s*[-_]?\s*(\d)/i,
     /u[-_]?\s*(\d)(?!\w)/i,
@@ -533,14 +506,14 @@ function detectUnitNumber(name) {
     /ch\s*[-_]?\s*(\d)/i,
     /^(\d)$/
   ];
-  
+
   for (var i = 0; i < patterns.length; i++) {
     var match = lower.match(patterns[i]);
     if (match) {
       return parseInt(match[1]);
     }
   }
-  
+
   return null;
 }
 
@@ -555,13 +528,21 @@ function detectUnitNumber(name) {
  */
 function getDeptCode(name) {
   var lower = name.toLowerCase();
-  
-  for (var key in DEPT_CODES) {
-    if (lower.includes(key)) {
+
+  // Prefer longer/more specific keys first to avoid shorter keys
+  // (like "ce") matching substrings of longer department names
+  // (like "electronics") and returning the wrong code.
+  var keys = Object.keys(DEPT_CODES).sort(function(a, b) {
+    return b.length - a.length;
+  });
+
+  for (var i = 0; i < keys.length; i++) {
+    var key = keys[i];
+    if (lower.indexOf(key) !== -1) {
       return DEPT_CODES[key];
     }
   }
-  
+
   return name.substring(0, 3).toUpperCase();
 }
 
@@ -576,17 +557,17 @@ function getDeptCode(name) {
  */
 function getCacheInfo(key) {
   var result = { data: null, age: null, timestamp: null };
-  
+
   if (typeof cacheManager === 'undefined') {
     return result;
   }
-  
+
   var cacheKey = 'enginotes_cache_' + key;
-  
+
   try {
     var item = localStorage.getItem(cacheKey);
     if (!item) return result;
-    
+
     var parsed = JSON.parse(item);
     result.data = parsed.value;
     result.timestamp = parsed.timestamp;
@@ -594,7 +575,7 @@ function getCacheInfo(key) {
   } catch (e) {
     // Ignore parse errors
   }
-  
+
   return result;
 }
 
@@ -611,27 +592,24 @@ var backgroundRefreshInProgress = {};
 async function silentBackgroundRefresh(rootId) {
   // Prevent multiple simultaneous refreshes for same folder
   if (backgroundRefreshInProgress[rootId]) {
-    console.log('[DriveAPI] Background refresh already in progress for', rootId);
+    Logger.log('[DriveAPI] Background refresh already in progress for', rootId);
     return;
   }
-  
+
   backgroundRefreshInProgress[rootId] = true;
-  
+
   try {
-    console.log('[DriveAPI] Starting silent background refresh...');
-    
+    Logger.log('[DriveAPI] Starting silent background refresh...');
+
     // Clear only the structure cache for this root
     var structureCacheKey = 'drive_' + rootId.substring(0, 8) + '_structure';
     if (typeof cacheManager !== 'undefined') {
       cacheManager.remove(structureCacheKey);
     }
-    
-    // Fetch fresh data
-    await loadGoogleAPI();
-    
+
     var deptFolders = await fetchFolders(rootId);
     var data = [];
-    
+
     for (var i = 0; i < deptFolders.length; i++) {
       var dept = deptFolders[i];
       var deptData = {
@@ -641,18 +619,18 @@ async function silentBackgroundRefresh(rootId) {
         folderId: dept.id,
         semesters: {}
       };
-      
+
       var subFolders = await fetchFolders(dept.id);
-      
+
       for (var j = 0; j < subFolders.length; j++) {
         var sub = subFolders[j];
         var semNum = detectSemester(sub.name);
-        
+
         if (semNum !== null) {
           if (!deptData.semesters[semNum]) {
             deptData.semesters[semNum] = [];
           }
-          
+
           var subjectFolders = await fetchFolders(sub.id);
           for (var k = 0; k < subjectFolders.length; k++) {
             var subj = subjectFolders[k];
@@ -668,23 +646,23 @@ async function silentBackgroundRefresh(rootId) {
           deptData.semesters[detectedSem].push(subjectData);
         }
       }
-      
+
       for (var s = 1; s <= 8; s++) {
         if (!deptData.semesters[s]) {
           deptData.semesters[s] = [];
         }
       }
-      
+
       data.push(deptData);
     }
-    
+
     // Update cache and memory
     DATA_MAP[rootId] = data;
     setCachedData(getCacheKey('STRUCTURE'), data);
-    
-    console.log('[DriveAPI] Silent background refresh complete');
+
+    Logger.log('[DriveAPI] Silent background refresh complete');
   } catch (error) {
-    console.error('[DriveAPI] Background refresh failed:', error);
+    Logger.error('[DriveAPI] Background refresh failed:', error);
   } finally {
     backgroundRefreshInProgress[rootId] = false;
   }
@@ -702,49 +680,42 @@ async function silentBackgroundRefresh(rootId) {
  */
 async function buildStructure() {
   var rootId = getRootFolderId();
-  console.log('[DriveAPI] buildStructure called with rootId:', rootId);
-  
+  Logger.log('[DriveAPI] buildStructure called with rootId:', rootId);
+
   // Check if already loaded in memory for this ROOT_FOLDER_ID
   if (structureLoadedMap[rootId] && DATA_MAP[rootId] && DATA_MAP[rootId].length > 0) {
-    console.log('[DriveAPI] Using in-memory structure');
+    Logger.log('[DriveAPI] Using in-memory structure');
     return DATA_MAP[rootId];
   }
-  
+
   // Check localStorage cache for this ROOT_FOLDER_ID
   var structureCacheKey = getCacheKey('STRUCTURE');
   var cacheInfo = getCacheInfo(structureCacheKey);
-  
+
   if (cacheInfo.data && cacheInfo.data.length > 0) {
     DATA_MAP[rootId] = cacheInfo.data;
     structureLoadedMap[rootId] = true;
     var folderType = getFolderType(rootId);
-    console.log('[DriveAPI] Loaded from cache for', folderType, '- Age:', formatCacheAge(cacheInfo.age));
-    
+    Logger.log('[DriveAPI] Loaded from cache for', folderType, '- Age:', formatCacheAge(cacheInfo.age));
+
     // Auto-refresh in background if cache is stale
     if (cacheInfo.age > AUTO_REFRESH_THRESHOLD) {
-      console.log('[DriveAPI] Cache is stale, triggering silent background refresh...');
+      Logger.log('[DriveAPI] Cache is stale, triggering silent background refresh...');
       silentBackgroundRefresh(rootId);
     }
-    
+
     return DATA_MAP[rootId];
   }
-  
+
   // Fetch from API
   var folderType = getFolderType(rootId);
-  console.log('[DriveAPI] Fetching from API for', folderType);
-  
-  try {
-    await loadGoogleAPI();
-  } catch (apiError) {
-    console.error('[DriveAPI] Failed to load Google API:', apiError);
-    throw apiError;
-  }
-  
+  Logger.log('[DriveAPI] Fetching from API for', folderType);
+
   var deptFolders = await fetchFolders(rootId);
-  console.log('[DriveAPI] Found', deptFolders.length, 'department folders');
-  
+  Logger.log('[DriveAPI] Found', deptFolders.length, 'department folders');
+
   var data = [];
-  
+
   for (var i = 0; i < deptFolders.length; i++) {
     var dept = deptFolders[i];
     var deptData = {
@@ -754,18 +725,18 @@ async function buildStructure() {
       folderId: dept.id,
       semesters: {}
     };
-    
+
     var subFolders = await fetchFolders(dept.id);
-    
+
     for (var j = 0; j < subFolders.length; j++) {
       var sub = subFolders[j];
       var semNum = detectSemester(sub.name);
-      
+
       if (semNum !== null) {
         if (!deptData.semesters[semNum]) {
           deptData.semesters[semNum] = [];
         }
-        
+
         var subjectFolders = await fetchFolders(sub.id);
         for (var k = 0; k < subjectFolders.length; k++) {
           var subj = subjectFolders[k];
@@ -781,22 +752,23 @@ async function buildStructure() {
         deptData.semesters[detectedSem].push(subjectData);
       }
     }
-    
+
     for (var s = 1; s <= 8; s++) {
       if (!deptData.semesters[s]) {
         deptData.semesters[s] = [];
       }
     }
-    
+
     data.push(deptData);
   }
-  
+
   // Cache for this ROOT_FOLDER_ID
   DATA_MAP[rootId] = data;
   structureLoadedMap[rootId] = true;
   setCachedData(structureCacheKey, data);
-  
-  console.log('[DriveAPI] Structure built and cached');
+
+  Logger.log('[DriveAPI] Structure built and cached');
+
   return data;
 }
 
@@ -826,7 +798,7 @@ function detectSemesterFromSubject(name) {
 async function buildSubjectData(folder, semNum) {
   var subFolders = await fetchFolders(folder.id);
   var unitsData = [];
-  
+
   var hasUnitFolders = false;
   for (var i = 0; i < subFolders.length; i++) {
     var u = subFolders[i];
@@ -841,7 +813,7 @@ async function buildSubjectData(folder, semNum) {
       });
     }
   }
-  
+
   if (!hasUnitFolders && subFolders.length > 0) {
     for (var i = 0; i < subFolders.length; i++) {
       var u = subFolders[i];
@@ -853,11 +825,11 @@ async function buildSubjectData(folder, semNum) {
       });
     }
   }
-  
+
   unitsData.sort(function(a, b) {
     return a.number - b.number;
   });
-  
+
   if (unitsData.length === 0) {
     unitsData.push({
       id: folder.id,
@@ -867,7 +839,7 @@ async function buildSubjectData(folder, semNum) {
       isDefault: true
     });
   }
-  
+
   return {
     id: folder.id,
     code: folder.name.substring(0, 8).toUpperCase(),
@@ -889,17 +861,14 @@ async function buildSubjectData(folder, semNum) {
  */
 async function refreshStructure() {
   var rootId = getRootFolderId();
-  console.log('[DriveAPI] Refreshing structure...');
-  
+  Logger.log('[DriveAPI] Refreshing structure...');
+
   // Clear cache for current ROOT_FOLDER_ID only
   clearCurrentCache();
-  
-  // Fetch fresh data from API
-  await loadGoogleAPI();
-  
+
   var deptFolders = await fetchFolders(rootId);
   var data = [];
-  
+
   for (var i = 0; i < deptFolders.length; i++) {
     var dept = deptFolders[i];
     var deptData = {
@@ -909,18 +878,18 @@ async function refreshStructure() {
       folderId: dept.id,
       semesters: {}
     };
-    
+
     var subFolders = await fetchFolders(dept.id);
-    
+
     for (var j = 0; j < subFolders.length; j++) {
       var sub = subFolders[j];
       var semNum = detectSemester(sub.name);
-      
+
       if (semNum !== null) {
         if (!deptData.semesters[semNum]) {
           deptData.semesters[semNum] = [];
         }
-        
+
         var subjectFolders = await fetchFolders(sub.id);
         for (var k = 0; k < subjectFolders.length; k++) {
           var subj = subjectFolders[k];
@@ -936,23 +905,23 @@ async function refreshStructure() {
         deptData.semesters[detectedSem].push(subjectData);
       }
     }
-    
+
     for (var s = 1; s <= 8; s++) {
       if (!deptData.semesters[s]) {
         deptData.semesters[s] = [];
       }
     }
-    
+
     data.push(deptData);
   }
-  
+
   // Cache the fresh structure
   DATA_MAP[rootId] = data;
   structureLoadedMap[rootId] = true;
   setCachedData(getCacheKey('STRUCTURE'), data);
-  
-  console.log('[DriveAPI] Structure refreshed and cached');
-  
+
+  Logger.log('[DriveAPI] Structure refreshed and cached');
+
   return data;
 }
 
@@ -965,7 +934,7 @@ function getCacheStatus() {
   var structureCacheKey = getCacheKey('STRUCTURE');
   var hasCache = false;
   var cacheAge = null;
-  
+
   if (typeof cacheManager !== 'undefined' && cacheManager.isAvailable()) {
     // Check if we have cached data
     var cacheKey = 'enginotes_cache_' + structureCacheKey;
@@ -982,7 +951,7 @@ function getCacheStatus() {
       }
     }
   }
-  
+
   return {
     hasCache: hasCache,
     cacheAge: cacheAge,
@@ -1002,7 +971,7 @@ function formatCacheAge(ms) {
   var minutes = Math.floor(seconds / 60);
   var hours = Math.floor(minutes / 60);
   var days = Math.floor(hours / 24);
-  
+
   if (days > 0) {
     return days + 'd ' + (hours % 24) + 'h ago';
   } else if (hours > 0) {

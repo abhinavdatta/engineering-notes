@@ -1,0 +1,349 @@
+/**
+ * ===========================================================
+ * UTILITIES.CSS - Helper Classes and Responsive Overrides
+ * ===========================================================
+ * Contains: Utility Classes, Responsive Media Queries
+ * ===========================================================
+ */
+
+/* ============================================================
+   RESPONSIVE STYLES - TABLET
+   ============================================================ */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+
+  .navbar-brand .brand-text {
+    font-size: 16px;
+  }
+
+  .navbar-link {
+    display: none;
+  }
+
+  /* Hide breadcrumb on mobile - it's in the menu */
+  .navbar-breadcrumb {
+    display: none;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .theme-switcher {
+    gap: 1px;
+    padding: 3px;
+  }
+
+  .theme-switch-btn {
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .navbar-actions .nav-btn span {
+    display: none;
+  }
+
+  .navbar-actions .nav-btn {
+    padding: 8px 10px;
+  }
+
+  .dept-links {
+    padding: 10px 16px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+  }
+
+  .dept-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dept-btn {
+    padding: 4px 10px;
+    font-size: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    border-radius: 16px;
+  }
+
+  .header {
+    padding: 10px 12px;
+  }
+  
+  .header-inner {
+    width: 100%;
+  }
+  
+  .header-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  /* Row 1: Logo + Home + Theme */
+  .header-top > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+  
+  .header-top > div:first-child > *:not(.logo):not(.theme-toggle) {
+    order: -1;
+  }
+  
+  .home-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  
+  .logo {
+    font-size: 16px;
+    order: 0;
+    flex: 1;
+    text-align: center;
+  }
+  
+  /* Theme toggle inline with logo row */
+  .theme-toggle {
+    order: 1;
+    width: auto;
+    gap: 4px;
+  }
+  
+  .theme-btn {
+    padding: 4px 8px;
+    font-size: 10px;
+  }
+  
+  /* Row 2: Actions (Back + Refresh) */
+  .header-top > div:last-child {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  
+  .refresh-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    order: -1;
+  }
+  
+  .cache-status {
+    font-size: 10px;
+    margin-left: 0;
+  }
+  
+  .breadcrumb {
+    width: 100%;
+    font-size: 11px;
+    max-width: 100%;
+    margin-top: 4px;
+  }
+  
+  .main {
+    padding: 12px;
+  }
+  
+  .unit-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .unit-card {
+    padding: 14px 10px;
+  }
+  
+  .unit-card-number {
+    font-size: 22px;
+  }
+  
+  .unit-card-icon {
+    font-size: 26px;
+  }
+  
+  .unit-card-name {
+    font-size: 11px;
+  }
+  
+  .footer {
+    padding: 14px 12px;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 12px;
+  }
+  
+  .footer-links a {
+    font-size: 12px;
+  }
+  
+  .modal-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+  
+  .modal-header > div:first-child {
+    width: 100%;
+  }
+  
+  .modal-title {
+    font-size: 13px;
+  }
+  
+  .modal-header > div:last-child {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+  
+  .modal-open-btn,
+  .modal-close-btn {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 12px;
+    margin-right: 0;
+  }
+  
+  /* Show file cards on mobile instead of tables */
+  .table-container {
+    display: none;
+  }
+  
+  .file-cards {
+    display: block;
+  }
+  
+  .section-title {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE STYLES - EXTRA SMALL PHONES
+   ============================================================ */
+@media (max-width: 360px) {
+  .unit-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .unit-card {
+    padding: 10px 8px;
+  }
+  
+  .unit-card-number {
+    font-size: 18px;
+  }
+  
+  .dept-links {
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+/* ============================================================
+   MOBILE MENU OVERLAY
+   ============================================================ */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-primary);
+  z-index: 200;
+  padding: 80px 24px 24px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-menu.active {
+  display: flex;
+}
+
+.mobile-menu-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.mobile-menu-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.mobile-menu-link:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--accent-color);
+}
+
+.mobile-menu .theme-switcher {
+  margin: 24px auto 0;
+  display: flex;
+}
+
+/* Mobile Navigation Path (Breadcrumb in Menu) */
+.mobile-nav-path {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+
+.mobile-nav-path-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mobile-nav-path-link:hover {
+  text-decoration: underline;
+}
+
+.mobile-nav-separator {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.mobile-nav-current {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}

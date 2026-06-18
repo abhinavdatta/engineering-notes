@@ -3,12 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculator - EngNotes</title>
+  
+  <!-- SEO Meta Tags -->
+  <title>GPA & CGPA Calculator | EngNotes</title>
+  <meta name="description" content="Calculate your engineering internal marks, GPA, and CGPA with our easy-to-use calculator. Project your final grades with the "What If" simulator.">
+  <meta name="keywords" content="GPA calculator, CGPA calculator, internal marks calculator, engineering students, grade calculator, semester grades, projected grades">
+  <meta name="author" content="EngNotes">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://enginotes.pages.dev/calculator.html">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="GPA & CGPA Calculator | EngNotes">
+  <meta property="og:description" content="Calculate your engineering internal marks, GPA, and CGPA with our easy-to-use calculator.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://enginotes.pages.dev/calculator.html">
+  <meta property="og:image" content="https://enginotes.pages.dev/og-image.png">
+  <meta property="og:site_name" content="EngNotes">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GPA & CGPA Calculator | EngNotes">
+  <meta name="twitter:description" content="Calculate your engineering internal marks, GPA, and CGPA with our easy-to-use calculator.">
+  <meta name="twitter:image" content="https://enginotes.pages.dev/og-image.png">
+  
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%23a855f7'>C</text></svg>">
   
   <!-- CSS: themes.css must load first -->
   <link rel="stylesheet" href="css/themes.css">
-  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/calculator.css">
   <link rel="stylesheet" href="css/cookie-consent.css">
 </head>
@@ -321,6 +348,8 @@
   </footer>
 
   <!-- JavaScript -->
+  <!-- logger.js for debug logging utility (MUST load first) -->
+  <script src="js/logger.js"></script>
   <script src="js/config.js"></script>
   <script src="js/theme-manager.js"></script>
   <script src="js/calculator.js"></script>

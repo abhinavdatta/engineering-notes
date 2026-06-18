@@ -105,5 +105,4 @@ User-agent: *
 Allow: /
 Crawl-delay: 600
 
-# Sitemap - replace with your domain
-# Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://enginotes.pages.dev/sitemap.xml

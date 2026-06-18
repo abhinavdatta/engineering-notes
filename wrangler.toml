@@ -1,0 +1,13 @@
+name = "enginotes"
+compatibility_date = "2024-01-01"
+
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+[env.preview]
+vars = { ENVIRONMENT = "preview" }
+
+# Routes - ensure /api/* goes to worker
+[[routes]]
+pattern = "api/drive/*"
+zone_name = "your-zone-name"  # Replace with your actual zone

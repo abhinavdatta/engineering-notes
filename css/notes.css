@@ -215,15 +215,15 @@
 }
 
 /* Department Color Variants */
-.department-card[data-dept="EIE"] { --card-accent: #ef4444; }
-.department-card[data-dept="ECE"] { --card-accent: #f97316; }
-.department-card[data-dept="EEE"] { --card-accent: #eab308; }
-.department-card[data-dept="CSE"] { --card-accent: #22c55e; }
-.department-card[data-dept="ME"] { --card-accent: #06b6d4; }
-.department-card[data-dept="CE"] { --card-accent: #3b82f6; }
-.department-card[data-dept="IT"] { --card-accent: #8b5cf6; }
-.department-card[data-dept="AI"] { --card-accent: #ec4899; }
-.department-card[data-dept="AIDS"] { --card-accent: #ec4899; }
+.department-card[data-dept="EIE"] { --card-accent: var(--dept-eie-color); }
+.department-card[data-dept="ECE"] { --card-accent: var(--dept-ece-color); }
+.department-card[data-dept="EEE"] { --card-accent: var(--dept-eee-color); }
+.department-card[data-dept="CSE"] { --card-accent: var(--dept-cse-color); }
+.department-card[data-dept="ME"] { --card-accent: var(--dept-me-color); }
+.department-card[data-dept="CE"] { --card-accent: var(--dept-ce-color); }
+.department-card[data-dept="IT"] { --card-accent: var(--dept-it-color); }
+.department-card[data-dept="AI"] { --card-accent: var(--dept-aids-color); }
+.department-card[data-dept="AIDS"] { --card-accent: var(--dept-aids-color); }
 
 /* ============================================================
    SEMESTER SECTION
@@ -871,4 +871,315 @@
   .main {
     padding: 16px;
   }
+}
+
+
+
+
+
+
+
+/* ============================================================
+   HOVER AURA GRADIENT EFFECTS
+   ============================================================ */
+
+/* Feature Card Aura Effect */
+.feature-card {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--card-accent-color, #10b981), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(20px);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+  filter: blur(30px);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 60px var(--card-accent-color, rgba(16, 185, 129, 0.4)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Card-specific accent colors */
+.feature-card.green {
+  --card-accent-color: #10b981;
+}
+
+.feature-card.blue {
+  --card-accent-color: #06b6d4;
+}
+
+.feature-card.purple {
+  --card-accent-color: #a855f7;
+}
+
+/* Feature Card Icon Glow on Hover */
+.feature-card:hover .feature-card-icon {
+  box-shadow: 
+    0 0 20px var(--card-accent-color),
+    0 0 40px var(--card-accent-color),
+    0 0 60px var(--card-accent-color);
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Feature Card Tags Glow */
+.feature-card:hover .feature-card-tag {
+  box-shadow: 0 0 10px var(--card-accent-color);
+}
+
+/* Contribute Button Aura */
+.contribute-btn {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.contribute-btn::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, #06b6d4, #a855f7);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(25px);
+  animation: gradient-rotate 3s linear infinite;
+}
+
+.contribute-btn:hover::before {
+  opacity: 1;
+  filter: blur(30px);
+}
+
+.contribute-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(16, 185, 129, 0.4),
+    0 0 50px rgba(16, 185, 129, 0.3),
+    0 0 80px rgba(6, 182, 212, 0.2);
+}
+
+/* Gradient rotation animation */
+@keyframes gradient-rotate {
+  0% {
+    filter: blur(25px) hue-rotate(0deg);
+  }
+  100% {
+    filter: blur(25px) hue-rotate(360deg);
+  }
+}
+
+/* Contribute Section Icon Glow */
+.contribute-section-icon {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.contribute-section:hover .contribute-section-icon {
+  box-shadow: 
+    0 0 20px #10b981,
+    0 0 40px #10b981,
+    0 0 60px #10b981,
+    0 0 80px #06b6d4;
+  transform: rotate(180deg) scale(1.2);
+}
+
+/* Navbar Link Aura */
+.navbar-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border-radius: 2px;
+  opacity: 0;
+}
+
+.navbar-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
+  box-shadow: 0 0 15px #10b981;
+}
+
+.navbar-link:hover {
+  color: #10b981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+/* Footer Link Aura */
+.footer-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+.footer-link:hover::before {
+  opacity: 1;
+}
+
+.footer-link:hover {
+  text-shadow: 
+    0 0 10px #10b981,
+    0 0 20px #10b981;
+  transform: translateY(-2px);
+}
+
+/* Navbar Brand Glow */
+.navbar-brand:hover .brand-icon {
+  box-shadow: 
+    0 0 20px var(--accent-color),
+    0 0 40px var(--accent-color);
+  transform: scale(1.1);
+}
+
+.navbar-brand:hover .brand-text span {
+  text-shadow: 0 0 20px var(--accent-color);
+}
+
+/* Theme Switcher Buttons Glow */
+.theme-switch-btn {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.theme-switch-btn::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+.theme-switch-btn:hover::before {
+  opacity: 0.5;
+}
+
+.theme-switch-btn:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* Mobile Menu Link Aura */
+.mobile-menu-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.mobile-menu-link:hover::after {
+  width: 100%;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.mobile-menu-link:hover {
+  color: #10b981;
+  text-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+  padding-left: 30px;
+}
+
+/* Cookie Banner Buttons Glow */
+.cookie-accept-btn:hover {
+  box-shadow: 
+    0 0 20px #10b981,
+    0 0 40px #10b981,
+    0 0 60px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
+}
+
+.cookie-decline-btn:hover {
+  box-shadow: 
+    0 0 20px #ef4444,
+    0 0 40px #ef4444,
+    0 0 60px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Hero Badge Glow */
+.hero-badge {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hero-badge:hover {
+  box-shadow: 
+    0 0 20px var(--accent-color),
+    0 0 40px var(--accent-color);
+  transform: scale(1.05);
+}
+
+/* Hero Title Highlight Hover Effect */
+.hero-title .highlight {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.hero-title .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), #06b6d4);
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--accent-color);
+  opacity: 0.7;
+}
+
+.hero-title:hover .highlight {
+  text-shadow: 
+    0 0 10px var(--accent-color),
+    0 0 20px var(--accent-color),
+    0 0 30px var(--accent-color);
 }

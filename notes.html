@@ -3,33 +3,42 @@
 <head>
   <!-- ============================================================
        NOTES.HTML - Class Resources Page
-       ============================================================
-       This page displays Notes, Question Papers, and Lab Manuals.
-       
-       CSS Files (load in order):
-       1. themes.css - Theme variables (must be first)
-       2. common.css - Shared styles
-       3. notes.css  - Page-specific styles (green accent)
-       4. ads.css    - Ad spaces and adblock popup
-       5. cookie-consent.css - Cookie banner styles
-       
-       JS Files (load in order):
-       1. config.js        - Environment configuration (MUST BE FIRST)
-       2. theme-manager.js - Theme initialization
-       3. cookie-consent.js - Cookie consent and caching
-       4. drive-api.js     - Google Drive functions
-       5. navigation.js    - UI rendering
-       6. bot-protection.js- Security
-       7. notes-app.js     - Page initialization
        ============================================================ -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Class Resources - EngNotes</title>
+  
+  <!-- SEO Meta Tags -->
+  <title>Class Resources - Notes, Question Papers & Lab Manuals | EngNotes</title>
+  <meta name="description" content="Access free engineering notes, question papers, and lab manuals organized by department and semester. Download PDF resources for all engineering branches.">
+  <meta name="keywords" content="engineering notes, question papers, lab manuals, class notes, semester notes, engineering students, study materials, CSE, ECE, EEE, Mechanical, Civil">
+  <meta name="author" content="EngNotes">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://enginotes.pages.dev/notes.html">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="Class Resources - Notes, Question Papers & Lab Manuals | EngNotes">
+  <meta property="og:description" content="Access free engineering notes, question papers, and lab manuals organized by department and semester.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://enginotes.pages.dev/notes.html">
+  <meta property="og:image" content="https://enginotes.pages.dev/og-image.png">
+  <meta property="og:site_name" content="EngNotes">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Class Resources - Notes, Question Papers & Lab Manuals | EngNotes">
+  <meta name="twitter:description" content="Access free engineering notes, question papers, and lab manuals organized by department and semester.">
+  <meta name="twitter:image" content="https://enginotes.pages.dev/og-image.png">
+  
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2322c55e'>N</text></svg>">
   
   <!-- CSS: Themes must load first to define CSS variables -->
   <link rel="stylesheet" href="css/themes.css">
-  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/notes.css">
   <link rel="stylesheet" href="css/ads.css">
   <link rel="stylesheet" href="css/cookie-consent.css">
@@ -247,6 +256,8 @@
   <!-- ============================================================
        JAVASCRIPT FILES
        ============================================================ -->
+  <!-- logger.js for debug logging utility (MUST load first) -->
+  <script src="js/logger.js"></script>
   <!-- config.js MUST load first to set up window.CONFIG -->
   <script src="js/config.js"></script>
   <script>

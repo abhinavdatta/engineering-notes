@@ -3,12 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
   <title>EngNotes - Engineering Notes & Textbooks for Students</title>
+  <meta name="description" content="Free engineering notes, textbooks, and previous question papers organized by department and semester. Access comprehensive study materials for all engineering branches.">
+  <meta name="keywords" content="engineering notes, textbooks, question papers, lab manuals, engineering students, semester notes, study materials, CSE, ECE, EEE, Mechanical, Civil, IT, AI">
+  <meta name="author" content="EngNotes">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://enginotes.pages.dev/">
+  
+  <!-- Open Graph Tags -->
+  <meta property="og:title" content="EngNotes - Engineering Notes & Textbooks for Students">
+  <meta property="og:description" content="Free engineering notes, textbooks, and previous question papers organized by department and semester.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://enginotes.pages.dev/">
+  <meta property="og:image" content="https://enginotes.pages.dev/og-image.png">
+  <meta property="og:site_name" content="EngNotes">
+  <meta property="og:locale" content="en_US">
+  
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EngNotes - Engineering Notes & Textbooks for Students">
+  <meta name="twitter:description" content="Free engineering notes, textbooks, and previous question papers organized by department and semester.">
+  <meta name="twitter:image" content="https://enginotes.pages.dev/og-image.png">
+  
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='%2310b981'>EN</text></svg>">
   
   <!-- CSS: themes.css must load first -->
   <link rel="stylesheet" href="css/themes.css">
-  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
   <link rel="stylesheet" href="css/home.css">
   <link rel="stylesheet" href="css/ads.css">
   <link rel="stylesheet" href="css/cookie-consent.css">
@@ -145,11 +172,59 @@
   </div>
 
   <!-- JavaScript -->
+  <!-- logger.js for debug logging utility (MUST load first) -->
+  <script src="js/logger.js"></script>
   <!-- config.js for environment variables (used for contact email, etc.) -->
   <script src="js/config.js"></script>
   <script src="js/theme-manager.js"></script>
   <script src="js/cookie-consent.js"></script>
   <script src="js/bot-protection.js"></script>
   <script src="js/home-app.js"></script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "EngNotes",
+        "url": "https://enginotes.pages.dev",
+        "description": "Free engineering notes, textbooks, and previous question papers organized by department and semester",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://enginotes.pages.dev/notes.html?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://enginotes.pages.dev/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://enginotes.pages.dev/#organization",
+        "name": "EngNotes",
+        "url": "https://enginotes.pages.dev",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://enginotes.pages.dev/favicon.ico",
+          "width": 100,
+          "height": 100
+        },
+        "description": "Free engineering notes, textbooks, and previous question papers organized by department and semester for students",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "mailtest65066@gmail.com",
+          "contactType": "customer service",
+          "availableLanguage": "English"
+        },
+        "sameAs": [
+          "https://github.com/abhinavdatta/engineering-notes"
+        ]
+      }
+    ]
+  }
+  </script>
 </body>
 </html>

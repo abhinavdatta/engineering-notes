@@ -105,12 +105,12 @@ function setTheme(theme) {
  */
 function updateThemeButtons(activeTheme) {
   // Find all theme buttons
-  var themeButtons = document.querySelectorAll('.theme-btn');
-  
+  var themeButtons = document.querySelectorAll('.theme-switch-btn');
+
   // Update each button's active state
   themeButtons.forEach(function(btn) {
     var btnTheme = btn.getAttribute('data-theme');
-    
+
     if (btnTheme === activeTheme) {
       // Add active class to matching button
       btn.classList.add('active');

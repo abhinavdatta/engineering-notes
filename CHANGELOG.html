@@ -4,184 +4,785 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EngNotes - Changelog</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f8fafc;
-      color: #1e293b;
-      line-height: 1.6;
-      padding: 40px 20px;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 32px;
-      margin-bottom: 8px;
-      color: #0f172a;
-    }
-    .subtitle {
-      color: #64748b;
-      margin-bottom: 32px;
-    }
-    .version {
-      background: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 24px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .version-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .version-badge {
-      background: #10b981;
-      color: #fff;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .version-date {
-      color: #64748b;
-      font-size: 14px;
-    }
-    .feature-group {
-      margin-bottom: 16px;
-    }
-    .feature-group h3 {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-    .feature-list {
-      list-style: none;
-    }
-    .feature-list li {
-      padding: 8px 0;
-      padding-left: 24px;
-      position: relative;
-    }
-    .feature-list li::before {
-      content: "✓";
-      position: absolute;
-      left: 0;
-      color: #10b981;
-      font-weight: bold;
-    }
-    .feature-list.added li::before {
-      content: "+";
-      color: #10b981;
-    }
-    .feature-list.changed li::before {
-      content: "~";
-      color: #f59e0b;
-    }
-    .feature-list.removed li::before {
-      content: "-";
-      color: #ef4444;
-    }
-    code {
-      background: #f1f5f9;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 13px;
-      color: #475569;
-    }
-    .file-list {
-      background: #f8fafc;
-      border-radius: 8px;
-      padding: 16px;
-      margin-top: 16px;
-    }
-    .file-list h4 {
-      font-size: 13px;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-    .file-list ul {
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .file-list li {
-      background: #e2e8f0;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-family: monospace;
-    }
-    .summary-box {
-      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-      color: #fff;
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 32px;
-    }
-    .summary-box h2 {
-      margin-bottom: 12px;
-    }
-    .summary-box p {
-      opacity: 0.9;
-    }
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 16px;
-    }
-    .stat {
-      background: rgba(255,255,255,0.2);
-      border-radius: 8px;
-      padding: 12px;
-      text-align: center;
-    }
-    .stat-value {
-      font-size: 24px;
-      font-weight: 700;
-    }
-    .stat-label {
-      font-size: 12px;
-      opacity: 0.8;
-    }
+    <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/utilities.css">
+  <link rel="stylesheet" href="css/cookie-consent.css">
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+  }
+  .subtitle {
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+  .version {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px var(--card-shadow);
+    border: 1px solid var(--border-color);
+  }
+  .version-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .version-badge {
+    background: #10b981;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .version-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .version-date {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+  .summary-box {
+    background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 32px;
+    box-shadow: 0 10px 30px rgba(2,6,23,0.12), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .summary-box h2 {
+    margin-bottom: 8px;
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .summary-box p {
+    opacity: 0.95;
+    margin-bottom: 14px;
+  }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .stat {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-value {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 13px;
+    opacity: 0.95;
+  }
+
+  @media (max-width: 640px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+  .feature-group {
+    margin-bottom: 20px;
+  }
+  .feature-group h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+  }
+  .feature-list {
+    list-style: none;
+    padding-left: 0;
+  }
+  .feature-list li {
+    padding: 6px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding-left: 20px;
+    position: relative;
+  }
+  .feature-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted);
+  }
+  .feature-list.added li::before {
+    content: '+';
+    color: #10b981;
+    font-weight: bold;
+  }
+  .feature-list.changed li::before {
+    content: '~';
+    color: #f97316;
+    font-weight: bold;
+  }
+  .feature-list.fixed li::before {
+    content: '✓';
+    color: #10b981;
+    font-weight: bold;
+  }
+  .feature-list.removed li::before {
+    content: '−';
+    color: #ef4444;
+    font-weight: bold;
+  }
+  .feature-list li code {
+    background: var(--bg-tertiary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+  .version a {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+  .version a:hover {
+    text-decoration: underline;
+  }
+
+/* ============================================================
+   HOVER AURA GRADIENT EFFECTS
+   ============================================================ */
+
+/* Feature Card Aura Effect */
+.feature-card {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--card-accent-color, #10b981), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(20px);
+}
+
+.feature-card:hover::before {
+  opacity: 1;
+  filter: blur(30px);
+}
+
+.feature-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.2),
+    0 0 60px var(--card-accent-color, rgba(16, 185, 129, 0.4)),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Card-specific accent colors */
+.feature-card.green {
+  --card-accent-color: #10b981;
+}
+
+.feature-card.blue {
+  --card-accent-color: #06b6d4;
+}
+
+.feature-card.purple {
+  --card-accent-color: #a855f7;
+}
+
+/* Feature Card Icon Glow on Hover */
+.feature-card:hover .feature-card-icon {
+  box-shadow: 
+    0 0 20px var(--card-accent-color),
+    0 0 40px var(--card-accent-color),
+    0 0 60px var(--card-accent-color);
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Feature Card Tags Glow */
+.feature-card:hover .feature-card-tag {
+  box-shadow: 0 0 10px var(--card-accent-color);
+}
+
+/* Contribute Button Aura */
+.contribute-btn {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.contribute-btn::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, #06b6d4, #a855f7);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(25px);
+  animation: gradient-rotate 3s linear infinite;
+}
+
+.contribute-btn:hover::before {
+  opacity: 1;
+  filter: blur(30px);
+}
+
+.contribute-btn:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 15px 30px rgba(16, 185, 129, 0.4),
+    0 0 50px rgba(16, 185, 129, 0.3),
+    0 0 80px rgba(6, 182, 212, 0.2);
+}
+
+/* Gradient rotation animation */
+@keyframes gradient-rotate {
+  0% {
+    filter: blur(25px) hue-rotate(0deg);
+  }
+  100% {
+    filter: blur(25px) hue-rotate(360deg);
+  }
+}
+
+/* Contribute Section Icon Glow */
+.contribute-section-icon {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.contribute-section:hover .contribute-section-icon {
+  box-shadow: 
+    0 0 20px #10b981,
+    0 0 40px #10b981,
+    0 0 60px #10b981,
+    0 0 80px #06b6d4;
+  transform: rotate(180deg) scale(1.2);
+}
+
+/* Navbar Link Aura */
+.navbar-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border-radius: 2px;
+  opacity: 0;
+}
+
+.navbar-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
+  box-shadow: 0 0 15px #10b981;
+}
+
+.navbar-link:hover {
+  color: #10b981;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+/* Footer Link Aura */
+.footer-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+.footer-link:hover::before {
+  opacity: 1;
+}
+
+.footer-link:hover {
+  text-shadow: 
+    0 0 10px #10b981,
+    0 0 20px #10b981;
+  transform: translateY(-2px);
+}
+
+/* Navbar Brand Glow */
+.navbar-brand:hover .brand-icon {
+  box-shadow: 
+    0 0 20px var(--accent-color),
+    0 0 40px var(--accent-color);
+  transform: scale(1.1);
+}
+
+.navbar-brand:hover .brand-text span {
+  text-shadow: 0 0 20px var(--accent-color);
+}
+
+/* Theme Switcher Buttons Glow */
+.theme-switch-btn {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.theme-switch-btn::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #10b981, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+.theme-switch-btn:hover::before {
+  opacity: 0.5;
+}
+
+.theme-switch-btn:hover {
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+}
+
+/* Mobile Menu Link Aura */
+.mobile-menu-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.mobile-menu-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #10b981, #06b6d4);
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.mobile-menu-link:hover::after {
+  width: 100%;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.mobile-menu-link:hover {
+  color: #10b981;
+  text-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+  padding-left: 30px;
+}
+
+/* Cookie Banner Buttons Glow */
+.cookie-accept-btn:hover {
+  box-shadow: 
+    0 0 20px #10b981,
+    0 0 40px #10b981,
+    0 0 60px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
+}
+
+.cookie-decline-btn:hover {
+  box-shadow: 
+    0 0 20px #ef4444,
+    0 0 40px #ef4444,
+    0 0 60px rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Hero Badge Glow */
+.hero-badge {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hero-badge:hover {
+  box-shadow: 
+    0 0 20px var(--accent-color),
+    0 0 40px var(--accent-color);
+  transform: scale(1.05);
+}
+
+/* Hero Title Highlight Hover Effect */
+.hero-title .highlight {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.hero-title .highlight::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), #06b6d4);
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--accent-color);
+  opacity: 0.7;
+}
+
+.hero-title:hover .highlight {
+  text-shadow: 
+    0 0 10px var(--accent-color),
+    0 0 20px var(--accent-color),
+    0 0 30px var(--accent-color);
+}
+
   </style>
 </head>
 <body>
+
+    <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <span class="brand-icon">EN</span>
+      <span class="brand-text">Eng<span>Notes</span></span>
+    </a>
+    
+    <div class="navbar-menu">
+      <div class="navbar-breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="separator">→</span>
+        <span>Privacy Policy</span>
+      </div>
+      
+      <div class="theme-switcher">
+        <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')" title="Light">Light</button>
+        <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')" title="Dark">Dark</button>
+        <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')" title="Black">Black</button>
+      </div>
+
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+    <a href="index.html" class="mobile-menu-link">Home</a>
+    <a href="notes.html" class="mobile-menu-link">Class Resources</a>
+    <a href="textbooks.html" class="mobile-menu-link">Textbooks</a>
+    <a href="calculator.html" class="mobile-menu-link">Calculator</a>
+    <div class="theme-switcher">
+      <button class="theme-switch-btn active" data-theme="light" onclick="setTheme('light')">Light</button>
+      <button class="theme-switch-btn" data-theme="dark" onclick="setTheme('dark')">Dark</button>
+      <button class="theme-switch-btn" data-theme="pure-black" onclick="setTheme('pure-black')">Black</button>
+    </div>
+  </div>
+
+
   <div class="container">
     <h1>EngNotes Changelog</h1>
-    <p class="subtitle">Engineering Notes & Textbooks Website - All changes and features</p>
+    <p class="subtitle">Track all updates, bug fixes, and improvements</p>
 
     <!-- Summary -->
     <div class="summary-box">
       <h2>Summary</h2>
-      <p>A complete engineering notes and textbooks website with Google Drive integration, smart caching, and cookie consent.</p>
+      <h4>Latest Version: v3.2.1</h4>
+      <p>A complete engineering notes and textbooks website with Google Drive API integration, Cloudflare Pages deployment, Cloudflare Worker for API proxying, and enhanced security features.</p>
       <div class="stats">
         <div class="stat">
-          <div class="stat-value">7</div>
+          <div class="stat-value">12</div>
           <div class="stat-label">JS Files</div>
         </div>
         <div class="stat">
-          <div class="stat-value">8</div>
+          <div class="stat-value">11</div>
           <div class="stat-label">CSS Files</div>
         </div>
         <div class="stat">
-          <div class="stat-value">5</div>
+          <div class="stat-value">7</div>
           <div class="stat-label">HTML Pages</div>
         </div>
+        <div class="stat">
+          <div class="stat-value">3.2</div>
+          <div class="stat-label">Versions</div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Version 3.1.7 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.2.1</span>
+        <span class="version-date">12-06-2026 - Theme Background Fix</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Fixed Theme Background Not Changing</strong> - Fixed CSS selector in <code>home.css</code> from <code>body:not([data-theme="dark"]):not([data-theme="pure-black"])</code> to <code>html:not([data-theme="dark"]):not([data-theme="pure-black"]) body</code> to properly detect theme changes on HTML element</li>
+          <li><strong>Added Smooth Transition</strong> - Added <code>transition: background-color 0.3s ease</code> to body background for smooth theme switching</li>
+          <li><strong>Fixed Minor Bugs</strong> - Fixed some minor bugs</li>
+        </ul>
+      </div>
+    </div>
+    <!-- Version 3.1.6 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.2</span>
+        <span class="version-date">12-06-2026 - Bug Fixes & UX Improvements</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Fixed Cookie Consent Change Button</strong> - Corrected typo in `cookie-consent.js` (<code>DECLENSED</code> → <code>DECLINED</code>) so "Change" button now works for both accepted and declined states</li>
+          <li><strong>Fixed Navigation State Management</strong> - Added <code>hideAllViews()</code> call in <code>restoreFromState()</code> to properly hide all views when returning to home</li>
+          <li><strong>Fixed Department View Bug</strong> - Resolved issue where subjects appeared below departments when navigating back from department view</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>UX Improvements</h3>
+        <ul class="feature-list added">
+          <li><strong>Hover Aura Gradient Effects</strong> - Added beautiful glow effects on interactive elements:
+            <ul>
+              <li>Multi-layered glowing auras on feature cards (color-coded: green, blue, purple)</li>
+              <li>Animated rotating gradient halos on contribute and interactive buttons</li>
+              <li>Smooth underlines with glow effects on navigation links</li>
+              <li>Pulsing background glow on footer links and interactive elements</li>
+              <li>Icon glow effects with subtle rotations on hover</li>
+              <li>Mobile menu links with gradient slide effects</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Documentation</h3>
+        <ul class="feature-list added">
+          <li><strong>Updated README.md</strong> - Added v3.1.6 version history and hover effects documentation</li>
+          <li><strong>Updated Privacy Policy</strong> - Added details about rate limiting, bot detection, CSP headers, and other security features</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Performance</h3>
+        <ul class="feature-list changed">
+          <li><strong>Improved Browser Back Button</strong> - Better state management when using browser back navigation</li>
+          <li><strong>Smooth Transitions</strong> - Added 0.3s ease transitions to all hover effects for consistent animation</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- Version 3.1.5 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.5</span>
+        <span class="version-date">12-06-2026 - Folder Ordering Fix</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Fixed Folder Ordering</strong> - Folders now display in correct alphabetical order (SEM-1, SEM-2, SEM-3, etc.)</li>
+          <li><strong>Fixed File Ordering</strong> - Files now sorted alphabetically within folders</li>
+          <li><strong>Added orderBy Parameter</strong> - Added <code>orderBy</code> parameter support to Cloudflare Worker</li>
+          <li><strong>Default Sorting</strong> - Added default <code>orderBy='name'</code> in worker when client doesn't specify</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Important Note</h3>
+        <p style="color: #64748b; font-size: 14px;">After deploying this version, users must clear their browser cache for the fix to take effect. Users can click <strong>Cookie Preferences</strong> in footer, then <strong>Clear All Data</strong>, and refresh the page.</p>
+      </div>
+    </div>
+
+    <!-- Version 3.1.4 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.4</span>
+        <span class="version-date">12-06-2026 - Environment Variable Debug</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Efficient API Key Access</strong> - Worker now uses cached <code>apiKey</code> variable instead of accessing <code>env.GOOGLE_DRIVE_API_KEY</code> multiple times</li>
+          <li><strong>Debug Logging</strong> - Added comprehensive debug logging when API key is not found</li>
+          <li><strong>Improved Error Messages</strong> - Better error messages for easier debugging of environment variable issues</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>Console Logging</strong> - Console logging of environment variable keys when API key is missing</li>
+          <li><strong>Environment Object Logging</strong> - Console logging of environment object structure in Cloudflare logs</li>
+          <li><strong>Documentation</strong> - Added <code>ENV_VARIABLE_TROUBLESHOOTING.md</code>, <code>CLOUDFLARE_PAGES_SETUP.md</code>, and <code>QUICK_FIX_ENV_VAR.md</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 3.1.3 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.3</span>
+        <span class="version-date">12-06-2026 - Query Parameter Fix</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Worker Query Handling</strong> - Fixed worker ignoring custom query (<code>q</code>) parameters from client-side requests</li>
+          <li><strong>Client-Side Filtering</strong> - Fixed client-side folder/file filtering not working through API proxy</li>
+          <li><strong>Query Logic</strong> - Worker now uses client <code>q</code> param if provided, falls back to default query</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Added</h3>
+        <ul class="feature-list added">
+          <li><strong>API Key Validation</strong> - Added API key validation in Cloudflare Worker</li>
+          <li><strong>Clear Error Messages</strong> - Added clear error message when <code>GOOGLE_DRIVE_API_KEY</code> is not configured</li>
+          <li><strong>Documentation</strong> - Added <code>API_KEY_DEBUG.md</code> with diagnostic guide and troubleshooting tips</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 3.1.2 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.2</span>
+        <span class="version-date">12-06-2026 - Security & UI Fixes</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Security Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Removed API Key</strong> - Removed hardcoded Google Drive API key from client-side code</li>
+          <li><strong>Removed API Key Property</strong> - Removed <code>GOOGLE_DRIVE_API_KEY</code> property from config.js</li>
+          <li><strong>Updated Validation</strong> - Removed <code>hasApiKey</code> check from config validation</li>
+          <li><strong>Cloudflare Secrets</strong> - Worker now only uses <code>env.GOOGLE_DRIVE_API_KEY</code> (Cloudflare Secret)</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>UI Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Theme Switcher</strong> - Fixed theme switcher buttons now showing active state correctly</li>
+          <li><strong>JavaScript Class Mismatch</strong> - Fixed JavaScript class mismatch (<code>.theme-btn</code> → <code>.theme-switch-btn</code>)</li>
+          <li><strong>Missing Styles</strong> - Fixed missing footer, home button, and department button styles</li>
+          <li><strong>Layout Styles</strong> - Added missing layout styles (footer, .home-btn, .dept-btn, .dept-links)</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Bug Fixes</h3>
+        <ul class="feature-list changed">
+          <li><strong>Google API 403 Error</strong> - Fixed Google Drive API 403 error by adding Referer header to Cloudflare Worker</li>
+          <li><strong>Referer Header</strong> - Updated <code>_worker.js</code> to send Referer header for Google API compatibility</li>
+          <li><strong>Config Validation</strong> - Updated <code>isConfigured()</code> function to only check folder IDs</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 3.1.1 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.1</span>
+        <span class="version-date">12-06-2026 - Code Quality Improvements</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>Code Quality</h3>
+        <ul class="feature-list changed">
+          <li><strong>Logger Cleanup</strong> - Cleaned up logger implementation and removed unused code</li>
+          <li><strong>Error Handling</strong> - Improved error handling throughout the application</li>
+          <li><strong>CSS Consistency</strong> - Updated CSS class names for consistency</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Documentation</h3>
+        <ul class="feature-list added">
+          <li><strong>Updated README</strong> - Updated README with current features</li>
+          <li><strong>Code Comments</strong> - Added code comments for better maintainability</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Version 3.1.0 -->
+    <div class="version">
+      <div class="version-header">
+        <span class="version-badge">v3.1.0</span>
+        <span class="version-date">12-06-2026 - Security & Privacy Features</span>
+      </div>
+
+      <div class="feature-group">
+        <h3>New Features</h3>
+        <ul class="feature-list added">
+          <li><strong>Cookie Consent System</strong> - Added cookie consent system</li>
+          <li><strong>Local Storage Caching</strong> - Added local storage caching with user consent</li>
+          <li><strong>CSP Headers</strong> - Added Content Security Policy headers</li>
+          <li><strong>Rate Limiting</strong> - Added rate limiting protection</li>
+          <li><strong>Bot Detection</strong> - Added bot detection</li>
+          <li><strong>Ad-Block Detection</strong> - Added ad-block detection</li>
+        </ul>
+      </div>
+
+      <div class="feature-group">
+        <h3>Improvements</h3>
+        <ul class="feature-list changed">
+          <li><strong>Performance</strong> - Improved performance with caching</li>
+          <li><strong>Security</strong> - Enhanced security with CSP headers</li>
+          <li><strong>User Experience</strong> - Better user experience with cookie preferences</li>
+        </ul>
       </div>
     </div>
 
@@ -189,31 +790,34 @@
     <div class="version">
       <div class="version-header">
         <span class="version-badge">v3.0</span>
-        <span class="version-date">Latest - Simplified Config for Direct Upload</span>
+        <span class="version-date">12-06-2026 - Major Release</span>
       </div>
 
       <div class="feature-group">
-        <h3>Changed</h3>
-        <ul class="feature-list changed">
-          <li><strong>Removed some functions Functions</strong> Fixed issues with Deployment for Cloudflare</li>
+        <h3>New Features</h3>
+        <ul class="feature-list added">
+          <li><strong>Notes Viewer</strong> - Notes viewer with Google Drive integration</li>
+          <li><strong>Textbooks Viewer</strong> - Textbooks viewer with Google Drive integration</li>
+          <li><strong>Subject Organization</strong> - Subject/semester organization</li>
+          <li><strong>PDF Viewer</strong> - PDF viewer support</li>
+          <li><strong>Responsive Design</strong> - Responsive design for all devices</li>
+          <li><strong>Theme Support</strong> - Dark/Light theme support</li>
+          <li><strong>Calculator Tool</strong> - Calculator tool</li>
+          <li><strong>Privacy Policy</strong> - Privacy policy page</li>
         </ul>
       </div>
 
       <div class="feature-group">
-        <h3>Security</h3>
-        <ul class="feature-list">
-          <li>Added some security fixes</li>
-        </ul>
-      </div>
-
-      <div class="file-list">
-        <h4>Files Changed</h4>
-        <ul>
-          <li>js/config.js (simplified)</li>
-          <li>functions/ (removed)</li>
+        <h3>Infrastructure</h3>
+        <ul class="feature-list added">
+          <li><strong>Cloudflare Pages</strong> - Cloudflare Pages deployment</li>
+          <li><strong>Cloudflare Worker</strong> - Cloudflare Worker for API proxy</li>
+          <li><strong>Google Drive API</strong> - Google Drive API integration</li>
+          <li><strong>Local Storage Caching</strong> - Client-side caching with localStorage</li>
         </ul>
       </div>
     </div>
+
 
     <!-- Version 2.7 -->
     <div class="version">
@@ -966,65 +1570,76 @@
     </div>
 
     <!-- File Structure -->
-    <div class="version">
-      <div class="version-header">
-        <span class="version-badge">Files</span>
-        <span class="version-date">Complete File Structure</span>
-      </div>
-      
-      <div class="file-list">
-        <h4>HTML Files (3)</h4>
-        <ul>
-          <li>index.html</li>
-          <li>pages/notes.html</li>
-          <li>pages/textbooks.html</li>
-        </ul>
-      </div>
-      
-      <div class="file-list">
-        <h4>CSS Files (7)</h4>
-        <ul>
-          <li>css/themes.css</li>
-          <li>css/common.css</li>
-          <li>css/notes.css</li>
-          <li>css/textbooks.css</li>
-          <li>css/home.css</li>
-          <li>css/ads.css</li>
-          <li>css/cookie-consent.css</li>
-        </ul>
-      </div>
-      
-      <div class="file-list">
-        <h4>JavaScript Files (7)</h4>
-        <ul>
-          <li>js/drive-api.js</li>
-          <li>js/navigation.js</li>
-          <li>js/cookie-consent.js</li>
-          <li>js/notes-app.js</li>
-          <li>js/textbooks-app.js</li>
-          <li>js/home-app.js</li>
-          <li>js/theme-manager.js</li>
-          <li>js/bot-protection.js</li>
-        </ul>
-      </div>
-    </div>
-
+<div class="version">
+  <div class="version-header">
+    <span class="version-badge">Files</span>
+    <span class="version-date">Complete File Structure</span>
+  </div>
+  
+  <div class="file-list">
+    <h4>HTML Files (8)</h4>
+    <ul>
+      <li>index.html</li>
+      <li>notes.html</li>
+      <li>textbooks.html</li>
+      <li>calculator.html</li>
+      <li>privacy.html</li>
+      <li>pages/notes.html</li>
+      <li>pages/textbooks.html</li>
+      <li>pages/calculator.html</li>
+    </ul>
+  </div>
+  
+  <div class="file-list">
+    <h4>CSS Files (11)</h4>
+    <ul>
+      <li>css/base.css</li>
+      <li>css/layout.css</li>
+      <li>css/components.css</li>
+      <li>css/utilities.css</li>
+      <li>css/themes.css</li>
+      <li>css/home.css</li>
+      <li>css/notes.css</li>
+      <li>css/textbooks.css</li>
+      <li>css/calculator.css</li>
+      <li>css/ads.css</li>
+      <li>css/cookie-consent.css</li>
+    </ul>
+  </div>
+  
+  <div class="file-list">
+    <h4>JavaScript Files (12)</h4>
+    <ul>
+      <li>js/config.js</li>
+      <li>js/logger.js</li>
+      <li>js/drive-api.js</li>
+      <li>js/navigation.js</li>
+      <li>js/cookie-consent.js</li>
+      <li>js/theme-manager.js</li>
+      <li>js/home-app.js</li>
+      <li>js/notes-app.js</li>
+      <li>js/textbooks-app.js</li>
+      <li>js/calculator.js</li>
+      <li>js/bot-protection.js</li>
+      <li>js/adblock-detector.js</li>
+    </ul>
+  </div>
+</div>
     <!-- API Configuration -->
     <div class="version">
       <div class="version-header">
         <span class="version-badge">Config</span>
         <span class="version-date">API Configuration</span>
       </div>
-      
       <div class="feature-group">
         <h3>Google Drive API</h3>
         <ul class="feature-list">
-          <li><strong>API Key:</strong> <code>AIzaSyCC8BbNNG2HhwEJ74GRBoos_lvREUPUN2Y</code></li>
-          <li><strong>Notes Drive ID:</strong> <code>1SNnQiyuSNuJUSbs_GCgR8vRmYwxzJ3JG</code></li>
-          <li><strong>Textbooks Drive ID:</strong> <code>1qdcMtjkSDhOFolDIHB6lLi6dK57ZTlmi</code></li>
-          <li><strong>Cache TTL:</strong> 24 hours (86400000 ms)</li>
+          <li><strong>API Key</strong> - Required for Google Drive API access, set in drive-api.js</li>
+          <li><strong>Folder IDs</strong> - Separate ROOT_FOLDER_ID for Notes and Textbooks, set in each HTML page</li>
+          <li><strong>Drive Structure</strong> - Root folder contains department subfolders, which contain subject folders, which contain unit folders with files</li>
+          <li><strong>File Types Supported</strong> - PDFs, Word docs, PowerPoints (viewed via Google Drive preview)</li>
+          <li><strong>API Quota Management</strong> - Caching folder structure to minimize API calls and avoid hitting quota limits</li>
         </ul>
-      </div>
     </div>
 
     <!-- Footer -->
@@ -1034,5 +1649,9 @@
       <a href="https://enginotes.pages.dev" style="color: #64748b;">Website</a>
     </p>
   </div>
+    <script src="js/logger.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/theme-manager.js"></script>
+  <script src="js/cookie-consent.js"></script>
 </body>
 </html>

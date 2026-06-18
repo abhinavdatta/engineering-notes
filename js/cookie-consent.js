@@ -103,8 +103,8 @@ function acceptCookies() {
   if (typeof window.onCookiesAccepted === 'function') {
     window.onCookiesAccepted();
   }
-  
-  console.log('[CookieConsent] Cookies accepted - caching enabled');
+
+  Logger.log('[CookieConsent] Cookies accepted - caching enabled');
 }
 
 /**
@@ -123,8 +123,8 @@ function declineCookies() {
   if (typeof window.onCookiesDeclined === 'function') {
     window.onCookiesDeclined();
   }
-  
-  console.log('[CookieConsent] Cookies declined - caching disabled');
+
+  Logger.log('[CookieConsent] Cookies declined - caching disabled');
 }
 
 /**
@@ -181,7 +181,7 @@ function updateCookieStatus() {
   if (consent === CONSENT_VALUES.ACCEPTED) {
     statusEl.className = 'cookie-status accepted';
     statusEl.innerHTML = '<span class="cookie-status-icon">●</span> Caching enabled | <a onclick="resetCookieConsent()">Change</a>';
-  } else if (consent === CONSENT_VALUES.DECLENSED) {
+  } else if (consent === CONSENT_VALUES.DECLINED) {
     statusEl.className = 'cookie-status declined';
     statusEl.innerHTML = '<span class="cookie-status-icon">●</span> Caching disabled | <a onclick="resetCookieConsent()">Change</a>';
   } else {
@@ -205,7 +205,7 @@ var cacheManager = {
    */
   set: function(key, value, ttl) {
     if (!hasCookieConsent()) {
-      console.log('[CacheManager] Skipping cache set - no consent');
+      Logger.log('[CacheManager] Skipping cache set - no consent');
       return false;
     }
     
@@ -220,7 +220,7 @@ var cacheManager = {
       localStorage.setItem(cacheKey, JSON.stringify(data));
       return true;
     } catch (e) {
-      console.error('[CacheManager] Error setting cache:', e);
+      Logger.error('[CacheManager] Error setting cache:', e);
       return false;
     }
   },
@@ -248,10 +248,9 @@ var cacheManager = {
         this.remove(key);
         return null;
       }
-      
       return data.value;
     } catch (e) {
-      console.error('[CacheManager] Error getting cache:', e);
+      Logger.error('[CacheManager] Error getting cache:', e);
       return null;
     }
   },
@@ -281,8 +280,8 @@ var cacheManager = {
     keysToRemove.forEach(function(key) {
       localStorage.removeItem(key);
     });
-    
-    console.log('[CacheManager] Cleared ' + keysToRemove.length + ' cached items');
+
+    Logger.log('[CacheManager] Cleared ' + keysToRemove.length + ' cached items');
   },
   
   /**
@@ -339,8 +338,8 @@ function initCookieConsent() {
   
   // Update status indicator
   updateCookieStatus();
-  
-  console.log('[CookieConsent] Initialized - Consent:', getConsentStatus() || 'pending');
+
+  Logger.log('[CookieConsent] Initialized - Consent:', getConsentStatus() || 'pending');
 }
 
 // Auto-initialize when DOM is ready
