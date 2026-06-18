@@ -419,7 +419,7 @@ Open an issue or submit a PR.
 - Zero client-side API key references
 - Cloudflare Secrets for secure key management
 
-See [CHANGELOG.md](CHANGELOG.md) for complete version history.
+See [CHANGELOG.html](CHANGELOG.html) for complete version history.
 
 ---
 
