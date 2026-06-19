@@ -1,6 +1,6 @@
 <div align="center">
 
-# 📚 EngNotes
+# 📚 EngiNotes
 
 **Engineering Notes & Textbooks Platform**
 
