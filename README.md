@@ -333,18 +333,18 @@ Add a `/_headers` file for Cloudflare Pages:
 
 ## 🧪 Pre-Deploy Checklist
 
-```
-□ Test on localhost with a real API key
-□ All pages load without console errors
-□ Theme switching works (all 3 themes)
-□ Cookie consent — accept and decline flows
-□ Notes page loads departments and navigates correctly
-□ Textbooks page loads departments
-□ File preview and download work
-□ All calculators produce correct results
-□ Mobile layout at 768px and 480px
-□ Brave browser — caching gracefully blocked
-```
+
+- [ ] Test on localhost with a real API key
+- [ ] All pages load without console errors
+- [ ] Theme switching works (all 3 themes)
+- [ ] Cookie consent — accept and decline flows
+- [ ] Notes page loads departments and navigates correctly
+- [ ] Textbooks page loads departments
+- [ ] File preview and download work
+- [ ] All calculators produce correct results
+- [ ] Mobile layout at 768px and 480px
+- [ ] Brave browser — caching gracefully blocked
+
 
 ---
 
